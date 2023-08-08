@@ -1,6 +1,8 @@
 SDK Android para SuiteEtecsa
 ============================
 
+[![](https://jitpack.io/v/suitetecsa/sdk-android.svg)](https://jitpack.io/#suitetecsa/sdk-android)
+
 Una librería que facilita la creación de aplicaciones Android dedicadas a gestionar los servicios de [ETECSA](https://www.etecsa.cu).
 
 ## Cómo usar
