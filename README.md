@@ -1,5 +1,5 @@
-# SDK Android para SuiteEtecsa
-==============================
+SDK Android para SuiteEtecsa
+============================
 
 Una librería que facilita la creación de aplicaciones Android dedicadas a gestionar los servicios de [ETECSA](https://www.etecsa.cu).
 
