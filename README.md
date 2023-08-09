@@ -13,8 +13,11 @@ Agrega la dependencia a tu archivo build.gradle o .kts:
 implementation("com.github.suitetecsa.sdk-android:{última-versión}")
 ```
 
-Obtén las tarjetas SIM insertadas en el dispositivo:
+### Obtener información de las tarjetas SIM
 
+Para obtener información sobre las tarjetas SIM insertadas en el dispositivo:
+
+#### Kotlin
 ```kotlin
 // Instancia SimCardsAPI
 val simCardsAPI = SimCardsAPI
@@ -25,8 +28,22 @@ val simCardsAPI = SimCardsAPI
 val simCards = simCardsAPI.getSimCards()
 ```
 
-Obtén el saldo de la primera tarjeta SIM de la lista:
+#### Java
+```java
+// Instancia SimCardsAPI
+SimCardsAPI simCardsAPI = SimCardsAPI
+    .builder(context)
+    .build();
 
+// Obtiene las tarjetas SIM insertadas en el dispositivo
+List<SimCard> simCards = simCardsAPI.getSimCards();
+```
+
+### Obtener saldo de la tarjeta SIM
+
+Para obtener el saldo de la primera tarjeta SIM de la lista:
+
+#### Kotlin
 ```kotlin
 // Obtiene el ID de suscripción de la primera tarjeta SIM de la lista
 val subscriptionId = simCards.first().subscriptionId
@@ -45,6 +62,147 @@ val ussdResponse = ussdApi.sendUssdRequest("*222#")
 
 // Convierte el objeto UssdResponse en un objeto MainBalance
 val mainBalance = ussdResponse.parseMainBalance()
+```
+
+#### Java
+```java
+// Obtiene el ID de suscripción de la primera tarjeta SIM de la lista
+int subscriptionId = simCards.get(0).getSubscriptionId();
+
+// Crea un objeto TelephonyManager
+TelephonyManager manager = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE))
+    .createForSubscriptionId(subscriptionId);
+
+// Instancia UssdApi
+UssdApi ussdApi = UssdApi
+    .builder(manager)
+    .build();
+
+// Envía una solicitud Ussd y devuelve un UssdResponse
+UssdResponse ussdResponse = ussdApi.sendUssdRequest("*222#");
+
+// Convierte el objeto UssdResponse en un objeto MainBalance
+MainBalance mainBalance = ussdResponse.parseMainBalance();
+```
+
+### Ejemplo corrutina
+
+#### Kotlin
+```kotlin
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var telephonyManager: TelephonyManager
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Inicializa el TelephonyManager
+        telephonyManager = getSystemService(TelephonyManager::class.java)
+
+        // Verifica y solicita permisos si es necesario (esto es solo un ejemplo; asegúrate de manejar los permisos correctamente)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+            makeUssdRequest()
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), PERMISSION_REQUEST_CODE)
+        }
+    }
+
+    private fun makeUssdRequest() {
+        // Crea una instancia de UssdApi utilizando el builder
+        val ussdApi = UssdApi.builder(telephonyManager).build()
+
+        // Define el código USSD que deseas enviar
+        val ussdCode = "*123#" // Por ejemplo, este es un código USSD de ejemplo
+
+        // Realiza la solicitud USSD en un CoroutineScope
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val ussdResponse = withContext(Dispatchers.IO) {
+                    ussdApi.sendUssdRequest(ussdCode)
+                }
+                handleUssdResponse(ussdResponse)
+            } catch (e: UssdException) {
+                // Manejar excepciones de USSD
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun handleUssdResponse(ussdResponse: UssdResponse) {
+        // Maneja la respuesta USSD según tus necesidades
+        val message = ussdResponse.message
+        // Por ejemplo, muestra la respuesta en una vista o realiza acciones basadas en la respuesta
+    }
+
+    companion object {
+        private const val PERMISSION_REQUEST_CODE = 1
+    }
+}
+```
+
+#### Java
+```java
+public class MainActivity extends AppCompatActivity {
+
+    private TelephonyManager telephonyManager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Inicializa el TelephonyManager
+        telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+
+        // Verifica y solicita permisos si es necesario (esto es solo un ejemplo; asegúrate de manejar los permisos correctamente)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+            makeUssdRequest();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    private void makeUssdRequest() {
+        // Crea una instancia de UssdApi utilizando el builder
+        UssdApi ussdApi = UssdApi.builder(telephonyManager).build();
+
+        // Define el código USSD que deseas enviar
+        String ussdCode = "*123#"; // Por ejemplo, este es un código USSD de ejemplo
+
+        // Realiza la solicitud USSD en un CoroutineScope
+        new CoroutineScope(Dispatchers.Main).launch(new CoroutineScope.CallerContinuation() {
+            @Override
+            public void resumeWith(Object result) {
+                try {
+                    UssdResponse ussdResponse = withContext(Dispatchers.IO, () -> {
+                        try {
+                            return ussdApi.sendUssdRequest(ussdCode);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    });
+                    handleUssdResponse(ussdResponse);
+                } catch (UssdException e) {
+                    // Manejar excepciones de USSD
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public Object invokeSuspend(Object result) {
+                return null;
+            }
+        });
+    }
+
+    private void handleUssdResponse(UssdResponse ussdResponse) {
+        // Maneja la respuesta USSD según tus necesidades
+        String message = ussdResponse.getMessage();
+        // Por ejemplo, muestra la respuesta en una vista o realiza acciones basadas en la respuesta
+    }
+
+    private static final int PERMISSION_REQUEST_CODE = 1;
+}
 ```
 
 # Contribución
