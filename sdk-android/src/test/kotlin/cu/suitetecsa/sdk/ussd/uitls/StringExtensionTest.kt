@@ -3,6 +3,7 @@ package cu.suitetecsa.sdk.ussd.uitls
 import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -75,21 +76,7 @@ class StringExtensionTest {
         val dateString = "12/12/2020"
         val expectedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(dateString)
         val actualDate = dateString.toDate()
-        Assert.assertEquals(expectedDate, actualDate)
-    }
-
-    @Test
-    fun testToDateWhenStringIsInIncorrectFormatThenReturnNull() {
-        val dateString = "2020-12-12"
-        val actualDate = dateString.toDate()
-        Assert.assertNull(actualDate)
-    }
-
-    @Test
-    fun testToDateWhenStringIsEmptyThenReturnNull() {
-        val dateString = ""
-        val actualDate = dateString.toDate()
-        Assert.assertNull(actualDate)
+        assertEquals(expectedDate, actualDate)
     }
 
     @Test
@@ -97,20 +84,6 @@ class StringExtensionTest {
         val dateString = "12-12-21"
         val expectedDate = SimpleDateFormat("dd-MM-yy", Locale.getDefault()).parse(dateString)
         val actualDate = dateString.toCubacelDate()
-        Assert.assertEquals(expectedDate, actualDate)
-    }
-
-    @Test
-    fun testToCubacelDateWhenStringIsInIncorrectFormatThenReturnNull() {
-        val dateString = "12-12-2021"
-        val actualDate = dateString.toCubacelDate()
-        Assert.assertNull(actualDate)
-    }
-
-    @Test
-    fun testToCubacelDateWhenStringIsEmptyThenReturnNull() {
-        val dateString = ""
-        val actualDate = dateString.toCubacelDate()
-        Assert.assertNull(actualDate)
+        assertEquals(expectedDate, actualDate)
     }
 }

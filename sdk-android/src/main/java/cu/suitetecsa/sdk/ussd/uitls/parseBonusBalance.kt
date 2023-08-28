@@ -36,9 +36,8 @@ fun UssdResponse.parseBonusBalance(): BonusBalance {
     val (bonusData, bonusUnlimitedData) = dataRegex.find(this.message)?.let { dataMatcher ->
         Pair(
             BonusData(
-                bonusDataCount = dataMatcher.groups["dataAllNetworkBonus"]?.value?.toBytes()?.toLong()
-                    ?: 0L,
-                bonusDataCountLte = dataMatcher.groups["bonusDataLte"]?.value?.toBytes()?.toLong() ?: 0L,
+                bonusDataCount = dataMatcher.groups["dataAllNetworkBonus"]?.value?.toBytes(),
+                bonusDataCountLte = dataMatcher.groups["bonusDataLte"]?.value?.toBytes(),
                 bonusDataDueDate = dataMatcher.groups["bonusDataDueDate"]?.value ?: ""
             ),
             BonusUnlimitedData(
@@ -52,7 +51,7 @@ fun UssdResponse.parseBonusBalance(): BonusBalance {
 
     val bonusDataCU = dataCURegex.find(this.message)?.let { dataCUMatcher ->
         BonusDataCU(
-            bonusDataCuCount = dataCUMatcher.groups["bonusDataCu"]?.value?.toBytes()?.toLong(),
+            bonusDataCuCount = dataCUMatcher.groups["bonusDataCu"]?.value?.toBytes(),
             bonusDataCuDueDate = dataCUMatcher.groups["bonusDataCuDueDate"]?.value
         )
     } ?: BonusDataCU(bonusDataCuCount = null, bonusDataCuDueDate = null)

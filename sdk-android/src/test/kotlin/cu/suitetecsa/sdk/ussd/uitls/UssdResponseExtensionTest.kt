@@ -21,7 +21,7 @@ class UssdResponseExtensionTest {
         val ussdResponse = UssdResponse("Datos: 27.63 GB vence 06-06-23.")
         val bonusBalance = ussdResponse.parseBonusBalance()
 
-        assertEquals("27.63 GB".toBytes().toLong(), bonusBalance.data.bonusDataCount)
+        assertEquals("27.63 GB".toBytes(), bonusBalance.data.bonusDataCount)
         assertEquals("06-06-23", bonusBalance.data.bonusDataDueDate)
     }
 
@@ -30,7 +30,7 @@ class UssdResponseExtensionTest {
         val ussdResponse = UssdResponse( "Datos.cu 175 MB vence 06-06-23.")
         val bonusBalance = ussdResponse.parseBonusBalance()
 
-        assertEquals("175 MB".toBytes().toLong(), bonusBalance.dataCu.bonusDataCuCount)
+        assertEquals("175 MB".toBytes(), bonusBalance.dataCu.bonusDataCuCount)
         assertEquals("06-06-23", bonusBalance.dataCu.bonusDataCuDueDate)
     }
 
@@ -67,8 +67,8 @@ class UssdResponseExtensionTest {
 
         val mainBalance = ussdResponse.parseMainBalance()
 
-        assertEquals(3_758_096_384L, mainBalance.data.data)
-        assertEquals(1_331_439_861L, mainBalance.data.dataLte)
+        assertEquals(3.758096384E9, mainBalance.data.data)
+        assertEquals(1.33143986176E9, mainBalance.data.dataLte)
         assertEquals(27_498L, mainBalance.voice.mainVoice)
         assertEquals(452, mainBalance.sms.mainSms)
         assertEquals(25.00f, mainBalance.credit)
@@ -84,7 +84,7 @@ class UssdResponseExtensionTest {
 
         val mainBalance = ussdResponse.parseMainBalance()
 
-        assertEquals(3_758_096_384L, mainBalance.data.data)
+        assertEquals(3.758096384E9, mainBalance.data.data)
         Assert.assertNull(mainBalance.data.dataLte)
         assertEquals(27_498L, mainBalance.voice.mainVoice)
         Assert.assertNull(mainBalance.sms.mainSms)
@@ -114,8 +114,8 @@ class UssdResponseExtensionTest {
         val mainData = ussdResponse.parseMainData()
 
         assertEquals(true, mainData.usageBasedPricing)
-        assertEquals(2_147_483_648L, mainData.data)
-        assertEquals(1_073_741_824L, mainData.dataLte)
+        assertEquals(2.147483648E9, mainData.data)
+        assertEquals(1.073741824E9, mainData.dataLte)
         assertEquals(30, mainData.remainingDays)
     }
 
@@ -150,8 +150,8 @@ class UssdResponseExtensionTest {
         val mainData = ussdResponse.parseMainData()
 
         assertEquals(false, mainData.usageBasedPricing)
-        assertEquals(4_294_967_296L, mainData.data)
-        assertEquals(3_221_225_472L, mainData.dataLte)
+        assertEquals(4.294967296E9, mainData.data)
+        assertEquals(3.221225472E9, mainData.dataLte)
         Assert.assertNull(mainData.remainingDays)
     }
 

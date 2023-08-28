@@ -75,7 +75,3 @@ internal class SimCardDataSourceImpl(
         }
     }
 }
-
-internal data class SubscriptionInfo(
-    val iccId: String, val displayName: String, val simSlotIndex: Int, val subscriptionId: Int
-)

@@ -5,7 +5,7 @@ import kotlin.math.pow
 
 private const val SIZE_UNIT_MAX_LENGTH: Double = 1024.0
 
-fun String.toBytes(): Double {
+internal fun String.toBytes(): Double {
     val sizeUnit = this.split(" ").last()
     val sizeValue = this.replace(" $sizeUnit", "").replace(" ", "")
     return sizeValue.replace(",", ".").toDouble() * when (sizeUnit.uppercase(Locale.getDefault())) {
