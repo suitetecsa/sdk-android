@@ -4,17 +4,19 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import cu.suitetecsa.sdk.ussd.model.MainSms
 import cu.suitetecsa.sdk.ussd.model.UssdResponse
-import java.util.regex.Pattern
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun UssdResponse.parseMainSms(): MainSms {
-    val smsPattern =
-        Pattern.compile("""Usted dispone de\s+(?<sms>(\d+))\s+SMS\s+validos por\s+(?<dueDate>(\d+\s+dias))""")
-    val matcher = smsPattern.matcher(this.message)
-    return if (matcher.find()) {
-        MainSms(
-            mainSms = matcher.group("sms")?.toInt() ?: 0,
-            mainSmsDueDate = matcher.group("dueDate") ?: ""
+    val smsRegex =
+        """Usted dispone de\s+(?<sms>(\d+))\s+SMS(\s+no activos)?(\s+validos por\s+(?<dueDate>(\d+))\s+dias)?(\.)?"""
+            .toRegex()
+
+    val (sms, remainingDays) = smsRegex.find(this.message)?.let { matchResult ->
+        Pair(
+            matchResult.groups["sms"]?.value?.toInt(),
+            matchResult.groups["dueDate"]?.value?.toInt()
         )
-    } else MainSms(mainSms = 0, mainSmsDueDate = "")
+    } ?: Pair(null, null)
+
+    return MainSms(mainSms = sms, remainingDays = remainingDays)
 }

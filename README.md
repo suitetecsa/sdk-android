@@ -3,7 +3,7 @@ SDK Android para SuiteEtecsa
 
 [![](https://jitpack.io/v/suitetecsa/sdk-android.svg)](https://jitpack.io/#suitetecsa/sdk-android)
 
-Una librería que facilita la creación de aplicaciones Android dedicadas a gestionar los servicios de [ETECSA](https://www.etecsa.cu).
+Esta es una librería que facilita la creación de aplicaciones Android dedicadas a gestionar los servicios de [ETECSA](https://www.etecsa.cu).
 
 ## Cómo usar
 
@@ -15,7 +15,7 @@ implementation("com.github.suitetecsa.sdk-android:{última-versión}")
 
 ### Obtener información de las tarjetas SIM
 
-Para obtener información sobre las tarjetas SIM insertadas en el dispositivo:
+Para obtener información sobre las tarjetas SIM insertadas en el dispositivo, puedes seguir estos pasos:
 
 #### Kotlin
 ```kotlin
@@ -41,24 +41,15 @@ List<SimCard> simCards = simCardsAPI.getSimCards();
 
 ### Obtener saldo de la tarjeta SIM
 
-Para obtener el saldo de la primera tarjeta SIM de la lista:
+Para obtener el saldo de la primera tarjeta SIM de la lista, puedes seguir estos pasos:
 
 #### Kotlin
 ```kotlin
-// Obtiene el ID de suscripción de la primera tarjeta SIM de la lista
-val subscriptionId = simCards.first().subscriptionId
+// Obtener la primera SIM de la lista
+val firstSimCard = simCards.first()
 
-// Crea un objeto TelephonyManager
-val manager = (context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager)
-    .createForSubscriptionId(subscriptionId)
-
-// Instancia UssdApi
-val ussdApi = UssdApi
-    .builder(manager)
-    .build()
-
-// Envía una solicitud Ussd y devuelve un UssdResponse
-val ussdResponse = ussdApi.sendUssdRequest("*222#")
+// Enviar la solicitud
+val ussdResponse = firstSimCard.sendUssdRequest(context, "*222#")
 
 // Convierte el objeto UssdResponse en un objeto MainBalance
 val mainBalance = ussdResponse.parseMainBalance()
@@ -69,17 +60,11 @@ val mainBalance = ussdResponse.parseMainBalance()
 // Obtiene el ID de suscripción de la primera tarjeta SIM de la lista
 int subscriptionId = simCards.get(0).getSubscriptionId();
 
-// Crea un objeto TelephonyManager
-TelephonyManager manager = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE))
-    .createForSubscriptionId(subscriptionId);
-
-// Instancia UssdApi
-UssdApi ussdApi = UssdApi
-    .builder(manager)
-    .build();
+// Obtener la primera SIM de la lista
+SimCard firstSimCard = simCards.get(0);
 
 // Envía una solicitud Ussd y devuelve un UssdResponse
-UssdResponse ussdResponse = ussdApi.sendUssdRequest("*222#");
+UssdResponse ussdResponse = firstSimCard.sendUssdRequest("*222#");
 
 // Convierte el objeto UssdResponse en un objeto MainBalance
 MainBalance mainBalance = ussdResponse.parseMainBalance();
@@ -90,13 +75,14 @@ MainBalance mainBalance = ussdResponse.parseMainBalance();
 #### Kotlin
 ```kotlin
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var telephonyManager: TelephonyManager
+    
+    private lateinit var simCardsAPI: SimCardApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Inicializa el TelephonyManager
-        telephonyManager = getSystemService(TelephonyManager::class.java)
+
+        // Inicializa simCardApi
+        simCardsAPI = SimCardsAPI.builder(context).build()
 
         // Verifica y solicita permisos si es necesario (esto es solo un ejemplo; asegúrate de manejar los permisos correctamente)
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
@@ -107,17 +93,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun makeUssdRequest() {
-        // Crea una instancia de UssdApi utilizando el builder
-        val ussdApi = UssdApi.builder(telephonyManager).build()
-
         // Define el código USSD que deseas enviar
         val ussdCode = "*123#" // Por ejemplo, este es un código USSD de ejemplo
+
+        // Obtener la primera SIM de la lista
+        val firstSimCard = simCards.first()
 
         // Realiza la solicitud USSD en un CoroutineScope
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 val ussdResponse = withContext(Dispatchers.IO) {
-                    ussdApi.sendUssdRequest(ussdCode)
+                    firstSimCard.sendUssdRequest(context, ussdCode)
                 }
                 handleUssdResponse(ussdResponse)
             } catch (e: UssdException) {
@@ -143,15 +129,15 @@ class MainActivity : AppCompatActivity() {
 ```java
 public class MainActivity extends AppCompatActivity {
 
-    private TelephonyManager telephonyManager;
+    private SimCardApi simCardApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Inicializa el TelephonyManager
-        telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        // Inicializa simCardApi
+        simCardApi = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
 
         // Verifica y solicita permisos si es necesario (esto es solo un ejemplo; asegúrate de manejar los permisos correctamente)
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
@@ -162,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void makeUssdRequest() {
-        // Crea una instancia de UssdApi utilizando el builder
-        UssdApi ussdApi = UssdApi.builder(telephonyManager).build();
+        // Obtener la primera SIM de la lista
+        SimCard firstSimCard = simCards.get(0);
 
         // Define el código USSD que deseas enviar
         String ussdCode = "*123#"; // Por ejemplo, este es un código USSD de ejemplo
@@ -175,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     UssdResponse ussdResponse = withContext(Dispatchers.IO, () -> {
                         try {
-                            return ussdApi.sendUssdRequest(ussdCode);
+                            return firstSimCard.sendUssdRequest(context, ussdCode);
                         } catch (Exception e) {
                             e.printStackTrace();
                             return null;

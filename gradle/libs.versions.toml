@@ -12,6 +12,8 @@ appcompat = "1.6.1"
 material = "1.9.0"
 detekt = "1.23.1"
 net-monster = "1.2.0"
+mockito-core = "3.12.4"
+robolectric = "4.6.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -31,6 +33,9 @@ material3 = { group = "androidx.compose.material3", name = "material3" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 net-monster = { group = "app.netmonster", name = "core", version.ref = "net-monster" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito-core" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }

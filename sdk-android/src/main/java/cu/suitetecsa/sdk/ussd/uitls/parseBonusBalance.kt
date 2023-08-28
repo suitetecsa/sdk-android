@@ -8,55 +8,54 @@ import cu.suitetecsa.sdk.ussd.model.BonusData
 import cu.suitetecsa.sdk.ussd.model.BonusDataCU
 import cu.suitetecsa.sdk.ussd.model.BonusUnlimitedData
 import cu.suitetecsa.sdk.ussd.model.UssdResponse
-import java.util.regex.Pattern
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun UssdResponse.parseBonusBalance(): BonusBalance {
-    val creditPattern =
-        Pattern.compile("""(\$(?<bonusCredit>([\d.]+))\s+vence\s+(?<bonusCreditDueDate>(\d{2}-\d{2}-\d{2}))\.)?""")
-    val dataPattern =
-        Pattern.compile("""(Datos:\s+(ilimitados\s+vence\s+)?(?<unlimitedData>(\d{2}-\d{2}-\d{2})\.)?"""
-                    + """(\s+)?(?<dataAllNetworkBonus>(\d+(\.\d+)?)(\s)*([GMK])?B)?"""
-                    + """(\s+\+\s+)?((?<bonusDataLte>(\d+(\.\d+)?)(\s)*([GMK])?B)\s+LTE)?(\s+vence\s+)?"""
-                    + """(?<bonusDataDueDate>(\d{2}-\d{2}-\d{2}))?\.)?""")
-    val dataCUPattern =
-        Pattern.compile("""(Datos\.cu\s+(?<bonusDataCu>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+vence\s+)?"""
-                    + """(?<bonusDataCuDueDate>(\d{2}-\d{2}-\d{2}))?\.)?""")
+    val creditRegex =
+        """\$(?<bonusCredit>([\d.]+))\s+vence\s+(?<bonusCreditDueDate>(\d{2}-\d{2}-\d{2}))\."""
+            .toRegex()
+    val dataRegex =
+        ("""Datos:\s+(ilimitados\s+vence\s+(?<unlimitedData>(\d{2}-\d{2}-\d{2}))\.)?""" +
+                """(\s+)?((?<dataAllNetworkBonus>(\d+(\.\d+)?)(\s)*([GMK])?B))?(\s+\+\s+)?""" +
+                """((?<bonusDataLte>(\d+(\.\d+)?)(\s)*([GMK])?B)\s+LTE)?(\s+vence\s+)?""" +
+                """((?<bonusDataDueDate>(\d{2}-\d{2}-\d{2}))\.)?""")
+            .toRegex()
+    val dataCURegex =
+        ("""Datos\.cu\s+(?<bonusDataCu>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+vence\s+)?""" +
+            """(?<bonusDataCuDueDate>(\d{2}-\d{2}-\d{2}))?\.""")
+            .toRegex()
 
 
-    val creditMatcher = creditPattern.matcher(this.message)
-    val bonusCredit = if (creditMatcher.find()) {
+    val bonusCredit = creditRegex.find(this.message)?.let { matchResult ->
         BonusCredit(
-            credit = creditMatcher.group("bonusCredit")?.toFloatOrNull() ?: 0f,
-            bonusCreditDueDate = creditMatcher.group("bonusCreditDueDate") ?: ""
+            credit = matchResult.groups["bonusCredit"]?.value?.toFloatOrNull(),
+            bonusCreditDueDate = matchResult.groups["bonusCreditDueDate"]?.value
         )
-    } else BonusCredit(credit = 0f, bonusCreditDueDate = "")
+    } ?: BonusCredit(credit = null, bonusCreditDueDate = null)
 
-    val dataMatcher = dataPattern.matcher(this.message)
-    val (bonusData, bonusUnlimitedData) = if (dataMatcher.find()) {
+    val (bonusData, bonusUnlimitedData) = dataRegex.find(this.message)?.let { dataMatcher ->
         Pair(
             BonusData(
-                bonusDataCount = dataMatcher.group("dataAllNetworkBonus")?.toBytes()?.toLong()
+                bonusDataCount = dataMatcher.groups["dataAllNetworkBonus"]?.value?.toBytes()?.toLong()
                     ?: 0L,
-                bonusDataCountLte = dataMatcher.group("bonusDataLte")?.toBytes()?.toLong() ?: 0L,
-                bonusDataDueDate = dataMatcher.group("bonusDataDueDate") ?: ""
+                bonusDataCountLte = dataMatcher.groups["bonusDataLte"]?.value?.toBytes()?.toLong() ?: 0L,
+                bonusDataDueDate = dataMatcher.groups["bonusDataDueDate"]?.value ?: ""
             ),
             BonusUnlimitedData(
-                bonusUnlimitedDataDueDate = dataMatcher.group("unlimitedData") ?: ""
+                bonusUnlimitedDataDueDate = dataMatcher.groups["unlimitedData"]?.value
             )
         )
-    } else Pair(
-        BonusData(bonusDataCount = 0L, bonusDataCountLte = 0L, bonusDataDueDate = ""),
-        BonusUnlimitedData(bonusUnlimitedDataDueDate = "")
+    } ?: Pair(
+        BonusData(bonusDataCount = null, bonusDataCountLte = null, bonusDataDueDate = null),
+        BonusUnlimitedData(bonusUnlimitedDataDueDate = null)
     )
 
-    val dataCUMatcher = dataCUPattern.matcher(this.message)
-    val bonusDataCU = if (dataCUMatcher.find()) {
+    val bonusDataCU = dataCURegex.find(this.message)?.let { dataCUMatcher ->
         BonusDataCU(
-            bonusDataCuCount = dataCUMatcher.group("bonusDataCu")?.toBytes()?.toLong() ?: 0L,
-            bonusDataCuDueDate = dataCUMatcher.group("bonusDataCuDueDate") ?: ""
+            bonusDataCuCount = dataCUMatcher.groups["bonusDataCu"]?.value?.toBytes()?.toLong(),
+            bonusDataCuDueDate = dataCUMatcher.groups["bonusDataCuDueDate"]?.value
         )
-    } else BonusDataCU(bonusDataCuCount = 0L, bonusDataCuDueDate = "")
+    } ?: BonusDataCU(bonusDataCuCount = null, bonusDataCuDueDate = null)
 
     return BonusBalance(
         credit = bonusCredit,

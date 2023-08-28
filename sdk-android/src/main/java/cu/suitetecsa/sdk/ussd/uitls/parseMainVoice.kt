@@ -4,17 +4,31 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import cu.suitetecsa.sdk.ussd.model.MainVoice
 import cu.suitetecsa.sdk.ussd.model.UssdResponse
-import java.util.regex.Pattern
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun UssdResponse.parseMainVoice(): MainVoice {
     val voicePattern =
-        Pattern.compile("""Usted dispone de\s+(?<voice>(\d+:\d{2}:\d{2}))\s+MIN\s+validos por\s+(?<dueDate>(\d+\s+dias))""")
-    val matcher = voicePattern.matcher(this.message)
-    return if (matcher.find()) {
-        MainVoice(
-            mainVoice = matcher.group("voice")?.toSeconds() ?: 0L,
-            mainVoiceDueDate = matcher.group("dueDate") ?: ""
+        ("""Usted dispone de\s+(?<voice>(\d+:\d{2}:\d{2}))\s+MIN(\s+no activos)?""" +
+                """(\s+validos por\s+(?<dueDate>(\d+))\s+dias)?""")
+            .toRegex()
+
+    val (voice, remainingDays) = voicePattern.find(this.message)?.let { matchResult ->
+        Pair(
+            matchResult.groups["voice"]?.value?.toSeconds(),
+            matchResult.groups["dueDate"]?.value?.toInt()
         )
-    } else MainVoice(mainVoice = 0L, mainVoiceDueDate = "")
+    } ?: Pair(null, null)
+
+    return MainVoice(
+        mainVoice = voice,
+        remainingDays = remainingDays
+    )
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun main() {
+    val response = UssdResponse(
+        message = "Usted dispone de 07:37:49 MIN validos por 24 dias"
+    )
+    println(response.parseMainVoice())
 }

@@ -4,26 +4,29 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import cu.suitetecsa.sdk.ussd.model.MainData
 import cu.suitetecsa.sdk.ussd.model.UssdResponse
-import java.util.regex.Pattern
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun UssdResponse.parseMainData(): MainData {
-    val dataPattern =
-        Pattern.compile("""(Tarifa:\s+(?<tfc>[^"]*?)\.)?(\s+)?(Paquetes:\s+(?<dataAllNetwork>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+\+\s+)?((?<dataLte>(\d+(\.\d+)?)(\s)*([GMK])?B)\s+LTE)?(\s+validos\s+(?<dueDate>(\d+\s+dias)))?\.)?""")
-    val matcher = dataPattern.matcher(this.message)
-    return if (matcher.find()) {
-        MainData(
-            usageBasedPricing = matcher.group("tfc")?.let {
-                it != "No Activa"
-            } ?: false,
-            mainData = matcher.group("dataAllNetwork")?.toBytes()?.toLong() ?: 0L,
-            mainDataLte = matcher.group("dataLte")?.toBytes()?.toLong() ?: 0L,
-            mainDataDueDate = matcher.group("dueDate") ?: ""
+    val usageBasedPricingRegex = """Tarifa:\s+(?<tfc>[^"]*?)\.""".toRegex()
+    val usageBasedPricing = usageBasedPricingRegex.find(this.message)?.let { matchResult ->
+        matchResult.groups["tfc"]?.value != "No activa"
+    } ?: false
+
+    val mainDataRegex = ("""Paquetes:\s+(?<dataAllNetwork>(\d+(\.\d+)?)(\s)*([GMK])?B)?""" +
+    """(\s+\+\s+)?((?<dataLte>(\d+(\.\d+)?)(\s)*([GMK])?B)\s+LTE)?""" +
+            """(\s+no activos)?(\s+validos\s+(?<dueDate>(\d+))\s+dias)?\.""").toRegex()
+    val (data, dataLte, remainingDays) = mainDataRegex.find(this.message)?.let { matchResult ->
+        Triple(
+            matchResult.groups["dataAllNetwork"]?.value?.toBytes(),
+            matchResult.groups["dataLte"]?.value?.toBytes(),
+            matchResult.groups["dueDate"]?.value?.toInt()
         )
-    } else MainData(
-        usageBasedPricing = false,
-        mainData = 0L,
-        mainDataLte = 0L,
-        mainDataDueDate = ""
-    )
+    } ?: Triple(null, null, null)
+
+    return MainData(
+            usageBasedPricing = usageBasedPricing,
+            data = data,
+            dataLte = dataLte,
+            remainingDays = remainingDays
+        )
 }

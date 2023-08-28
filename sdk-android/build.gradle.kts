@@ -43,6 +43,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.net.monster)
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.robolectric)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

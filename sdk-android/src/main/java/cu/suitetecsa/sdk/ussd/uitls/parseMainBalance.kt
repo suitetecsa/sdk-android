@@ -2,66 +2,61 @@ package cu.suitetecsa.sdk.ussd.uitls
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import cu.suitetecsa.sdk.ussd.model.DailyData
+import cu.suitetecsa.sdk.ussd.model.MailData
 import cu.suitetecsa.sdk.ussd.model.MainBalance
 import cu.suitetecsa.sdk.ussd.model.MainData
 import cu.suitetecsa.sdk.ussd.model.MainSms
 import cu.suitetecsa.sdk.ussd.model.MainVoice
 import cu.suitetecsa.sdk.ussd.model.UssdResponse
-import java.util.regex.Pattern
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun UssdResponse.parseMainBalance(): MainBalance {
-    val creditPattern =
-        Pattern.compile("""Saldo:\s+(?<principalCredit>([\d.]+))\s+CUP\.\s+([^"]*?)?Linea activa hasta\s+(?<activeUntil>(\d{2}-\d{2}-\d{2}))\s+vence\s+(?<dueDate>(\d{2}-\d{2}-\d{2}))\.""")
-    val dataPattern =
-        Pattern.compile("""Datos:\s+(?<dataAllNetwork>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+\+\s+)?((?<dataLte>(\d+(\.\d+)?)(\s)*([GMK])?B)\s+LTE)?\.""")
-    val voicePattern = Pattern.compile("""Voz:\s+(?<voice>(\d{1,3}:\d{2}:\d{2}))\.""")
-    val smsPattern = Pattern.compile("""SMS:\s+(?<sms>(\d+))\.""")
-
-    val dataMatcher = dataPattern.matcher(this.message)
-    val mainData = if (dataMatcher.find()) {
-        MainData(
-            usageBasedPricing = false,
-            mainData = dataMatcher.group("dataAllNetwork")?.toBytes()?.toLong() ?: 0L,
-            mainDataLte = dataMatcher.group("dataLte")?.toBytes()?.toLong() ?: 0L,
-            mainDataDueDate = ""
+    val dataRegex =
+        ("""Datos:\s+(?<dataAllNetwork>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+\+\s+)?""" +
+                """((?<dataLte>(\d+(\.\d+)?)(\s)*([GMK])?B)\s+LTE)?\.""")
+            .toRegex()
+    val (dataAllNetwork, dataLte) = dataRegex.find(this.message)?.let { matchResult ->
+        Pair(
+            matchResult.groups["dataAllNetwork"]?.value?.toBytes(),
+            matchResult.groups["dataLte"]?.value?.toBytes()
         )
-    } else MainData(
+    } ?: Pair(null, null)
+    val mainData = MainData(
         usageBasedPricing = false,
-        mainData = 0L,
-        mainDataLte = 0L,
-        mainDataDueDate = ""
+        data = dataAllNetwork,
+        dataLte = dataLte,
+        remainingDays = null
     )
 
-    val voiceMatcher = voicePattern.matcher(this.message)
-    val mainVoice = if (voiceMatcher.find()) {
-        MainVoice(
-            mainVoice = voiceMatcher.group("voice")?.toSeconds() ?: 0L,
-            mainVoiceDueDate = ""
-        )
-    } else MainVoice(0L, "")
+    val voiceRegex = """Voz:\s+(?<voice>(\d{1,3}:\d{2}:\d{2}))\.""".toRegex()
+    val voice = voiceRegex.find(this.message)?.groups?.get("voice")?.value?.toSeconds()
+    val mainVoice = MainVoice(mainVoice = voice, remainingDays = null)
 
-    val smsMatcher = smsPattern.matcher(this.message)
-    val mainSms = if (smsMatcher.find()) {
-        MainSms(mainSms = smsMatcher.group("sms")?.toInt() ?: 0, mainSmsDueDate = "")
-    } else MainSms(mainSms = 0, mainSmsDueDate = "")
+    val smsRegex = """SMS:\s+(?<sms>(\d+))\.""".toRegex()
+    val sms = smsRegex.find(this.message)?.groups?.get("sms")?.value?.toInt()
+    val mainSms = MainSms(mainSms = sms, remainingDays = null)
 
-    val creditMatcher = creditPattern.matcher(this.message)
-    return if (creditMatcher.find()) {
-        MainBalance(
-            credit = creditMatcher.group("principalCredit")?.toFloatOrNull() ?: 0f,
-            activeUntil = creditMatcher.group("activeUntil") ?: "",
-            mainBalanceDueDate = creditMatcher.group("dueDate") ?: "",
-            data = mainData,
-            voice = mainVoice,
-            sms = mainSms
+    val creditRegex =
+        ("""Saldo:\s+(?<principalCredit>([\d.]+))\s+CUP\.\s+([^"]*?)?""" +
+                """Linea activa hasta\s+(?<activeUntil>(\d{2}-\d{2}-\d{2}))""" +
+                """\s+vence\s+(?<dueDate>(\d{2}-\d{2}-\d{2}))\.""")
+            .toRegex()
+    val (credit, activeUntil, dueDate) = creditRegex.find(this.message)?.let { matchResult ->
+        Triple(
+            matchResult.groups["principalCredit"]?.value?.toFloatOrNull(),
+            matchResult.groups["activeUntil"]?.value,
+            matchResult.groups["dueDate"]?.value
         )
-    } else MainBalance(
-        credit = 0f,
-        activeUntil = "",
-        mainBalanceDueDate = "",
+    } ?: Triple(null, null, null)
+    return MainBalance(
+        credit = credit,
+        activeUntil = activeUntil,
+        mainBalanceDueDate = dueDate,
         data = mainData,
         voice = mainVoice,
-        sms = mainSms
+        sms = mainSms,
+        dailyData = DailyData(null, null),
+        mailData = MailData(null, null)
     )
 }
