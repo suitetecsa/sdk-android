@@ -1,8 +1,8 @@
 package cu.suitetecsa.sdk.sim
 
 import android.content.Context
-import cu.suitetecsa.sdk.sim.datasource.SimCardDataSourceImpl
 import cu.suitetecsa.sdk.sim.datasource.SimCardDataSource
+import cu.suitetecsa.sdk.sim.datasource.SimCardDataSourceImpl
 import cu.suitetecsa.sdk.sim.model.SimCard
 
 class SimCardsAPI private constructor(private val simCardDataSource: SimCardDataSource) {
@@ -26,13 +26,6 @@ class SimCardsAPI private constructor(private val simCardDataSource: SimCardData
 
         private fun createDefaultDataSource(context: Context): SimCardDataSource {
             return SimCardDataSourceImpl(context)
-        }
-    }
-
-    companion object {
-        // Método estático para obtener una instancia del builder
-        fun builder(context: Context): Builder {
-            return Builder(context)
         }
     }
 }

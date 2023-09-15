@@ -1,9 +1,7 @@
 package cu.suitetecsa.sdk.ussd.uitls
 
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 

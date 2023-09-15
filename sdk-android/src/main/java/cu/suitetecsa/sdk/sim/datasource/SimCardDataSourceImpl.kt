@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.telephony.SubscriptionInfo
 import android.telephony.SubscriptionManager
+import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.annotation.RequiresPermission
 import cu.suitetecsa.sdk.sim.model.SimCard
@@ -50,9 +51,14 @@ internal class SimCardDataSourceImpl(
     }
 
     private fun getSimCardsFromSubscriptionInfoList(subscriptionInfoList: List<SubscriptionInfo>): List<SimCard> {
-        return subscriptionInfoList.map {
+        return subscriptionInfoList.map { info ->
             SimCard(
-                it.iccId, it.displayName.toString(), it.simSlotIndex, it.subscriptionId
+                serialNumber = info.iccId,
+                displayName = info.displayName.toString(),
+                slotIndex = info.simSlotIndex,
+                subscriptionId = info.subscriptionId,
+                telephony = (context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager)
+                    .createForSubscriptionId(info.subscriptionId)
             )
         }
     }
@@ -68,9 +74,14 @@ internal class SimCardDataSourceImpl(
         val subscriptionManager = NetMonsterFactory.getSubscription(context)
         val subscriptionInfoList = subscriptionManager.getActiveSubscriptions()
 
-        return subscriptionInfoList.map {
+        return subscriptionInfoList.map { subscribedNetwork ->
             SimCard(
-                it.subscriptionId.toString(), "", it.simSlotIndex, it.subscriptionId
+                serialNumber = subscribedNetwork.subscriptionId.toString(),
+                displayName = "",
+                slotIndex = subscribedNetwork.simSlotIndex,
+                subscriptionId = subscribedNetwork.subscriptionId,
+                telephony = (context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager)
+                    .createForSubscriptionId(subscribedNetwork.subscriptionId)
             )
         }
     }

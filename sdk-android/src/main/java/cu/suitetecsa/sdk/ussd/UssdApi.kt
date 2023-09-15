@@ -1,19 +1,14 @@
 package cu.suitetecsa.sdk.ussd
 
 import android.Manifest
-import android.content.Context
-import android.os.Build
 import android.telephony.TelephonyManager
-import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
-import cu.suitetecsa.sdk.sim.SimCardsAPI
 import cu.suitetecsa.sdk.ussd.datasources.UssdRequestSender
 import cu.suitetecsa.sdk.ussd.datasources.UssdRequestSenderImpl
 import cu.suitetecsa.sdk.ussd.datasources.UssdResponseHandler
 import cu.suitetecsa.sdk.ussd.datasources.UssdResponseHandlerImpl
 import cu.suitetecsa.sdk.ussd.model.UssdResponse
 
-@RequiresApi(Build.VERSION_CODES.O)
 class UssdApi private constructor(
     private val requestSender: UssdRequestSender,
     private val responseHandler: UssdResponseHandler
@@ -31,6 +26,7 @@ class UssdApi private constructor(
     class Builder(private val telephonyManager: TelephonyManager) {
         // This field stores the request sender
         private var ussdRequestSender: UssdRequestSender? = null
+
         // This field stores the response handler
         private var ussdResponseHandler: UssdResponseHandler? = null
 
@@ -49,9 +45,9 @@ class UssdApi private constructor(
         // This method builds a UssdApi
         fun build(): UssdApi {
             // Set the request sender
-            val requestSender = ussdRequestSender?: createDefaultRequestSender(telephonyManager)
+            val requestSender = ussdRequestSender ?: createDefaultRequestSender(telephonyManager)
             // Set the response handler
-            val responseHandler = ussdResponseHandler?: createDefaultResponseHandler()
+            val responseHandler = ussdResponseHandler ?: createDefaultResponseHandler()
             // Return the UssdApi
             return UssdApi(requestSender, responseHandler)
         }
@@ -64,14 +60,6 @@ class UssdApi private constructor(
         // This method creates the default response handler
         private fun createDefaultResponseHandler(): UssdResponseHandler {
             return UssdResponseHandlerImpl()
-        }
-    }
-
-    companion object {
-        // This method creates a builder for a UssdApi
-        fun builder(telephonyManager: TelephonyManager): Builder {
-            // Return the builder
-            return Builder(telephonyManager)
         }
     }
 }

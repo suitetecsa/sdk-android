@@ -27,7 +27,7 @@ class UssdResponseExtensionTest {
 
     @Test
     fun testParseBonusBalanceWhenBonusDataCuInMessageThenReturnsCorrectBonusDataCu() {
-        val ussdResponse = UssdResponse( "Datos.cu 175 MB vence 06-06-23.")
+        val ussdResponse = UssdResponse("Datos.cu 175 MB vence 06-06-23.")
         val bonusBalance = ussdResponse.parseBonusBalance()
 
         assertEquals("175 MB".toBytes(), bonusBalance.dataCu.bonusDataCuCount)
@@ -59,10 +59,10 @@ class UssdResponseExtensionTest {
     @Test
     fun testParseMainBalanceWhenMessageContainsAllInfoThenReturnsCorrectMainBalance() {
         val message = "Saldo: 25.00 CUP. " +
-                "Datos: 3.50 GB + 1.24 GB LTE. " +
-                "Voz: 07:38:18. " +
-                "SMS: 452. " +
-                "Linea activa hasta 13-04-24 vence 13-05-24."
+            "Datos: 3.50 GB + 1.24 GB LTE. " +
+            "Voz: 07:38:18. " +
+            "SMS: 452. " +
+            "Linea activa hasta 13-04-24 vence 13-05-24."
         val ussdResponse = UssdResponse(message)
 
         val mainBalance = ussdResponse.parseMainBalance()
@@ -143,10 +143,12 @@ class UssdResponseExtensionTest {
 
     @Test
     fun testParseMainDataWhenNoActiveMainDataThenRemainingDaysNull() {
-        val ussdResponse = UssdResponse("Tarifa: No activa. " +
+        val ussdResponse = UssdResponse(
+            "Tarifa: No activa. " +
                 "Mensajeria: 600 MB validos 30 dias. " +
                 "Diaria: 200 MB no activos. " +
-                "Paquetes: 4 GB + 3 GB LTE no activos.")
+                "Paquetes: 4 GB + 3 GB LTE no activos."
+        )
         val mainData = ussdResponse.parseMainData()
 
         assertEquals(false, mainData.usageBasedPricing)

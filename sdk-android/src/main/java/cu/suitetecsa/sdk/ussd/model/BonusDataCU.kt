@@ -1,5 +1,6 @@
 package cu.suitetecsa.sdk.ussd.model
 
 data class BonusDataCU(
-    val bonusDataCuCount: Double?, val bonusDataCuDueDate: String?
+    val bonusDataCuCount: Double?,
+    val bonusDataCuDueDate: String?
 )
