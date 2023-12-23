@@ -3,7 +3,6 @@ package cu.suitetecsa.sdkandroid.presentation.balance
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.compose.runtime.State
@@ -183,7 +182,6 @@ class BalancesViewModel @Inject constructor(
         val ussdCode = if (!isActive) {
             "*133*1*1*2${Uri.parse("#")}"
         } else { "*133*1*1*1${Uri.parse("#")}" }
-        val successMessage = "Su solicitud esta siendo procesada."
         currentSimCard?.also {
             it.ussdExecute(
                 ussdCode,
@@ -199,7 +197,7 @@ class BalancesViewModel @Inject constructor(
                     override fun onSuccess(ussdResponse: UssdResponse) {
                         when (ussdResponse) {
                             is UssdResponse.Custom -> {
-                                if (ussdResponse.response == successMessage) {
+                                if (ussdResponse.response == UssdResponse.PROCESSING_RESPONSE) {
                                     _state.value.data?.let { data ->
                                         _state.value = _state.value.copy(
                                             data = data.copy(usageBasedPricing = isActive)

@@ -77,4 +77,8 @@ sealed class UssdResponse {
     ) : UssdResponse()
 
     data class Custom(val response: String) : UssdResponse()
+
+    companion object {
+        const val PROCESSING_RESPONSE = "Su solicitud esta siendo procesada."
+    }
 }

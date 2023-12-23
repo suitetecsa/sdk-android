@@ -18,6 +18,7 @@ implementation("com.github.suitetecsa.sdk-android:{última-versión}")
 Para obtener información sobre las tarjetas SIM insertadas en el dispositivo, puedes seguir estos pasos:
 
 #### Kotlin
+
 ```kotlin
 // Instancia SimCardsAPI
 val simCardsAPI = SimCardsAPI
@@ -29,6 +30,7 @@ val simCards = simCardsAPI.getSimCards()
 ```
 
 #### Java
+
 ```java
 // Instancia SimCardsAPI
 SimCardsAPI simCardsAPI = SimCardsAPI
@@ -39,11 +41,26 @@ SimCardsAPI simCardsAPI = SimCardsAPI
 List<SimCard> simCards = simCardsAPI.getSimCards();
 ```
 
+### Realizar llamadas con una SIM
+
+#### Kotlin
+
+```kotlin
+simcCards.last().makeCall(context, "51234567")
+```
+
+#### Java
+
+```java
+SimCardExtensionKt.makeCall(simCards.get(0), context, "51234567")
+```
+
 ### Obtener saldo de la tarjeta SIM
 
 Para obtener el saldo de la primera tarjeta SIM de la lista, puedes seguir estos pasos:
 
 #### Kotlin
+
 ```kotlin
 // Obtener la primera SIM de la lista
 val firstSimCard = simCards.first()
@@ -72,6 +89,7 @@ firstSimCard.ussdExecute(
 ```
 
 #### Java
+
 ```java
 // Obtener la primera SIM de la lista
 SimCard firstSimCard = simCards.get(0);
@@ -105,6 +123,7 @@ SimCardExtensionKt.ussdExecute(firstSimCard, "*222#", new ConsultBalanceCallBack
 `consultBalance` es una función de extensión que realiza las consultas de saldo automáticamente, consulta primero el saldo inicial, y dependiendo de la información que extraiga consulta los demás saldos. O sea, que si en el saldo inicial no detecta paquetes de datos, no ejecutará la consulta (\*222\*328#). Esto puede ser un inconveniente si desea consultar siempre el estado de la tarifa por consumo, una forma de solucionarlo es comprobar si la linea posee información de planes de datos y si no fuese el caso hacer la consulta del estado de la TPC usando la función `ussdExecute`.
 
 #### Kotlin
+
 ```kotlin
 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
     simCard.consultBalance(
@@ -178,32 +197,33 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 ```
 
 #### Java
+
 ```java
 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-	SimCardExtensionKt.ussdExecute(firstSimCard, new ConsultBalanceCallBack() {
-		@SuppressLint("MissingPermission")
-		@Override
-		public void onRequesting(@NonNull UssdConsultType consultType) {
-			String consultMessage;
-			if (consultType instanceof UssdConsultType.BonusBalance) {
+    SimCardExtensionKt.ussdExecute(firstSimCard, new ConsultBalanceCallBack() {
+        @SuppressLint("MissingPermission")
+        @Override
+        public void onRequesting(@NonNull UssdConsultType consultType) {
+            String consultMessage;
+            if (consultType instanceof UssdConsultType.BonusBalance) {
                 consultMessage = "Consultando Bonos...";
-			} else if (consultType instanceof UssdConsultType.DataBalance) {
+            } else if (consultType instanceof UssdConsultType.DataBalance) {
                 consultMessage = "Consultando Datos...";
-			} else if (consultType instanceof UssdConsultType.MessagesBalance) {
+            } else if (consultType instanceof UssdConsultType.MessagesBalance) {
                 consultMessage = "Consultando SMS...";
-			} else if (consultType instanceof UssdConsultType.PrincipalBalance) {
+            } else if (consultType instanceof UssdConsultType.PrincipalBalance) {
                 consultMessage = "Consultando Saldo...";
-			} else if (consultType instanceof UssdConsultType.VoiceBalance) {
+            } else if (consultType instanceof UssdConsultType.VoiceBalance) {
                 consultMessage = "Consultando Minutos...";
-			} else {
+            } else {
                 consultMessage = "";
-			}
-			Toast.makeText(context, consultMessage, Toast.LENGTH_LONG).show();
-		}
+            }
+            Toast.makeText(context, consultMessage, Toast.LENGTH_LONG).show();
+        }
 
-		@Override
-		public void onSuccess(@NonNull UssdResponse ussdResponse) {
-			if (ussdResponse instanceof UssdResponse.BonusBalance) {
+        @Override
+        public void onSuccess(@NonNull UssdResponse ussdResponse) {
+            if (ussdResponse instanceof UssdResponse.BonusBalance) {
                 // Contiene la informacion extraida de la consulta de bono (*222*266#).
                 // Es la ultima operacion en realizarse
                 Toast.makeText(
@@ -211,7 +231,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     ((UssdResponse.BonusBalance) ussdResponse).getCredit(),
                     Toast.LENGTH_LONG
                 ).show();
-			} else if (ussdResponse instanceof UssdResponse.DataBalance) {
+            } else if (ussdResponse instanceof UssdResponse.DataBalance) {
                 // Contiene la informacion extraida de la consulta de datos (*222*328#).
                 // Solo se ejecuta si se detecta paquetes de datos en el saldo principal.
                 Toast.makeText(
@@ -219,7 +239,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     ((UssdResponse.DataBalance) ussdResponse).getUsageBasedPricing(),
                     Toast.LENGTH_LONG
                 ).show();
-			} else if (ussdResponse instanceof UssdResponse.MessagesBalance) {
+            } else if (ussdResponse instanceof UssdResponse.MessagesBalance) {
                 // Contiene la informacion extraida de la consulta de mensajes (*222*767#).
                 // Solo se ejecuta si se detecta paquetes de SMS en el saldo principal.
                 Toast.makeText(
@@ -227,7 +247,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     ((UssdResponse.MessagesBalance) ussdResponse).getCount(),
                     Toast.LENGTH_LONG
                 ).show();
-			} else if (ussdResponse instanceof UssdResponse.PrincipalBalance) {
+            } else if (ussdResponse instanceof UssdResponse.PrincipalBalance) {
                 // Contiene la informacion extraida de la consulta de saldo (*222#).
                 // Es la primera operacion en realizarse
                 Toast.makeText(
@@ -235,7 +255,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     ((UssdResponse.PrincipalBalance) ussdResponse).getCredit(),
                     Toast.LENGTH_LONG
                 ).show();
-			} else if (ussdResponse instanceof UssdResponse.VoiceBalance) {
+            } else if (ussdResponse instanceof UssdResponse.VoiceBalance) {
                 // Contiene la informacion extraida de la consulta de mensajes (*222*869#).
                 // Solo se ejecuta si se detecta paquetes de Voz en el saldo principal.
                 Toast.makeText(
@@ -243,14 +263,14 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     ((UssdResponse.VoiceBalance) ussdResponse).getTime(),
                     Toast.LENGTH_LONG
                 ).show();
-			}
+            }
         }
 
-		@Override
-		public void onFailure(@NonNull Throwable throwable) {
-			throwable.printStackTrace();
-		}
-	});
+        @Override
+        public void onFailure(@NonNull Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    });
 }
 ```
 
