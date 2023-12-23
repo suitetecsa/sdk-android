@@ -1,4 +1,4 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.hilt.android)
@@ -36,6 +36,11 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    lint {
+        lintConfig = file("$rootDir/android-lint.xml")
+        abortOnError = false
+        sarifReport = true
     }
     kotlinOptions {
         jvmTarget = "1.8"
