@@ -40,7 +40,7 @@ fun TopBar(
 
 @Preview(showBackground = true)
 @Composable
-fun TopBarPreview() {
+private fun TopBarPreview() {
     SDKAndroidTheme {
         TopBar(
             title = "Cubacel",
@@ -50,7 +50,7 @@ fun TopBarPreview() {
 
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
-fun TopBarPreviewDark() {
+private fun TopBarPreviewDark() {
     SDKAndroidTheme {
         TopBar(
             title = "Cubacel",

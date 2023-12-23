@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 
 @Composable
 fun CustomLinearProgressBar(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
     progress: Float? = null
 ) {

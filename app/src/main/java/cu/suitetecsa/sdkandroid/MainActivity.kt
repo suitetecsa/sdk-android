@@ -1,6 +1,7 @@
 package cu.suitetecsa.sdkandroid
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,38 +10,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import cu.suitetecsa.sdkandroid.presentation.balance.BalanceRoute
 import cu.suitetecsa.sdkandroid.presentation.balance.component.TopBar
 import cu.suitetecsa.sdkandroid.ui.theme.SDKAndroidTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+private const val RequestCode = 50
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != android.content.pm.PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != android.content.pm.PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.READ_PHONE_STATE
-            ) != android.content.pm.PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.CALL_PHONE
-            ) != android.content.pm.PackageManager.PERMISSION_GRANTED
-        ) {
+        if (checkPermissions()) {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(
@@ -49,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.CALL_PHONE,
                 ),
-                50
+                RequestCode
             )
             return
         } else {
@@ -66,8 +54,8 @@ class MainActivity : ComponentActivity() {
                             topBar = { TopBar(title, actions) }
                         ) { paddingValues ->
                             BalanceRoute(
-                                setTitle = { title = it },
-                                setActions = { actions = it },
+                                onChangeTitle = { title = it },
+                                onSetActions = { actions = it },
                                 topPadding = paddingValues,
                             )
                         }
@@ -76,20 +64,20 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SDKAndroidTheme {
-        Greeting("Android")
+    private fun checkPermissions(): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_PHONE_STATE
+        ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CALL_PHONE
+        ) != PackageManager.PERMISSION_GRANTED
     }
 }

@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
-private const val BALANCE_PREFERENCES_NAME = "balance_preferences"
-private val Context.dataStore by preferencesDataStore(name = BALANCE_PREFERENCES_NAME)
+private const val BalancePreferencesName = "balance_preferences"
+private val Context.dataStore by preferencesDataStore(name = BalancePreferencesName)
 
 class PreferenceDataSource(private val context: Context) {
     fun preferences(): Flow<Preferences> = context.dataStore.data

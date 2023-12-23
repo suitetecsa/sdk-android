@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import cu.suitetecsa.sdkandroid.ui.theme.RedError
 import cu.suitetecsa.sdkandroid.ui.theme.SDKAndroidTheme
 
 @Composable
@@ -23,7 +24,9 @@ fun PrettyCard(
     backgroundColor: Color? = null,
     content: (@Composable () -> Unit)
 ) {
-    val cardColors = backgroundColor?.let { CardDefaults.cardColors(containerColor = it) } ?: CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    val cardColors = backgroundColor?.let {
+        CardDefaults.cardColors(containerColor = it)
+    } ?: CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.small,
@@ -48,12 +51,12 @@ fun PrettyCard(
 
 @Preview(showBackground = true)
 @Composable
-fun PrettyCardPreview() {
+private fun PrettyCardPreview() {
     SDKAndroidTheme {
         PrettyCard(
             modifier = Modifier.padding(16.dp),
             isLoading = true,
-            backgroundColor = Color(0xFFFF4747)
+            backgroundColor = RedError
         ) {
             Text(text = "Hello", modifier = Modifier.padding(16.dp))
         }
@@ -62,7 +65,7 @@ fun PrettyCardPreview() {
 
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
-fun PrettyCardPreviewDark() {
+private fun PrettyCardPreviewDark() {
     SDKAndroidTheme {
         Surface(
             Modifier
@@ -70,7 +73,7 @@ fun PrettyCardPreviewDark() {
             PrettyCard(
                 modifier = Modifier.padding(16.dp),
                 isLoading = true,
-                backgroundColor = Color(0xFFFF4747)
+                backgroundColor = RedError
             ) {
                 Text(text = "Hello", modifier = Modifier.padding(16.dp))
             }

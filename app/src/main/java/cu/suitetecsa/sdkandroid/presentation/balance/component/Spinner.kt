@@ -19,7 +19,7 @@ fun <T> Spinner(
     dropDownModifier: Modifier = Modifier,
     items: List<T>,
     selectedItem: T,
-    onItemSelected: (T) -> Unit,
+    onItemSelect: (T) -> Unit,
     selectedItemFactory: @Composable (Modifier, T) -> Unit,
     dropdownItemFactory: @Composable (T, Int) -> Unit,
     enabled: Boolean = true
@@ -41,7 +41,7 @@ fun <T> Spinner(
             items.forEachIndexed { index, element ->
                 DropdownMenuItem(
                     onClick = {
-                        onItemSelected(items[index])
+                        onItemSelect(items[index])
                         expanded = false
                     },
                     text = {

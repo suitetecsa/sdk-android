@@ -49,18 +49,18 @@ import cu.suitetecsa.sdkandroid.ui.theme.SDKAndroidTheme
 
 @Composable
 fun BalanceRoute(
-    balancesViewModel: BalancesViewModel = hiltViewModel(),
-    setTitle: (String) -> Unit,
-    setActions: (@Composable (RowScope.() -> Unit)) -> Unit,
+    onChangeTitle: (String) -> Unit,
+    onSetActions: (@Composable (RowScope.() -> Unit)) -> Unit,
     topPadding: PaddingValues,
+    balancesViewModel: BalancesViewModel = hiltViewModel(),
 ) {
     val state = balancesViewModel.state.value
 
-    setActions {
+    onSetActions {
         BalanceActions(
             simCards = state.simCards,
             currentSimCard = state.currentSimCard,
-            onSimCardSelected = {
+            onSimCardSelect = {
                 it?.also { simCard ->
                     balancesViewModel.onEvent(BalanceEvent.ChangeSimCard(simCard))
                 }
@@ -78,12 +78,12 @@ fun BalanceRoute(
         )
     }
 
-    setTitle(state.consultMessage ?: "Balance")
+    onChangeTitle(state.consultMessage ?: "Balance")
 
     BalanceScreen(
         topPadding = topPadding,
         state = state,
-        turnUsageBasedPricing = { balancesViewModel.onEvent(BalanceEvent.TurnUsageBasedPricing(it)) }
+        onTurnUsageBasedPricing = { balancesViewModel.onEvent(BalanceEvent.TurnUsageBasedPricing(it)) }
     )
 }
 
@@ -91,7 +91,7 @@ fun BalanceRoute(
 fun BalanceScreen(
     topPadding: PaddingValues,
     state: BalanceState,
-    turnUsageBasedPricing: (Boolean) -> Unit,
+    onTurnUsageBasedPricing: (Boolean) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -102,7 +102,7 @@ fun BalanceScreen(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             BalanceInfo(
                 state = state,
-                turnUsageBasedPricing = turnUsageBasedPricing
+                onTurnUsageBasedPricing = onTurnUsageBasedPricing
             )
         } else {
             Text(text = "Not supported")
@@ -113,7 +113,7 @@ fun BalanceScreen(
 @Composable
 fun BalanceInfo(
     state: BalanceState,
-    turnUsageBasedPricing: (Boolean) -> Unit
+    onTurnUsageBasedPricing: (Boolean) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -146,122 +146,133 @@ fun BalanceInfo(
                 Text(text = "Tarifa por consumo")
                 Switch(
                     checked = state.data?.usageBasedPricing ?: true,
-                    onCheckedChange = turnUsageBasedPricing,
+                    onCheckedChange = onTurnUsageBasedPricing,
                     enabled = !state.loading
                 )
             }
             Spacer(modifier = Modifier.padding(4.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                state.data?.let { data ->
-                    val dataCount = if (data.data != null && data.dataLte != null) {
-                        "${data.data!!.toSizeString()} + ${data.dataLte!!.toSizeString()} LTE"
-                    } else if (data.data != null) {
-                        data.data!!.toSizeString()
-                    } else {
-                        "${data.dataLte!!.toSizeString()} LTE"
-                    }
-                    DataPlan(
-                        planTitle = "Datos",
-                        dataCount = dataCount,
-                        dataExpire = data.remainingDays?.let { "$it días" }
-                    )
-                }
-                state.voice?.let { voice ->
-                    DataPlan(
-                        planTitle = "Voz",
-                        dataCount = "${voice.mainVoice.toTimeString()} MIN",
-                        dataExpire = voice.remainingDays?.let { "$it días" }
-                    )
-                }
-                state.sms?.let { sms ->
-                    DataPlan(
-                        planTitle = "SMS",
-                        dataCount = "${sms.mainSms} SMS",
-                        dataExpire = sms.remainingDays?.let { "$it días" }
-                    )
-                }
-                state.dailyData?.let { dailyData ->
-                    DataPlan(
-                        planTitle = "Bolsa diaria",
-                        dataCount = dailyData.data.toSizeString(),
-                        dataExpire = dailyData.remainingHours?.let { "$it horas" }
-                    )
-                }
-                state.mailData?.let { mailData ->
-                    DataPlan(
-                        planTitle = "Bolsa correo",
-                        dataCount = mailData.data.toSizeString(),
-                        dataExpire = mailData.remainingDays?.let { "$it días" }
-                    )
-                }
-            }
+            PlansSection(state = state)
             Spacer(modifier = Modifier.padding(4.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                state.bonusCredit?.let { bonusCredit ->
-                    DataPlan(
-                        planTitle = "Saldo",
-                        dataCount = "$%.2f CUP".format(bonusCredit.credit),
-                        dataExpire = bonusCredit.bonusCreditDueDate
-                    )
-                }
-                state.bonusData?.let { bonusData ->
-                    val dataCount =
-                        if (bonusData.bonusDataCount != null && bonusData.bonusDataCountLte != null) {
-                            "${bonusData.bonusDataCount!!.toSizeString()} + " +
-                                "${bonusData.bonusDataCountLte!!.toSizeString()} LTE"
-                        } else if (bonusData.bonusDataCount != null) {
-                            bonusData.bonusDataCount!!.toSizeString()
-                        } else {
-                            "${bonusData.bonusDataCountLte!!.toSizeString()} LTE"
-                        }
-                    DataPlan(
-                        planTitle = "Datos",
-                        dataCount = dataCount,
-                        dataExpire = bonusData.bonusDataDueDate
-                    )
-                }
-                state.bonusDataCU?.let { bonusDataCU ->
-                    DataPlan(
-                        planTitle = "Datos CU",
-                        dataCount = bonusDataCU.bonusDataCuCount.toSizeString(),
-                        dataExpire = bonusDataCU.bonusDataCuDueDate
-                    )
-                }
-                state.bonusUnlimitedData?.let { bonusUnlimitedData ->
-                    DataPlan(
-                        planTitle = "Datos Ilimitados",
-                        dataCount = "12:00 a.m -> 7:00 a.m",
-                        dataExpire = bonusUnlimitedData.bonusUnlimitedDataDueDate
-                    )
-                }
+            BonusSection(state = state)
+        }
+    }
+}
+
+@Composable
+fun PlansSection(state: BalanceState) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        state.data?.let { data ->
+            val dataCount = if (data.data != null && data.dataLte != null) {
+                "${data.data!!.toSizeString()} + ${data.dataLte!!.toSizeString()} LTE"
+            } else if (data.data != null) {
+                data.data!!.toSizeString()
+            } else {
+                "${data.dataLte!!.toSizeString()} LTE"
             }
+            DataPlan(
+                planTitle = "Datos",
+                dataCount = dataCount,
+                dataExpire = data.remainingDays?.let { "$it días" }
+            )
+        }
+        state.voice?.let { voice ->
+            DataPlan(
+                planTitle = "Voz",
+                dataCount = "${voice.mainVoice.toTimeString()} MIN",
+                dataExpire = voice.remainingDays?.let { "$it días" }
+            )
+        }
+        state.sms?.let { sms ->
+            DataPlan(
+                planTitle = "SMS",
+                dataCount = "${sms.mainSms} SMS",
+                dataExpire = sms.remainingDays?.let { "$it días" }
+            )
+        }
+        state.dailyData?.let { dailyData ->
+            DataPlan(
+                planTitle = "Bolsa diaria",
+                dataCount = dailyData.data.toSizeString(),
+                dataExpire = dailyData.remainingHours?.let { "$it horas" }
+            )
+        }
+        state.mailData?.let { mailData ->
+            DataPlan(
+                planTitle = "Bolsa correo",
+                dataCount = mailData.data.toSizeString(),
+                dataExpire = mailData.remainingDays?.let { "$it días" }
+            )
+        }
+    }
+}
+
+@Composable
+fun BonusSection(state: BalanceState) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        state.bonusCredit?.let { bonusCredit ->
+            DataPlan(
+                planTitle = "Saldo",
+                dataCount = "$%.2f CUP".format(bonusCredit.credit),
+                dataExpire = bonusCredit.bonusCreditDueDate
+            )
+        }
+        state.bonusData?.let { bonusData ->
+            val dataCount =
+                if (bonusData.bonusDataCount != null && bonusData.bonusDataCountLte != null) {
+                    "${bonusData.bonusDataCount!!.toSizeString()} + " +
+                            "${bonusData.bonusDataCountLte!!.toSizeString()} LTE"
+                } else if (bonusData.bonusDataCount != null) {
+                    bonusData.bonusDataCount!!.toSizeString()
+                } else {
+                    "${bonusData.bonusDataCountLte!!.toSizeString()} LTE"
+                }
+            DataPlan(
+                planTitle = "Datos",
+                dataCount = dataCount,
+                dataExpire = bonusData.bonusDataDueDate
+            )
+        }
+        state.bonusDataCU?.let { bonusDataCU ->
+            DataPlan(
+                planTitle = "Datos CU",
+                dataCount = bonusDataCU.bonusDataCuCount.toSizeString(),
+                dataExpire = bonusDataCU.bonusDataCuDueDate
+            )
+        }
+        state.bonusUnlimitedData?.let { bonusUnlimitedData ->
+            DataPlan(
+                planTitle = "Datos Ilimitados",
+                dataCount = "12:00 a.m -> 7:00 a.m",
+                dataExpire = bonusUnlimitedData.bonusUnlimitedDataDueDate
+            )
         }
     }
 }
 
 @Preview(showBackground = true, device = "id:Nexus One")
 @Composable
-fun BalanceInfoPreview() {
+private fun BalanceInfoPreview() {
     SDKAndroidTheme { Surface { BalanceInfo(BalanceState()) {} } }
 }
 
+@Suppress("MagicNumber")
 @Preview(
     showBackground = true,
     device = "id:Nexus One",
     uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
-fun BalanceInfoPreviewDark() {
+private fun BalanceInfoPreviewDark() {
     SDKAndroidTheme {
         Surface {
             BalanceInfo(
@@ -306,7 +317,7 @@ fun DataPlan(
 fun BalanceActions(
     simCards: List<SimCard?>,
     currentSimCard: SimCard?,
-    onSimCardSelected: (SimCard?) -> Unit,
+    onSimCardSelect: (SimCard?) -> Unit,
     onBalanceUpdate: () -> Unit,
     isSomeTaskRunning: Boolean
 ) {
@@ -320,7 +331,7 @@ fun BalanceActions(
             Spinner(
                 items = simCards,
                 selectedItem = currentSimCard,
-                onItemSelected = onSimCardSelected,
+                onItemSelect = onSimCardSelect,
                 enabled = !isSomeTaskRunning,
                 selectedItemFactory = { modifier, item ->
                     Row(

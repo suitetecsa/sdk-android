@@ -42,6 +42,11 @@ android {
         abortOnError = false
         sarifReport = true
     }
+    detekt {
+        buildUponDefaultConfig = true
+        allRules = false
+        autoCorrect = true
+    }
     kotlinOptions {
         jvmTarget = "1.8"
     }

@@ -7,24 +7,24 @@ import android.os.Build
 import cu.suitetecsa.sdk.android.domain.model.SimCard
 
 object Utils {
-    private val simSlotName = listOf(
-        "extra_asus_dial_use_dualsim",
-        "com.android.phone.extra.slot",
-        "slot",
-        "simslot",
-        "sim_slot",
-        "subscription",
-        "Subscription",
-        "phone",
-        "com.android.phone.DialingMode",
-        "simSlot",
-        "slot_id",
-        "simId",
-        "simnum",
-        "phone_type",
-        "slotId",
-        "slotIdx"
-    )
+//    private val simSlotName = listOf(
+//        "extra_asus_dial_use_dualsim",
+//        "com.android.phone.extra.slot",
+//        "slot",
+//        "simslot",
+//        "sim_slot",
+//        "subscription",
+//        "Subscription",
+//        "phone",
+//        "com.android.phone.DialingMode",
+//        "simSlot",
+//        "slot_id",
+//        "simId",
+//        "simnum",
+//        "phone_type",
+//        "slotId",
+//        "slotIdx"
+//    )
 
     fun makeCall(context: Context, phoneNumber: String, simCard: SimCard) {
         val uri = Uri.parse("tel:${phoneNumber}")

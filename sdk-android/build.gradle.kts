@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.arturbosch.detekt)
     `maven-publish`
 }
 
@@ -33,6 +34,12 @@ android {
         lintConfig = file("$rootDir/android-lint.xml")
         abortOnError = false
         sarifReport = true
+    }
+    detekt {
+        buildUponDefaultConfig = true
+        allRules = false
+        config = files("${rootProject.projectDir}/detekt.yml")
+        autoCorrect = true
     }
     kotlinOptions {
         jvmTarget = "1.8"
