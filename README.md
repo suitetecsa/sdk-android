@@ -7,7 +7,7 @@ Esta es una librería que facilita la creación de aplicaciones Android dedicada
 
 ## Cómo usar
 
-Agrega la dependencia a tu archivo build.gradle o .kts:
+Agrega la dependencia a tu archivo build.gradle/.kts:
 
 ```kotlin
 implementation("com.github.suitetecsa.sdk-android:{última-versión}")
@@ -21,7 +21,7 @@ Para obtener información sobre las tarjetas SIM insertadas en el dispositivo, p
 ```kotlin
 // Instancia SimCardsAPI
 val simCardsAPI = SimCardsAPI
-    .builder(context)
+    .Builder(context)
     .build()
 
 // Obtiene las tarjetas SIM insertadas en el dispositivo
@@ -32,7 +32,7 @@ val simCards = simCardsAPI.getSimCards()
 ```java
 // Instancia SimCardsAPI
 SimCardsAPI simCardsAPI = SimCardsAPI
-    .builder(context)
+    .Builder(context)
     .build();
 
 // Obtiene las tarjetas SIM insertadas en el dispositivo
@@ -47,147 +47,210 @@ Para obtener el saldo de la primera tarjeta SIM de la lista, puedes seguir estos
 ```kotlin
 // Obtener la primera SIM de la lista
 val firstSimCard = simCards.first()
-
+var balance: MainBalance? = null
 // Enviar la solicitud
-val ussdResponse = firstSimCard.sendUssdRequest(context, "*222#")
-
-// Convierte el objeto UssdResponse en un objeto MainBalance
-val mainBalance = ussdResponse.parseMainBalance()
+firstSimCard.ussdExecute(
+    "*222#",
+    object : ConsultBalanceCallBack {
+        override fun onRequesting(consultType: UssdConsultType) {
+            Toast.makeText(context, "Consultando saldo...", Toast.LENGTH_LONG).show()
+        }
+        override fun onSuccess(ussdResponse: UssdResponse) {
+            when (ussdResponse) {
+                is UssdResponse.Custom -> {
+                    // Convierte el objeto UssdResponse en un objeto MainBalance
+                    balance = ussdResponse.response.parseMainBalance()
+                }
+                else -> {}
+            }
+        }
+        override fun onFailure(throwable: Throwable) {
+            throw throwable
+        }
+    }
+)
 ```
 
 #### Java
 ```java
-// Obtiene el ID de suscripción de la primera tarjeta SIM de la lista
-int subscriptionId = simCards.get(0).getSubscriptionId();
-
 // Obtener la primera SIM de la lista
 SimCard firstSimCard = simCards.get(0);
+MainBalance balance;
 
-// Envía una solicitud Ussd y devuelve un UssdResponse
-UssdResponse ussdResponse = firstSimCard.sendUssdRequest("*222#");
+// Enviar la solicitud
+SimCardExtensionKt.ussdExecute(firstSimCard, "*222#", new ConsultBalanceCallBack() {
+    @Override
+    public void onRequesting(@NonNull UssdConsultType consultType) {
+        Toast.makeText(context, "Consultando saldo...", Toast.LENGTH_LONG).show();
+    }
 
-// Convierte el objeto UssdResponse en un objeto MainBalance
-MainBalance mainBalance = ussdResponse.parseMainBalance();
+    @Override
+    public void onSuccess(@NonNull UssdResponse ussdResponse) {
+        if (ussdResponse instanceof UssdResponse.Custom) {
+            UssdResponse.Custom customResponse = (UssdResponse.Custom) ussdResponse;
+            // Convierte el objeto UssdResponse en un objeto MainBalance
+            balance = parseMainBalance(customResponse.getResponse());
+        }
+    }
+
+    @Override
+    public void onFailure(@NonNull Throwable throwable) {
+        throw throwable;
+    }
+});
 ```
 
-### Ejemplo corrutina
+### Consultar todo el saldo disponible.
+
+`consultBalance` es una función de extensión que realiza las consultas de saldo automáticamente, consulta primero el saldo inicial, y dependiendo de la información que extraiga consulta los demás saldos. O sea, que si en el saldo inicial no detecta paquetes de datos, no ejecutará la consulta (\*222\*328#). Esto puede ser un inconveniente si desea consultar siempre el estado de la tarifa por consumo, una forma de solucionarlo es comprobar si la linea posee información de planes de datos y si no fuese el caso hacer la consulta del estado de la TPC usando la función `ussdExecute`.
 
 #### Kotlin
 ```kotlin
-class MainActivity : AppCompatActivity() {
-    
-    private lateinit var simCardsAPI: SimCardApi
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Inicializa simCardApi
-        simCardsAPI = SimCardsAPI.builder(context).build()
-
-        // Verifica y solicita permisos si es necesario (esto es solo un ejemplo; asegúrate de manejar los permisos correctamente)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-            makeUssdRequest()
-        } else {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), PERMISSION_REQUEST_CODE)
-        }
-    }
-
-    private fun makeUssdRequest() {
-        // Define el código USSD que deseas enviar
-        val ussdCode = "*123#" // Por ejemplo, este es un código USSD de ejemplo
-
-        // Obtener la primera SIM de la lista
-        val firstSimCard = simCards.first()
-
-        // Realiza la solicitud USSD en un CoroutineScope
-        CoroutineScope(Dispatchers.Main).launch {
-            try {
-                val ussdResponse = withContext(Dispatchers.IO) {
-                    firstSimCard.sendUssdRequest(context, ussdCode)
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    simCard.consultBalance(
+        object : ConsultBalanceCallBack {
+            override fun onRequesting(consultType: UssdConsultType) {
+                val consultMessage = when (consultType) {
+                    UssdConsultType.BonusBalance -> "Consultando Bonos"
+                    UssdConsultType.DataBalance -> "Consultando Datos"
+                    UssdConsultType.MessagesBalance -> "Consultando SMS"
+                    UssdConsultType.PrincipalBalance -> "Consultando Saldo"
+                    UssdConsultType.VoiceBalance -> "Consultando Minutos"
+                    is UssdConsultType.Custom -> ""
                 }
-                handleUssdResponse(ussdResponse)
-            } catch (e: UssdException) {
-                // Manejar excepciones de USSD
-                e.printStackTrace()
+                Toast.makeText(context, consultMessage, Toast.LENGTH_LONG).show()
+            }
+            override fun onSuccess(ussdResponse: UssdResponse) {
+                when (ussdResponse) {
+                    is UssdResponse.BonusBalance -> {
+                        // Contiene la informacion extraida de la consulta de bono (*222*266#).
+                        // Es la ultima operacion en realizarse
+                        Toast.makeText(
+                            context,
+                            "${ussdResponse.credit}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    is UssdResponse.DataBalance -> {
+                        // Contiene la informacion extraida de la consulta de datos (*222*328#).
+                        // Solo se ejecuta si se detecta paquetes de datos en el saldo principal.
+                        Toast.makeText(
+                            context,
+                            "${ussdResponse.usageBasedPricing}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    is UssdResponse.MessagesBalance -> {
+                        // Contiene la informacion extraida de la consulta de mensajes (*222*767#).
+                        // Solo se ejecuta si se detecta paquetes de SMS en el saldo principal.
+                        Toast.makeText(
+                            context,
+                            "${ussdResponse.count}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    is UssdResponse.PrincipalBalance -> {
+                        // Contiene la informacion extraida de la consulta de saldo (*222#).
+                        // Es la primera operacion en realizarse
+                        Toast.makeText(
+                            context,
+                            "${ussdResponse.credit}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    is UssdResponse.VoiceBalance -> {
+                        // Contiene la informacion extraida de la consulta de mensajes (*222*869#).
+                        // Solo se ejecuta si se detecta paquetes de Voz en el saldo principal.
+                        Toast.makeText(
+                            context,
+                            "${ussdResponse.count}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    is UssdResponse.Custom -> {
+                        // No se ejecuta en la consulta de saldo automacica.
+                    }
+                }
             }
         }
-    }
-
-    private fun handleUssdResponse(ussdResponse: UssdResponse) {
-        // Maneja la respuesta USSD según tus necesidades
-        val message = ussdResponse.message
-        // Por ejemplo, muestra la respuesta en una vista o realiza acciones basadas en la respuesta
-    }
-
-    companion object {
-        private const val PERMISSION_REQUEST_CODE = 1
-    }
+    )
 }
 ```
 
 #### Java
 ```java
-public class MainActivity extends AppCompatActivity {
+if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+	SimCardExtensionKt.ussdExecute(firstSimCard, new ConsultBalanceCallBack() {
+		@SuppressLint("MissingPermission")
+		@Override
+		public void onRequesting(@NonNull UssdConsultType consultType) {
+			String consultMessage;
+			if (consultType instanceof UssdConsultType.BonusBalance) {
+                consultMessage = "Consultando Bonos...";
+			} else if (consultType instanceof UssdConsultType.DataBalance) {
+                consultMessage = "Consultando Datos...";
+			} else if (consultType instanceof UssdConsultType.MessagesBalance) {
+                consultMessage = "Consultando SMS...";
+			} else if (consultType instanceof UssdConsultType.PrincipalBalance) {
+                consultMessage = "Consultando Saldo...";
+			} else if (consultType instanceof UssdConsultType.VoiceBalance) {
+                consultMessage = "Consultando Minutos...";
+			} else {
+                consultMessage = "";
+			}
+			Toast.makeText(context, consultMessage, Toast.LENGTH_LONG).show();
+		}
 
-    private SimCardApi simCardApi;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        // Inicializa simCardApi
-        simCardApi = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-
-        // Verifica y solicita permisos si es necesario (esto es solo un ejemplo; asegúrate de manejar los permisos correctamente)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-            makeUssdRequest();
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, PERMISSION_REQUEST_CODE);
+		@Override
+		public void onSuccess(@NonNull UssdResponse ussdResponse) {
+			if (ussdResponse instanceof UssdResponse.BonusBalance) {
+                // Contiene la informacion extraida de la consulta de bono (*222*266#).
+                // Es la ultima operacion en realizarse
+                Toast.makeText(
+                    context,
+                    ((UssdResponse.BonusBalance) ussdResponse).getCredit(),
+                    Toast.LENGTH_LONG
+                ).show();
+			} else if (ussdResponse instanceof UssdResponse.DataBalance) {
+                // Contiene la informacion extraida de la consulta de datos (*222*328#).
+                // Solo se ejecuta si se detecta paquetes de datos en el saldo principal.
+                Toast.makeText(
+                    context,
+                    ((UssdResponse.DataBalance) ussdResponse).getUsageBasedPricing(),
+                    Toast.LENGTH_LONG
+                ).show();
+			} else if (ussdResponse instanceof UssdResponse.MessagesBalance) {
+                // Contiene la informacion extraida de la consulta de mensajes (*222*767#).
+                // Solo se ejecuta si se detecta paquetes de SMS en el saldo principal.
+                Toast.makeText(
+                    context,
+                    ((UssdResponse.MessagesBalance) ussdResponse).getCount(),
+                    Toast.LENGTH_LONG
+                ).show();
+			} else if (ussdResponse instanceof UssdResponse.PrincipalBalance) {
+                // Contiene la informacion extraida de la consulta de saldo (*222#).
+                // Es la primera operacion en realizarse
+                Toast.makeText(
+                    context,
+                    ((UssdResponse.PrincipalBalance) ussdResponse).getCredit(),
+                    Toast.LENGTH_LONG
+                ).show();
+			} else if (ussdResponse instanceof UssdResponse.VoiceBalance) {
+                // Contiene la informacion extraida de la consulta de mensajes (*222*869#).
+                // Solo se ejecuta si se detecta paquetes de Voz en el saldo principal.
+                Toast.makeText(
+                    context,
+                    ((UssdResponse.VoiceBalance) ussdResponse).getTime(),
+                    Toast.LENGTH_LONG
+                ).show();
+			}
         }
-    }
 
-    private void makeUssdRequest() {
-        // Obtener la primera SIM de la lista
-        SimCard firstSimCard = simCards.get(0);
-
-        // Define el código USSD que deseas enviar
-        String ussdCode = "*123#"; // Por ejemplo, este es un código USSD de ejemplo
-
-        // Realiza la solicitud USSD en un CoroutineScope
-        new CoroutineScope(Dispatchers.Main).launch(new CoroutineScope.CallerContinuation() {
-            @Override
-            public void resumeWith(Object result) {
-                try {
-                    UssdResponse ussdResponse = withContext(Dispatchers.IO, () -> {
-                        try {
-                            return firstSimCard.sendUssdRequest(context, ussdCode);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            return null;
-                        }
-                    });
-                    handleUssdResponse(ussdResponse);
-                } catch (UssdException e) {
-                    // Manejar excepciones de USSD
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public Object invokeSuspend(Object result) {
-                return null;
-            }
-        });
-    }
-
-    private void handleUssdResponse(UssdResponse ussdResponse) {
-        // Maneja la respuesta USSD según tus necesidades
-        String message = ussdResponse.getMessage();
-        // Por ejemplo, muestra la respuesta en una vista o realiza acciones basadas en la respuesta
-    }
-
-    private static final int PERMISSION_REQUEST_CODE = 1;
+		@Override
+		public void onFailure(@NonNull Throwable throwable) {
+			throwable.printStackTrace();
+		}
+	});
 }
 ```
 
