@@ -20,7 +20,7 @@ fun CharSequence.parseDailyData(): DailyData? {
     return dailyDataRegex.find(this)?.let { matchResult ->
         DailyData(
             data = matchResult.groups["dataDaily"]?.value?.toBytes()!!,
-            remainingHours = matchResult.groups["dueDate"]?.value?.toInt()!!
+            remainingHours = matchResult.groups["dueDate"]?.value?.toInt()
         )
     }
 }

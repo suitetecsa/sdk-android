@@ -21,7 +21,7 @@ fun CharSequence.parseMailData(): MailData? {
     return mailDataRegex.find(this)?.let { matchResult ->
         MailData(
             data = matchResult.groups["dataMail"]?.value?.toBytes()!!,
-            remainingDays = matchResult.groups["dueDate"]?.value?.toInt()!!
+            remainingDays = matchResult.groups["dueDate"]?.value?.toInt()
         )
     }
 }
