@@ -1,19 +1,27 @@
 [versions]
-agp = "8.1.1"
-org-jetbrains-kotlin-android = "1.8.10"
-core-ktx = "1.10.1"
+agp = "8.2.0"
+kotlin = "1.9.21"
+core-ktx = "1.12.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 lifecycle-runtime-ktx = "2.6.2"
-activity-compose = "1.7.2"
-compose-bom = "2023.03.00"
+activity-compose = "1.8.2"
+compose-bom = "2023.10.01"
+arturbosch-detekt = "1.23.1"
+detekt-rules-compose = "1.3.0"
 appcompat = "1.6.1"
-material = "1.9.0"
-detekt = "1.23.1"
+material = "1.11.0"
+datastore-preferences = "1.0.0"
+material-icons-extended = "1.5.4"
+
+navigation-compose = "2.7.6"
+hilt-navigation-compose = "1.1.0"
+
+hilt-android = "2.50"
+devtools-ksp = "1.9.21-1.0.16"
+
 net-monster = "1.2.0"
-mockito-core = "3.12.4"
-robolectric = "4.6.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -30,18 +38,26 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
+detekt-rules-compose = { module = "ru.kode:detekt-rules-compose", version.ref = "detekt-rules-compose" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preferences" }
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "material-icons-extended" }
+
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
+
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }
+
 net-monster = { group = "app.netmonster", name = "core", version.ref = "net-monster" }
-mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito-core" }
-robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 
 [plugins]
-com-android-application = { id = "com.android.application", version.ref = "agp" }
-org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
-com-android-library = { id = "com.android.library", version.ref = "agp" }
-arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-kotlin-kapt = { id = "kotlin-kapt" }
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "arturbosch-detekt" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
 
-[bundles]
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
+devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "devtools-ksp" }
 

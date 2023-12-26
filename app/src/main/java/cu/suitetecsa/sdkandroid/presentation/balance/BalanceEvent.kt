@@ -1,0 +1,9 @@
+package cu.suitetecsa.sdkandroid.presentation.balance
+
+import cu.suitetecsa.sdk.android.domain.model.SimCard
+
+sealed class BalanceEvent {
+    data object UpdateBalance : BalanceEvent()
+    data class ChangeSimCard(val simCard: SimCard) : BalanceEvent()
+    data class TurnUsageBasedPricing(val isActive: Boolean) : BalanceEvent()
+}
