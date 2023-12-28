@@ -132,7 +132,9 @@ class BalancesViewModel @Inject constructor(
                                     data = ussdResponse.data,
                                     dataLte = ussdResponse.dataLte,
                                     remainingDays = ussdResponse.remainingDays
-                                )
+                                ),
+                                mailData = ussdResponse.mailData,
+                                dailyData = ussdResponse.dailyData
                             )
                         }
                         is UssdResponse.MessagesBalance -> {
