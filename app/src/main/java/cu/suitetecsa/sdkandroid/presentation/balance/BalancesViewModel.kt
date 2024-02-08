@@ -117,11 +117,11 @@ class BalancesViewModel @Inject constructor(
                     this@BalancesViewModel.consultType = request
                     val consultMessage = when (request) {
                         BONUS_BALANCE -> "Consultando Bonos"
-                        UssdRequest.DATA_BALANCE -> "Consultando Datos"
-                        UssdRequest.MESSAGES_BALANCE -> "Consultando SMS"
-                        UssdRequest.PRINCIPAL_BALANCE -> "Consultando Saldo"
-                        UssdRequest.VOICE_BALANCE -> "Consultando Minutos"
-                        UssdRequest.CUSTOM -> ""
+                        DATA_BALANCE -> "Consultando Datos"
+                        MESSAGES_BALANCE -> "Consultando SMS"
+                        PRINCIPAL_BALANCE -> "Consultando Saldo"
+                        VOICE_BALANCE -> "Consultando Minutos"
+                        CUSTOM -> ""
                     }
                     _state.value = _state.value.copy(consultMessage = consultMessage)
                 }
@@ -169,9 +169,9 @@ class BalancesViewModel @Inject constructor(
 
                         PRINCIPAL_BALANCE -> {
                             _state.value = _state.value.copy(
-                                balance = (ussdResponse as PrincipalBalance).balance.toFloat(),
-                                activeUntil = ussdResponse.activeUntil.asDateString,
-                                mainBalanceDueDate = ussdResponse.dueDate.asDateString,
+                                balance = (ussdResponse as PrincipalBalance).balance().toFloat(),
+                                activeUntil = ussdResponse.activeUntil().asDateString,
+                                mainBalanceDueDate = ussdResponse.dueDate().asDateString,
                             )
                         }
 

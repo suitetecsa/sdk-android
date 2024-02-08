@@ -34,7 +34,7 @@ public class MainSmsParser {
 
         Integer remainingDays = null;
 
-        if(!smsMatcher.find()) throw new ParseException(input.toString(), 0);;
+        if(!smsMatcher.find()) throw new ParseException(input.toString(), 0);
         // Parse the SMS balance and due date
         String smsStr = smsMatcher.group("sms");
         assert smsStr != null;

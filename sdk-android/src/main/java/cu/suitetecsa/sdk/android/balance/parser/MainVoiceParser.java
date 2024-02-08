@@ -34,7 +34,7 @@ public class MainVoiceParser {
 
         Integer remainingDays = null;
 
-        if(!voiceMatcher.find()) throw new ParseException(input.toString(), 0);;
+        if(!voiceMatcher.find()) throw new ParseException(input.toString(), 0);
         // Parse the voice balance and due date
         String voiceStr = voiceMatcher.group("voice");
         assert voiceStr != null;

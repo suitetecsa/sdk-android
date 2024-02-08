@@ -1,7 +1,5 @@
 package cu.suitetecsa.sdk.android.utils;
 
-import androidx.annotation.NonNull;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;

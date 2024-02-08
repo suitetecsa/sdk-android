@@ -36,7 +36,7 @@ public class MailDataParser {
 
         Integer remainingDays = null;
 
-        if (!mailDataMatcher.find()) return null;;
+        if (!mailDataMatcher.find()) return null;
         // Parse the mail data
         String dataMailStr = mailDataMatcher.group("dataMail");
         assert dataMailStr != null;
