@@ -36,13 +36,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import cu.suitetecsa.sdk.android.domain.model.BonusDataCU
-import cu.suitetecsa.sdk.android.domain.model.MainData
-import cu.suitetecsa.sdk.android.domain.model.MainSms
-import cu.suitetecsa.sdk.android.domain.model.MainVoice
-import cu.suitetecsa.sdk.android.domain.model.SimCard
-import cu.suitetecsa.sdk.android.framework.toSizeString
-import cu.suitetecsa.sdk.android.framework.toTimeString
+import cu.suitetecsa.sdk.android.kotlin.asRemainingDays
+import cu.suitetecsa.sdk.android.kotlin.asSizeString
+import cu.suitetecsa.sdk.android.kotlin.asTimeString
+import cu.suitetecsa.sdk.android.model.BonusDataCU
+import cu.suitetecsa.sdk.android.model.MainData
+import cu.suitetecsa.sdk.android.model.MainSms
+import cu.suitetecsa.sdk.android.model.MainVoice
+import cu.suitetecsa.sdk.android.model.SimCard
 import cu.suitetecsa.sdkandroid.R
 import cu.suitetecsa.sdkandroid.presentation.balance.component.Spinner
 import cu.suitetecsa.sdkandroid.ui.theme.SDKAndroidTheme
@@ -107,6 +108,7 @@ fun BalanceScreen(
         } else {
             Text(text = "Not supported")
         }
+        Text(text = state.errorText ?: "")
     }
 }
 
@@ -168,11 +170,11 @@ fun PlansSection(state: BalanceState) {
     ) {
         state.data?.let { data ->
             val dataCount = if (data.data != null && data.dataLte != null) {
-                "${data.data!!.toSizeString()} + ${data.dataLte!!.toSizeString()} LTE"
+                "${data.data!!.asSizeString} + ${data.dataLte!!.asSizeString} LTE"
             } else if (data.data != null) {
-                data.data!!.toSizeString()
+                data.data!!.asSizeString
             } else {
-                "${data.dataLte!!.toSizeString()} LTE"
+                "${data.dataLte!!.asSizeString} LTE"
             }
             DataPlan(
                 planTitle = "Datos",
@@ -183,29 +185,29 @@ fun PlansSection(state: BalanceState) {
         state.voice?.let { voice ->
             DataPlan(
                 planTitle = "Voz",
-                dataCount = "${voice.mainVoice.toTimeString()} MIN",
+                dataCount = voice.seconds.asTimeString,
                 dataExpire = voice.remainingDays?.let { "$it días" }
             )
         }
         state.sms?.let { sms ->
             DataPlan(
                 planTitle = "SMS",
-                dataCount = "${sms.mainSms} SMS",
+                dataCount = "${sms.sms} SMS",
                 dataExpire = sms.remainingDays?.let { "$it días" }
             )
         }
         state.dailyData?.let { dailyData ->
             DataPlan(
                 planTitle = "Bolsa diaria",
-                dataCount = dailyData.data.toSizeString(),
-                dataExpire = dailyData.remainingHours?.let { "$it horas" }
+                dataCount = dailyData.data.asSizeString,
+                dataExpire = dailyData.remainingHours()?.let { "$it horas" }
             )
         }
         state.mailData?.let { mailData ->
             DataPlan(
                 planTitle = "Bolsa correo",
-                dataCount = mailData.data.toSizeString(),
-                dataExpire = mailData.remainingDays?.let { "$it días" }
+                dataCount = mailData.data.asSizeString,
+                dataExpire = mailData.remainingDays()?.let { "$it días" }
             )
         }
     }
@@ -222,38 +224,38 @@ fun BonusSection(state: BalanceState) {
         state.bonusCredit?.let { bonusCredit ->
             DataPlan(
                 planTitle = "Saldo",
-                dataCount = "$%.2f CUP".format(bonusCredit.credit),
-                dataExpire = bonusCredit.bonusCreditDueDate
+                dataCount = "$%.2f CUP".format(bonusCredit.balance),
+                dataExpire = "${bonusCredit.dueDate.asRemainingDays} dias"
             )
         }
         state.bonusData?.let { bonusData ->
             val dataCount =
-                if (bonusData.bonusDataCount != null && bonusData.bonusDataCountLte != null) {
-                    "${bonusData.bonusDataCount!!.toSizeString()} + " +
-                            "${bonusData.bonusDataCountLte!!.toSizeString()} LTE"
-                } else if (bonusData.bonusDataCount != null) {
-                    bonusData.bonusDataCount!!.toSizeString()
+                if (bonusData.data != null && bonusData.dataLte != null) {
+                    "${bonusData.data!!.asSizeString} + " +
+                            "${bonusData.dataLte!!.asSizeString} LTE"
+                } else if (bonusData.data != null) {
+                    bonusData.data!!.asSizeString
                 } else {
-                    "${bonusData.bonusDataCountLte!!.toSizeString()} LTE"
+                    "${bonusData.dataLte!!.asSizeString} LTE"
                 }
             DataPlan(
                 planTitle = "Datos",
                 dataCount = dataCount,
-                dataExpire = bonusData.bonusDataDueDate
+                dataExpire = "${bonusData.dueDate.asRemainingDays} dias"
             )
         }
         state.bonusDataCU?.let { bonusDataCU ->
             DataPlan(
                 planTitle = "Datos CU",
-                dataCount = bonusDataCU.bonusDataCuCount.toSizeString(),
-                dataExpire = bonusDataCU.bonusDataCuDueDate
+                dataCount = bonusDataCU.data.asSizeString,
+                dataExpire = "${bonusDataCU.dueDate.asRemainingDays} dias"
             )
         }
         state.bonusUnlimitedData?.let { bonusUnlimitedData ->
             DataPlan(
                 planTitle = "Datos Ilimitados",
                 dataCount = "12:00 a.m -> 7:00 a.m",
-                dataExpire = bonusUnlimitedData.bonusUnlimitedDataDueDate
+                dataExpire = "${bonusUnlimitedData.dueDate.asRemainingDays} dias"
             )
         }
     }
@@ -280,8 +282,8 @@ private fun BalanceInfoPreviewDark() {
                     balance = 123.45f,
                     activeUntil = "10/10/2022",
                     mainBalanceDueDate = "10/10/2022",
-                    data = MainData(false, 8345369725.0, 29376382496.0, 25),
-                    bonusDataCU = BonusDataCU(236975200.0, "10/10/2022"),
+                    data = MainData(false, 8345369725, 29376382496, 25),
+                    bonusDataCU = BonusDataCU(236975200, 55665L),
                     voice = MainVoice(586314L, 25),
                     sms = MainSms(50, 25)
                 )

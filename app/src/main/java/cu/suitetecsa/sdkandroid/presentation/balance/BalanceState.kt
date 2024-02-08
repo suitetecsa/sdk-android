@@ -1,15 +1,16 @@
 package cu.suitetecsa.sdkandroid.presentation.balance
 
-import cu.suitetecsa.sdk.android.domain.model.BonusCredit
-import cu.suitetecsa.sdk.android.domain.model.BonusData
-import cu.suitetecsa.sdk.android.domain.model.BonusDataCU
-import cu.suitetecsa.sdk.android.domain.model.BonusUnlimitedData
-import cu.suitetecsa.sdk.android.domain.model.DailyData
-import cu.suitetecsa.sdk.android.domain.model.MailData
-import cu.suitetecsa.sdk.android.domain.model.MainData
-import cu.suitetecsa.sdk.android.domain.model.MainSms
-import cu.suitetecsa.sdk.android.domain.model.MainVoice
-import cu.suitetecsa.sdk.android.domain.model.SimCard
+import cu.suitetecsa.sdk.android.model.BonusCredit
+import cu.suitetecsa.sdk.android.model.BonusData
+import cu.suitetecsa.sdk.android.model.BonusDataCU
+import cu.suitetecsa.sdk.android.model.BonusUnlimitedData
+import cu.suitetecsa.sdk.android.model.DailyData
+import cu.suitetecsa.sdk.android.model.MailData
+import cu.suitetecsa.sdk.android.model.MainData
+import cu.suitetecsa.sdk.android.model.MainSms
+import cu.suitetecsa.sdk.android.model.MainVoice
+import cu.suitetecsa.sdk.android.model.SimCard
+
 
 data class BalanceState(
     val currentSimCard: SimCard? = null,
@@ -29,4 +30,5 @@ data class BalanceState(
     val loading: Boolean = false,
     val consultMessage: String? = null,
     val error: String? = null,
+    val errorText: String? = null,
 )

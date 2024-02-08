@@ -9,16 +9,29 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cu.suitetecsa.sdk.android.SimCardsAPI
-import cu.suitetecsa.sdk.android.domain.model.MainData
-import cu.suitetecsa.sdk.android.domain.model.MainSms
-import cu.suitetecsa.sdk.android.domain.model.MainVoice
-import cu.suitetecsa.sdk.android.domain.model.SimCard
-import cu.suitetecsa.sdk.android.framework.ConsultBalanceCallBack
-import cu.suitetecsa.sdk.android.framework.UssdConsultType
-import cu.suitetecsa.sdk.android.framework.UssdResponse
-import cu.suitetecsa.sdk.android.framework.consultBalance
-import cu.suitetecsa.sdk.android.framework.ussdExecute
+import cu.suitetecsa.sdk.android.SimCardCollector
+import cu.suitetecsa.sdk.android.balance.ConsultBalanceCallBack
+import cu.suitetecsa.sdk.android.balance.consult.UssdRequest
+import cu.suitetecsa.sdk.android.balance.consult.UssdRequest.BONUS_BALANCE
+import cu.suitetecsa.sdk.android.balance.consult.UssdRequest.CUSTOM
+import cu.suitetecsa.sdk.android.balance.consult.UssdRequest.DATA_BALANCE
+import cu.suitetecsa.sdk.android.balance.consult.UssdRequest.MESSAGES_BALANCE
+import cu.suitetecsa.sdk.android.balance.consult.UssdRequest.PRINCIPAL_BALANCE
+import cu.suitetecsa.sdk.android.balance.consult.UssdRequest.VOICE_BALANCE
+import cu.suitetecsa.sdk.android.balance.response.BonusBalance
+import cu.suitetecsa.sdk.android.balance.response.Custom
+import cu.suitetecsa.sdk.android.balance.response.DataBalance
+import cu.suitetecsa.sdk.android.balance.response.MessagesBalance
+import cu.suitetecsa.sdk.android.balance.response.PrincipalBalance
+import cu.suitetecsa.sdk.android.balance.response.UssdResponse
+import cu.suitetecsa.sdk.android.balance.response.VoiceBalance
+import cu.suitetecsa.sdk.android.kotlin.asDateString
+import cu.suitetecsa.sdk.android.kotlin.consultBalance
+import cu.suitetecsa.sdk.android.kotlin.ussdExecute
+import cu.suitetecsa.sdk.android.model.MainData
+import cu.suitetecsa.sdk.android.model.MainSms
+import cu.suitetecsa.sdk.android.model.MainVoice
+import cu.suitetecsa.sdk.android.model.SimCard
 import cu.suitetecsa.sdkandroid.data.source.PreferenceDataSource
 import cu.suitetecsa.sdkandroid.domain.model.Preferences
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,7 +44,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BalancesViewModel @Inject constructor(
     private val preferenceDataSource: PreferenceDataSource,
-    private val simCardsAPI: SimCardsAPI,
+    private val simCardsCollector: SimCardCollector,
 ) : ViewModel() {
     private val preferences: StateFlow<Preferences> = preferenceDataSource.preferences()
         .stateIn(
@@ -43,22 +56,25 @@ class BalancesViewModel @Inject constructor(
         get() = preferences.value.currentSimCardId
     private val simCards: List<SimCard>
         @SuppressLint("MissingPermission")
-        get() = simCardsAPI.getSimCards()
+        get() = simCardsCollector.collect()
     private val currentSimCard: SimCard?
         get() {
             return if (currentSimCardId.isNotBlank()) {
                 simCards.firstOrNull {
-                    it.serialNumber == preferences.value.currentSimCardId
+                    it.serialNumber() == preferences.value.currentSimCardId
                 }.let { it ?: simCards.firstOrNull() }
-            } else { simCards.firstOrNull() }
+            } else {
+                simCards.firstOrNull()
+            }
         }
 
-    private val _state = mutableStateOf(BalanceState(currentSimCard = currentSimCard, simCards = simCards))
+    private val _state =
+        mutableStateOf(BalanceState(currentSimCard = currentSimCard, simCards = simCards))
     val state: State<BalanceState>
         get() = _state
     var canUpdate = true
         private set
-    var consultType: UssdConsultType? = null
+    var consultType: UssdRequest? = null
         private set
 
     @SuppressLint("MissingPermission", "NewApi")
@@ -73,10 +89,12 @@ class BalancesViewModel @Inject constructor(
                     }
                 }
             }
+
             is BalanceEvent.ChangeSimCard -> {
                 viewModelScope.launch {
                     preferenceDataSource.updateCurrentSimCardId(event.simCard.serialNumber)
-                    _state.value = BalanceState(currentSimCard = currentSimCard, simCards = simCards)
+                    _state.value =
+                        BalanceState(currentSimCard = currentSimCard, simCards = simCards)
                 }
             }
 
@@ -95,26 +113,27 @@ class BalancesViewModel @Inject constructor(
     private fun updateBalance(simCard: SimCard) {
         simCard.consultBalance(
             object : ConsultBalanceCallBack {
-                override fun onRequesting(consultType: UssdConsultType) {
-                    this@BalancesViewModel.consultType = consultType
-                    val consultMessage = when (consultType) {
-                        UssdConsultType.BonusBalance -> "Consultando Bonos"
-                        UssdConsultType.DataBalance -> "Consultando Datos"
-                        UssdConsultType.MessagesBalance -> "Consultando SMS"
-                        UssdConsultType.PrincipalBalance -> "Consultando Saldo"
-                        UssdConsultType.VoiceBalance -> "Consultando Minutos"
-                        is UssdConsultType.Custom -> ""
+                override fun onRequesting(request: UssdRequest) {
+                    this@BalancesViewModel.consultType = request
+                    val consultMessage = when (request) {
+                        BONUS_BALANCE -> "Consultando Bonos"
+                        UssdRequest.DATA_BALANCE -> "Consultando Datos"
+                        UssdRequest.MESSAGES_BALANCE -> "Consultando SMS"
+                        UssdRequest.PRINCIPAL_BALANCE -> "Consultando Saldo"
+                        UssdRequest.VOICE_BALANCE -> "Consultando Minutos"
+                        UssdRequest.CUSTOM -> ""
                     }
-                    _state.value = _state.value.copy(
-                        consultMessage = consultMessage
-                    )
+                    _state.value = _state.value.copy(consultMessage = consultMessage)
                 }
 
-                override fun onSuccess(ussdResponse: UssdResponse) {
-                    when (ussdResponse) {
-                        is UssdResponse.BonusBalance -> {
+                override fun onSuccess(
+                    request: UssdRequest,
+                    ussdResponse: UssdResponse
+                ) {
+                    when (request) {
+                        BONUS_BALANCE -> {
                             _state.value = _state.value.copy(
-                                bonusCredit = ussdResponse.credit,
+                                bonusCredit = (ussdResponse as BonusBalance).credit,
                                 bonusData = ussdResponse.data,
                                 bonusDataCU = ussdResponse.dataCu,
                                 bonusUnlimitedData = ussdResponse.unlimitedData,
@@ -125,54 +144,58 @@ class BalancesViewModel @Inject constructor(
                             )
                             canUpdate = true
                         }
-                        is UssdResponse.DataBalance -> {
+
+                        DATA_BALANCE -> {
                             _state.value = _state.value.copy(
                                 data = MainData(
-                                    usageBasedPricing = ussdResponse.usageBasedPricing,
-                                    data = ussdResponse.data,
-                                    dataLte = ussdResponse.dataLte,
-                                    remainingDays = ussdResponse.remainingDays
+                                    (ussdResponse as DataBalance).usageBasedPricing,
+                                    ussdResponse.data(),
+                                    ussdResponse.dataLte(),
+                                    ussdResponse.remainingDays()
                                 ),
-                                mailData = ussdResponse.mailData,
-                                dailyData = ussdResponse.dailyData
+                                mailData = ussdResponse.mailData(),
+                                dailyData = ussdResponse.dailyData()
                             )
                         }
-                        is UssdResponse.MessagesBalance -> {
+
+                        MESSAGES_BALANCE -> {
                             _state.value = _state.value.copy(
                                 sms = MainSms(
-                                    mainSms = ussdResponse.count,
-                                    remainingDays = ussdResponse.remainingDays
+                                    (ussdResponse as MessagesBalance).sms(),
+                                    ussdResponse.remainingDays()
                                 )
                             )
                         }
-                        is UssdResponse.PrincipalBalance -> {
+
+                        PRINCIPAL_BALANCE -> {
                             _state.value = _state.value.copy(
-                                balance = ussdResponse.credit,
-                                activeUntil = ussdResponse.activeUntil,
-                                mainBalanceDueDate = ussdResponse.dueDate,
+                                balance = (ussdResponse as PrincipalBalance).balance.toFloat(),
+                                activeUntil = ussdResponse.activeUntil.asDateString,
+                                mainBalanceDueDate = ussdResponse.dueDate.asDateString,
                             )
                         }
-                        is UssdResponse.VoiceBalance -> {
+
+                        VOICE_BALANCE -> {
                             _state.value = _state.value.copy(
                                 voice = MainVoice(
-                                    mainVoice = ussdResponse.time,
-                                    remainingDays = ussdResponse.remainingDays
+                                    (ussdResponse as VoiceBalance).time,
+                                    ussdResponse.remainingDays
                                 )
                             )
                         }
-                        is UssdResponse.Custom -> {}
+
+                        else -> {}
                     }
                 }
 
                 override fun onFailure(throwable: Throwable) {
                     throwable.printStackTrace()
-                    if (consultType is UssdConsultType.BonusBalance) {
-                        _state.value = _state.value.copy(
-                            consultMessage = null,
-                            loading = false,
-                        )
-                        canUpdate = true
-                    }
+                    _state.value = _state.value.copy(
+                        errorText = throwable.message,
+                        consultMessage = null,
+                        loading = false,
+                    )
+                    canUpdate = true
                 }
             }
         )
@@ -183,34 +206,46 @@ class BalancesViewModel @Inject constructor(
     private fun turnUsageBasedPricing(isActive: Boolean) {
         val ussdCode = if (!isActive) {
             "*133*1*1*2${Uri.parse("#")}"
-        } else { "*133*1*1*1${Uri.parse("#")}" }
+        } else {
+            "*133*1*1*1${Uri.parse("#")}"
+        }
         currentSimCard?.also {
             it.ussdExecute(
                 ussdCode,
                 object : ConsultBalanceCallBack {
-                    override fun onRequesting(consultType: UssdConsultType) {
+                    override fun onRequesting(request: UssdRequest) {
                         _state.value = _state.value.copy(
                             consultMessage = if (!isActive) {
                                 "Desactivando TPC"
-                            } else { "Activando TPC" }
+                            } else {
+                                "Activando TPC"
+                            }
                         )
                     }
 
-                    override fun onSuccess(ussdResponse: UssdResponse) {
-                        when (ussdResponse) {
-                            is UssdResponse.Custom -> {
-                                if (ussdResponse.response == UssdResponse.PROCESSING_RESPONSE) {
+                    override fun onSuccess(
+                        request: UssdRequest,
+                        ussdResponse: UssdResponse
+                    ) {
+                        when (request) {
+                            CUSTOM -> {
+                                if ((ussdResponse as Custom).response == UssdResponse.PROCESSING_RESPONSE) {
                                     _state.value.data?.let { data ->
                                         _state.value = _state.value.copy(
-                                            data = data.copy(usageBasedPricing = isActive)
+                                            data = MainData(
+                                                isActive,
+                                                data.data,
+                                                data.dataLte,
+                                                data.remainingDays
+                                            )
                                         )
                                     } ?: run {
                                         _state.value = _state.value.copy(
                                             data = MainData(
-                                                usageBasedPricing = isActive,
-                                                data = null,
-                                                dataLte = null,
-                                                remainingDays = null
+                                                isActive,
+                                                null,
+                                                null,
+                                                null
                                             )
                                         )
                                     }
@@ -221,6 +256,7 @@ class BalancesViewModel @Inject constructor(
                                 )
                                 canUpdate = true
                             }
+
                             else -> {}
                         }
                     }
