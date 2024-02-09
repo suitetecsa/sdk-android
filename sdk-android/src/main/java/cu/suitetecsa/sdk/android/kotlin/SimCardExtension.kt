@@ -29,7 +29,7 @@ fun SimCard.consultBalance(callBack: ConsultBalanceCallBack) {
 
         override fun getTelephonyManager(): TelephonyManager = this@consultBalance.telephony()!!
 
-        override fun onRequesting(ussdRequest: UssdRequest) = callBack.onRequesting(ussdRequest)
+        override fun onRequesting(request: UssdRequest) = callBack.onRequesting(request)
 
         override fun onSuccess(
             request: UssdRequest,
@@ -47,7 +47,7 @@ fun SimCard.ussdExecute(ussdCode: String, callBack: ConsultBalanceCallBack) {
     val ussdBalanceRequestExecutorCallBack = object : RequestCallback {
         override fun getTelephonyManager(): TelephonyManager = this@ussdExecute.telephony()!!
 
-        override fun onRequesting(ussdRequest: UssdRequest) = callBack.onRequesting(ussdRequest)
+        override fun onRequesting(request: UssdRequest) = callBack.onRequesting(request)
 
         override fun onSuccess(
             request: UssdRequest,

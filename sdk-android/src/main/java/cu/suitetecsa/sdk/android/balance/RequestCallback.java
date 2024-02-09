@@ -17,9 +17,9 @@ public interface RequestCallback {
 
     /**
      * Método de devolución de llamada invocado cuando se realiza una solicitud de saldo USSD
-     * @param ussdRequest a UssdRequest instance
+     * @param request a UssdRequest instance
      */
-    void onRequesting(UssdRequest ussdRequest);
+    void onRequesting(UssdRequest request);
 
     /**
      * Método de devolución de llamada invocado cuando una solicitud de saldo USSD tiene éxito

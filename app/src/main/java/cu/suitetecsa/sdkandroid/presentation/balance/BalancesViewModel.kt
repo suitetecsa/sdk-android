@@ -133,10 +133,10 @@ class BalancesViewModel @Inject constructor(
                     when (request) {
                         BONUS_BALANCE -> {
                             _state.value = _state.value.copy(
-                                bonusCredit = (ussdResponse as BonusBalance).credit,
-                                bonusData = ussdResponse.data,
-                                bonusDataCU = ussdResponse.dataCu,
-                                bonusUnlimitedData = ussdResponse.unlimitedData,
+                                bonusCredit = (ussdResponse as BonusBalance).credit(),
+                                bonusData = ussdResponse.data(),
+                                bonusDataCU = ussdResponse.dataCu(),
+                                bonusUnlimitedData = ussdResponse.unlimitedData(),
                             )
                             _state.value = _state.value.copy(
                                 consultMessage = null,
@@ -178,8 +178,8 @@ class BalancesViewModel @Inject constructor(
                         VOICE_BALANCE -> {
                             _state.value = _state.value.copy(
                                 voice = MainVoice(
-                                    (ussdResponse as VoiceBalance).time,
-                                    ussdResponse.remainingDays
+                                    (ussdResponse as VoiceBalance).seconds(),
+                                    ussdResponse.remainingDays()
                                 )
                             )
                         }
@@ -229,7 +229,7 @@ class BalancesViewModel @Inject constructor(
                     ) {
                         when (request) {
                             CUSTOM -> {
-                                if ((ussdResponse as Custom).response == UssdResponse.PROCESSING_RESPONSE) {
+                                if ((ussdResponse as Custom).response() == UssdResponse.PROCESSING_RESPONSE) {
                                     _state.value.data?.let { data ->
                                         _state.value = _state.value.copy(
                                             data = MainData(

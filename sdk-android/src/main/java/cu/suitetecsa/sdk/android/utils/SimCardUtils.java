@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 
+import cu.suitetecsa.sdk.android.balance.ConsultBalanceCallBack;
 import cu.suitetecsa.sdk.android.model.SimCard;
 
 public class SimCardUtils {
@@ -20,5 +21,9 @@ public class SimCardUtils {
 
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+
+    public static void ussdExecute(SimCard simCard, String ussdCode, ConsultBalanceCallBack callBack) {
+
     }
 }
