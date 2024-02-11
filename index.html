@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDK Android para SuiteEtecsa</title>
+</head>
+<body>
+
+<h1>SDK Android para SuiteEtecsa</h1>
+
+<p><a href="https://jitpack.io/v/suitetecsa/sdk-android.svg"><img src="https://jitpack.io/v/suitetecsa/sdk-android.svg" alt="Estado de la versión en JitPack"></a></p>
+
+<p>Esta es una librería que facilita la creación de aplicaciones Android dedicadas a gestionar los servicios de <a href="https://www.etecsa.cu">ETECSA</a>.</p>
+
+<h2>Cómo usar</h2>
+
+<p>Agrega la dependencia a tu archivo build.gradle/.kts:</p>
+
+<pre><code>implementation("com.github.suitetecsa.sdk-android:{última-versión}")
+</code></pre>
+
+<h3>Obtener información de las tarjetas SIM</h3>
+
+<p>Para obtener información sobre las tarjetas SIM insertadas en el dispositivo, puedes seguir estos pasos:</p>
+
+<h4>Kotlin</h4>
+
+<pre><code>// Instancia SimCardsAPI
+val simCardsAPI = SimCardsAPI
+    .Builder(context)
+    .build()
+
+// Obtiene las tarjetas SIM insertadas en el dispositivo
+val simCards = simCardsAPI.getSimCards()
+</code></pre>
+
+<h4>Java</h4>
+
+<pre><code>// Instancia SimCardsAPI
+SimCardsAPI simCardsAPI = SimCardsAPI
+    .Builder(context)
+    .build();
+
+// Obtiene las tarjetas SIM insertadas en el dispositivo
+List&lt;SimCard&gt; simCards = simCardsAPI.getSimCards();
+</code></pre>
+
+<h3>Realizar llamadas con una SIM</h3>
+
+<h4>Kotlin</h4>
+
+<pre><code>simcCards.last().makeCall(context, "51234567")
+</code></pre>
+
+<h4>Java</h4>
+
+<pre><code>SimCardExtensionKt.makeCall(simCards.get(0), context, "51234567")
+</code></pre>
+
+<h3>Obtener saldo de la tarjeta SIM</h3>
+
+<p>Para obtener el saldo de la primera tarjeta SIM de la lista, puedes seguir estos pasos:</p>
+
+<h4>Kotlin</h4>
+
+<pre><code>// Obtener la primera SIM de la lista
+val firstSimCard = simCards.first()
+var balance: MainBalance? = null
+// Enviar la solicitud
+firstSimCard.ussdExecute(
+    "*222#",
+    object : ConsultBalanceCallBack {
+        override fun onRequesting(consultType: UssdConsultType) {
+            Toast.makeText(context, "Consultando saldo...", Toast.LENGTH_LONG).show()
+        }
+        override fun onSuccess(ussdResponse: UssdResponse) {
+            when (ussdResponse) {
+                is UssdResponse.Custom -&gt; {
+                    // Convierte el objeto UssdResponse en un objeto MainBalance
+                    balance = ussdResponse.response.parseMainBalance()
+                }
+                else -&gt; {}
+            }
+        }
+        override fun onFailure(throwable: Throwable) {
+            throw throwable
+        }
+    }
+)
+</code></pre>
+
+<h4>Java</h4>
+
+<pre><code>// Obtener la primera SIM de la lista
+SimCard firstSimCard = simCards.get(0);
+MainBalance balance;
+
+// Enviar la solicitud
+SimCardExtensionKt.ussdExecute(firstSimCard, "*222#", new ConsultBalanceCallBack() {
+    @Override
+    public void onRequesting(@NonNull UssdConsultType consultType) {
+        Toast.makeText(context, "Consultando saldo...", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onSuccess(@NonNull UssdResponse ussdResponse) {
+        if (ussdResponse instanceof UssdResponse.Custom) {
+            UssdResponse.Custom customResponse = (UssdResponse.Custom) ussdResponse;
+            // Convierte el objeto UssdResponse en un objeto MainBalance
+            balance = parseMainBalance(customResponse.getResponse());
+        }
+    }
+
+    @Override
+    public void onFailure(@NonNull Throwable throwable) {
+        throw throwable;
+    }
+});
+</code></pre>
+
+<h3>Consultar todo el saldo disponible.</h3>
+
+<p><code>consultBalance</code> es una función de extensión que realiza las consultas de saldo automáticamente, consulta primero el saldo inicial, y dependiendo de la información que extraiga consulta los demás saldos. O sea, que si en el saldo inicial no detecta paquetes de datos, no ejecutará la consulta (\*222\*328#). Esto puede ser un inconveniente si desea consultar siempre el estado de la tarifa por consumo, una forma de solucionarlo es comprobar si la línea posee información de planes de datos y si no fuese el caso hacer la consulta del estado de la TPC usando la función <code>ussdExecute</code>.</p>
+
+<h4>Kotlin</h4>
+
+<pre><code>if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.O) {
+    simCard.consultBalance(
+        object : ConsultBalanceCallBack {
+            override fun onRequesting(consultType: UssdConsultType) {
+                val consultMessage = when (consultType) {
+                    UssdConsultType.BonusBalance -&gt; "Consultando Bonos"
+                    UssdConsultType.DataBalance -&gt; "Consultando Datos"
+                    UssdConsultType.MessagesBalance -&gt; "Consultando SMS"
+                    UssdConsultType.PrincipalBalance -&gt; "Consultando Saldo"
+                    UssdConsultType.VoiceBalance -&gt; "Consultando Minutos"
+                    is UssdConsultType.Custom -&gt; ""
+                }
+                Toast.makeText(context, consultMessage, Toast.LENGTH_LONG).show()
+            }
+            override fun onSuccess(ussdResponse: UssdResponse) {
+                when (ussdResponse) {
+                    is UssdResponse.BonusBalance -&gt; {
+                        // Contiene la información extraida de la consulta de bono (*222*266#).
+                        // Es la última operación en realizarse
+                        Toast.makeText(
+                            context,
+                            "${ussdResponse.credit}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    is UssdResponse.DataBalance -&gt; {
+                        // Contiene la información extraida de la consulta de datos (*222*328#).
+                        // Solo se ejecuta si se detecta paquetes de datos en el saldo principal.
+                        Toast.makeText(
+                            context,
+                            "${ussdResponse.usageBasedPricing}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    is UssdResponse.MessagesBalance -&gt; {
+                        // Contiene la información extraida de la consulta de mensajes (*222*767#).
+                        // Solo se ejecuta si se detecta paquetes de SMS en el saldo principal.
+                        Toast.makeText(
+                            context,
+                            "${ussdResponse.count}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    is UssdResponse.PrincipalBalance -&gt; {
+                        // Contiene la información extraida de la consulta de saldo (*222#).
+                        // Es la primera operación en realizarse
+                        Toast.makeText(
+                            context,
+                            "${ussdResponse.credit}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    is UssdResponse.VoiceBalance -&gt; {
+                        // Contiene la información extraida de la consulta de mensajes (*222*869#).
+                        // Solo se ejecuta si se detecta paquetes de Voz en el saldo principal.
+                        Toast.makeText(
+                            context,
+                            "${ussdResponse.count}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    is UssdResponse.Custom -&gt; {
+                        // No se ejecuta en la consulta de saldo automática.
+                    }
+                }
+            }
+        }
+    )
+}
+</code></pre>
+
+<h4>Java</h4>
+
+<pre><code>if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.O) {
+    SimCardExtensionKt.ussdExecute(firstSimCard, new ConsultBalanceCallBack() {
+        @SuppressLint("MissingPermission")
+        @Override
+        public void onRequesting(@NonNull UssdConsultType consultType) {
+            String consultMessage;
+            if (consultType instanceof UssdConsultType.BonusBalance) {
+                consultMessage = "Consultando Bonos...";
+            } else if (consultType instanceof UssdConsultType.DataBalance) {
+                consultMessage = "Consultando Datos...";
+            } else if (consultType instanceof UssdConsultType.MessagesBalance) {
+                consultMessage = "Consultando SMS...";
+            } else if (consultType instanceof UssdConsultType.PrincipalBalance) {
+                consultMessage = "Consultando Saldo...";
+            } else if (consultType instanceof UssdConsultType.VoiceBalance) {
+                consultMessage = "Consultando Minutos...";
+            } else {
+                consultMessage = "";
+            }
+            Toast.makeText(context, consultMessage, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onSuccess(@NonNull UssdResponse ussdResponse) {
+            if (ussdResponse instanceof UssdResponse.BonusBalance) {
+                // Contiene la información extraida de la consulta de bono (*222*266#).
+                // Es la última operación en realizarse
+                Toast.makeText(
+                    context,
+                    ((UssdResponse.BonusBalance) ussdResponse).getCredit(),
+                    Toast.LENGTH_LONG
+                ).show();
+            } else if (ussdResponse instanceof UssdResponse.DataBalance) {
+                // Contiene la información extraida de la consulta de datos (*222*328#).
+                // Solo se ejecuta si se detecta paquetes de datos en el saldo principal.
+                Toast.makeText(
+                    context,
+                    ((UssdResponse.DataBalance) ussdResponse).getUsageBasedPricing(),
+                    Toast.LENGTH_LONG
+                ).show();
+            } else if (ussdResponse instanceof UssdResponse.MessagesBalance) {
+                // Contiene la información extraida de la consulta de mensajes (*222*767#).
+                // Solo se ejecuta si se detecta paquetes de SMS en el saldo principal.
+                Toast.makeText(
+                    context,
+                    ((UssdResponse.MessagesBalance) ussdResponse).getCount(),
+                    Toast.LENGTH_LONG
+                ).show();
+            } else if (ussdResponse instanceof UssdResponse.PrincipalBalance) {
+                // Contiene la información extraida de la consulta de saldo (*222#).
+                // Es la primera operación en realizarse
+                Toast.makeText(
+                    context,
+                    ((UssdResponse.PrincipalBalance) ussdResponse).getCredit(),
+                    Toast.LENGTH_LONG
+                ).show();
+            } else if (ussdResponse instanceof UssdResponse.VoiceBalance) {
+                // Contiene la información extraida de la consulta de mensajes (*222*869#).
+                // Solo se ejecuta si se detecta paquetes de Voz en el saldo principal.
+                Toast.makeText(
+                    context,
+                    ((UssdResponse.VoiceBalance) ussdResponse).getTime(),
+                    Toast.LENGTH_LONG
+                ).show();
+            }
+        }
+
+        @Override
+        public void onFailure(@NonNull Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    });
+}
+</code></pre>
+
+<h2>Contribución</h2>
+
+<p>¡Gracias por tu interés en colaborar con nuestro proyecto! Nos encanta recibir contribuciones de la
+comunidad y valoramos mucho tu tiempo y esfuerzo.</p>
+
+<h3>Cómo contribuir</h3>
+
+<p>Si estás interesado en contribuir, por favor sigue los siguientes pasos:</p>
+
+<ol>
+<li>Revisa las issues abiertas para ver si hay alguna tarea en la que puedas ayudar.</li>
+<li>Si no encuentras ninguna issue que te interese, por favor abre una nueva issue explicando el problema o la funcionalidad que te gustaría implementar. Asegúrate de incluir toda la información necesaria para que otros puedan entender el problema o la funcionalidad que estás proponiendo.</li>
+<li>Si ya tienes una issue asignada o si has decidido trabajar en una tarea existente, por favor crea un fork del repositorio y trabaja en una nueva rama (<code>git checkout -b nombre-de-mi-rama</code>).</li>
+<li>Cuando hayas terminado de trabajar en la tarea, crea un pull request explicando los cambios que has realizado y asegurándote de que el código cumple con nuestras directrices de estilo y calidad.</li>
+<li>Espera a que uno de nuestros colaboradores revise el pull request y lo apruebe o sugiera cambios adicionales.</li>
+</ol>
+
+<h3>Directrices de contribución</h3>
+
+<p>Por favor, asegúrate de seguir nuestras directrices de contribución para que podamos revisar y aprobar tus cambios de manera efectiva:</p>
+
+<ul>
+<li>Sigue los estándares de codificación y estilo de nuestro proyecto.</li>
+<li>Asegúrate de que el código nuevo esté cubierto por pruebas unitarias.</li>
+<li>Documenta cualquier cambio que hagas en la documentación del proyecto.</li>
+</ul>
+
+<p>¡Gracias de nuevo por tu interés en contribuir! Si tienes alguna pregunta o necesitas ayuda, no dudes en ponerte en contacto con nosotros en la sección de issues o enviándonos un mensaje directo.</p>
+
+<h3>Licencia</h3>
+
+<p>Este proyecto está licenciado bajo la Licencia MIT. Esto significa que tienes permiso para utilizar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y/o vender copias del software, y para permitir que las personas a las que se les proporcione el software lo hagan, con sujeción a las siguientes condiciones:</p>
+
+<ul>
+<li>Se debe incluir una copia de la licencia en todas las copias o partes sustanciales del software.</li>
+<li>El software se proporciona "tal cual", sin garantía de ningún tipo, expresa o implícita, incluyendo pero no limitado a garantías de comerciabilidad, aptitud para un propósito particular y no infracción. En ningún caso los autores o titulares de la licencia serán responsables de cualquier reclamo, daño u otra responsabilidad, ya sea en una acción de contrato, agravio o de otra manera, que surja de, fuera de o en conexión con el software o el uso u otros tratos en el software.</li>
+</ul>
+
+<p>Puedes encontrar una copia completa de la Licencia MIT en el archivo LICENSE que se incluye en este repositorio.</p>
+
+<h3>Contacto</h3>
+
+<p>Si tienes alguna pregunta o comentario sobre el proyecto, no dudes en ponerte en contacto conmigo a través de los siguientes medios:</p>
+
+<ul>
+<li>Correo electrónico: <a href="mailto:lesclaz95@gmail.com">lesclaz95@gmail.com</a></li>
+<li>Twitter: <a href="https://twitter.com/lesclaz">@lesclaz</a></li>
+<li>Telegram: <a href="https://t.me/lesclaz">@lesclaz</a></li>
+</ul>
+
+<p>Estaré encantado de escuchar tus comentarios y responder tus preguntas. ¡Gracias por tu interés en mi proyecto!</p>
+
+</body>
+</html>
