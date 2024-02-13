@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cu.suitetecsa.sdk.android.SimCardCollector
-import cu.suitetecsa.sdk.android.balance.ConsultBalanceCallBack
+import cu.suitetecsa.sdk.android.balance.FetchBalanceCallBack
 import cu.suitetecsa.sdk.android.balance.consult.UssdRequest
 import cu.suitetecsa.sdk.android.balance.consult.UssdRequest.BONUS_BALANCE
 import cu.suitetecsa.sdk.android.balance.consult.UssdRequest.CUSTOM
@@ -26,8 +26,8 @@ import cu.suitetecsa.sdk.android.balance.response.PrincipalBalance
 import cu.suitetecsa.sdk.android.balance.response.UssdResponse
 import cu.suitetecsa.sdk.android.balance.response.VoiceBalance
 import cu.suitetecsa.sdk.android.kotlin.asDateString
-import cu.suitetecsa.sdk.android.kotlin.consultBalance
-import cu.suitetecsa.sdk.android.kotlin.ussdExecute
+import cu.suitetecsa.sdk.android.kotlin.smartFetchBalance
+import cu.suitetecsa.sdk.android.kotlin.ussdFetch
 import cu.suitetecsa.sdk.android.model.MainData
 import cu.suitetecsa.sdk.android.model.MainSms
 import cu.suitetecsa.sdk.android.model.MainVoice
@@ -111,9 +111,9 @@ class BalancesViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     @RequiresPermission(android.Manifest.permission.CALL_PHONE)
     private fun updateBalance(simCard: SimCard) {
-        simCard.consultBalance(
-            object : ConsultBalanceCallBack {
-                override fun onRequesting(request: UssdRequest) {
+        simCard.smartFetchBalance(
+            object : FetchBalanceCallBack {
+                override fun onFetching(request: UssdRequest) {
                     this@BalancesViewModel.consultType = request
                     val consultMessage = when (request) {
                         BONUS_BALANCE -> "Consultando Bonos"
@@ -210,10 +210,10 @@ class BalancesViewModel @Inject constructor(
             "*133*1*1*1${Uri.parse("#")}"
         }
         currentSimCard?.also {
-            it.ussdExecute(
+            it.ussdFetch(
                 ussdCode,
-                object : ConsultBalanceCallBack {
-                    override fun onRequesting(request: UssdRequest) {
+                object : FetchBalanceCallBack {
+                    override fun onFetching(request: UssdRequest) {
                         _state.value = _state.value.copy(
                             consultMessage = if (!isActive) {
                                 "Desactivando TPC"

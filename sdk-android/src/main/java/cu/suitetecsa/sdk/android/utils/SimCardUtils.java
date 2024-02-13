@@ -4,8 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.telephony.TelephonyManager;
 
-import cu.suitetecsa.sdk.android.balance.ConsultBalanceCallBack;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.RequiresPermission;
+
+import cu.suitetecsa.sdk.android.balance.FetchBalanceCallBack;
+import cu.suitetecsa.sdk.android.balance.RequestCallback;
+import cu.suitetecsa.sdk.android.balance.UssdRequestSender;
+import cu.suitetecsa.sdk.android.balance.consult.UssdRequest;
+import cu.suitetecsa.sdk.android.balance.response.UssdResponse;
 import cu.suitetecsa.sdk.android.model.SimCard;
 
 public class SimCardUtils {
@@ -22,7 +30,57 @@ public class SimCardUtils {
         context.startActivity(intent);
     }
 
-    public static void ussdExecute(SimCard simCard, String ussdCode, ConsultBalanceCallBack callBack) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresPermission(android.Manifest.permission.CALL_PHONE)
+    public static void smartFetchBalance(SimCard simCard, FetchBalanceCallBack callBack) {
+        RequestCallback requestCallback = new RequestCallback() {
+            @Override
+            public TelephonyManager getTelephonyManager() {
+                return simCard.telephony();
+            }
 
+            @Override
+            public void onRequesting(UssdRequest request) {
+                callBack.onFetching(request);
+            }
+
+            @Override
+            public void onSuccess(UssdRequest request, UssdResponse response) {
+                callBack.onSuccess(request, response);
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                callBack.onFailure(throwable);
+            }
+        };
+        new UssdRequestSender.Builder().build().send(requestCallback);
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresPermission(android.Manifest.permission.CALL_PHONE)
+    public static void ussdFetch(SimCard simCard, String ussdCode, FetchBalanceCallBack callBack) {
+        RequestCallback requestCallback = new RequestCallback() {
+            @Override
+            public TelephonyManager getTelephonyManager() {
+                return simCard.telephony();
+            }
+
+            @Override
+            public void onRequesting(UssdRequest request) {
+                callBack.onFetching(request);
+            }
+
+            @Override
+            public void onSuccess(UssdRequest request, UssdResponse response) {
+                callBack.onSuccess(request, response);
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                callBack.onFailure(throwable);
+            }
+        };
+        new UssdRequestSender.Builder().build().send(ussdCode, requestCallback);
     }
 }

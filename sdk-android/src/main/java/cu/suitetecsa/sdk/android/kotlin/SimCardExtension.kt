@@ -5,7 +5,7 @@ import android.os.Build
 import android.telephony.TelephonyManager
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
-import cu.suitetecsa.sdk.android.balance.ConsultBalanceCallBack
+import cu.suitetecsa.sdk.android.balance.FetchBalanceCallBack
 import cu.suitetecsa.sdk.android.balance.RequestCallback
 import cu.suitetecsa.sdk.android.balance.UssdRequestSender
 import cu.suitetecsa.sdk.android.balance.consult.UssdRequest
@@ -24,12 +24,12 @@ import cu.suitetecsa.sdk.android.utils.SimCardUtils
  */
 @RequiresApi(Build.VERSION_CODES.O)
 @RequiresPermission(android.Manifest.permission.CALL_PHONE)
-fun SimCard.consultBalance(callBack: ConsultBalanceCallBack) {
-    val ussdBalanceRequestExecutorCallBack = object : RequestCallback {
+fun SimCard.smartFetchBalance(callBack: FetchBalanceCallBack) {
+    val requestCallback = object : RequestCallback {
 
-        override fun getTelephonyManager(): TelephonyManager = this@consultBalance.telephony()!!
+        override fun getTelephonyManager(): TelephonyManager = this@smartFetchBalance.telephony()!!
 
-        override fun onRequesting(request: UssdRequest) = callBack.onRequesting(request)
+        override fun onRequesting(request: UssdRequest) = callBack.onFetching(request)
 
         override fun onSuccess(
             request: UssdRequest,
@@ -38,16 +38,16 @@ fun SimCard.consultBalance(callBack: ConsultBalanceCallBack) {
 
         override fun onFailure(throwable: Throwable) = callBack.onFailure(throwable)
     }
-    UssdRequestSender.Builder().build().send(ussdBalanceRequestExecutorCallBack)
+    UssdRequestSender.Builder().build().send(requestCallback)
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @RequiresPermission(android.Manifest.permission.CALL_PHONE)
-fun SimCard.ussdExecute(ussdCode: String, callBack: ConsultBalanceCallBack) {
-    val ussdBalanceRequestExecutorCallBack = object : RequestCallback {
-        override fun getTelephonyManager(): TelephonyManager = this@ussdExecute.telephony()!!
+fun SimCard.ussdFetch(ussdCode: String, callBack: FetchBalanceCallBack) {
+    val requestCallback = object : RequestCallback {
+        override fun getTelephonyManager(): TelephonyManager = this@ussdFetch.telephony()!!
 
-        override fun onRequesting(request: UssdRequest) = callBack.onRequesting(request)
+        override fun onRequesting(request: UssdRequest) = callBack.onFetching(request)
 
         override fun onSuccess(
             request: UssdRequest,
@@ -56,7 +56,7 @@ fun SimCard.ussdExecute(ussdCode: String, callBack: ConsultBalanceCallBack) {
 
         override fun onFailure(throwable: Throwable) = callBack.onFailure(throwable)
     }
-    UssdRequestSender.Builder().build().send(ussdCode, ussdBalanceRequestExecutorCallBack)
+    UssdRequestSender.Builder().build().send(ussdCode, requestCallback)
 }
 
 @RequiresPermission(android.Manifest.permission.CALL_PHONE)
