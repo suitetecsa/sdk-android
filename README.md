@@ -21,24 +21,20 @@ Para obtener información sobre las tarjetas SIM insertadas en el dispositivo, p
 
 ```kotlin
 // Instancia SimCardsAPI
-val simCardsAPI = SimCardsAPI
-    .Builder(context)
-    .build()
+val simCardCollector = SimCardCollector.Builder().build(context)
 
 // Obtiene las tarjetas SIM insertadas en el dispositivo
-val simCards = simCardsAPI.getSimCards()
+val simCards = simCardCollector.collect()
 ```
 
 #### Java
 
 ```java
 // Instancia SimCardsAPI
-SimCardsAPI simCardsAPI = SimCardsAPI
-    .Builder(context)
-    .build();
+SimCardCollector simCardCollector = new SimCardCollector.Builder().build(context);
 
 // Obtiene las tarjetas SIM insertadas en el dispositivo
-List<SimCard> simCards = simCardsAPI.getSimCards();
+List<SimCard> simCards = simCardCollector.collect();
 ```
 
 ### Realizar llamadas con una SIM
@@ -46,13 +42,13 @@ List<SimCard> simCards = simCardsAPI.getSimCards();
 #### Kotlin
 
 ```kotlin
-simcCards.last().makeCall(context, "51234567")
+simCards.last().makeCall(context, "51234567")
 ```
 
 #### Java
 
 ```java
-SimCardExtensionKt.makeCall(simCards.get(0), context, "51234567")
+SimCardUtils.makeCall(simCards.get(0), context, "51234567");
 ```
 
 ### Obtener saldo de la tarjeta SIM
@@ -66,17 +62,19 @@ Para obtener el saldo de la primera tarjeta SIM de la lista, puedes seguir estos
 val firstSimCard = simCards.first()
 var balance: MainBalance? = null
 // Enviar la solicitud
+
 firstSimCard.ussdExecute(
     "*222#",
     object : ConsultBalanceCallBack {
-        override fun onRequesting(consultType: UssdConsultType) {
+        override fun onRequesting(request: UssdRequest) {
             Toast.makeText(context, "Consultando saldo...", Toast.LENGTH_LONG).show()
         }
-        override fun onSuccess(ussdResponse: UssdResponse) {
-            when (ussdResponse) {
-                is UssdResponse.Custom -> {
+        @SuppressLint("MissingPermission")
+        override fun onSuccess(request: UssdRequest, ussdResponse: UssdResponse) {
+            when (request) {
+                UssdRequest.CUSTOM -> {
                     // Convierte el objeto UssdResponse en un objeto MainBalance
-                    balance = ussdResponse.response.parseMainBalance()
+                    balance = (ussdResponse as Custom).response.parseMainBalance()
                 }
                 else -> {}
             }
@@ -93,27 +91,25 @@ firstSimCard.ussdExecute(
 ```java
 // Obtener la primera SIM de la lista
 SimCard firstSimCard = simCards.get(0);
-MainBalance balance;
+final MainBalance balance;
 
 // Enviar la solicitud
-SimCardExtensionKt.ussdExecute(firstSimCard, "*222#", new ConsultBalanceCallBack() {
-    @Override
-    public void onRequesting(@NonNull UssdConsultType consultType) {
+SimCardUtils.ussdExecute(firstSimCard, "*222#", new ConsultBalanceCallBack() {
+    @Override 
+    public void onRequesting(UssdRequest request) {
         Toast.makeText(context, "Consultando saldo...", Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void onSuccess(@NonNull UssdResponse ussdResponse) {
-        if (ussdResponse instanceof UssdResponse.Custom) {
-            UssdResponse.Custom customResponse = (UssdResponse.Custom) ussdResponse;
-            // Convierte el objeto UssdResponse en un objeto MainBalance
-            balance = parseMainBalance(customResponse.getResponse());
+    public void onSuccess(UssdRequest request, UssdResponse response) {
+        if (Objects.requireNonNull(request) == UssdRequest.CUSTOM) {
+            balance = MainBalanceParser.parseMainBalance(((Custom) response).response());
         }
     }
 
     @Override
-    public void onFailure(@NonNull Throwable throwable) {
-        throw throwable;
+    public void onFailure(Throwable throwable) {
+        throwable.printStackTrace();
     }
 });
 ```
@@ -128,68 +124,72 @@ SimCardExtensionKt.ussdExecute(firstSimCard, "*222#", new ConsultBalanceCallBack
 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
     simCard.consultBalance(
         object : ConsultBalanceCallBack {
-            override fun onRequesting(consultType: UssdConsultType) {
-                val consultMessage = when (consultType) {
-                    UssdConsultType.BonusBalance -> "Consultando Bonos"
-                    UssdConsultType.DataBalance -> "Consultando Datos"
-                    UssdConsultType.MessagesBalance -> "Consultando SMS"
-                    UssdConsultType.PrincipalBalance -> "Consultando Saldo"
-                    UssdConsultType.VoiceBalance -> "Consultando Minutos"
-                    is UssdConsultType.Custom -> ""
+            override fun onRequesting(resquest: UssdRequest) {
+                val consultMessage = when (resquest) {
+                    UssdRequest.BONUS_BALANCE -> "Consultando Bonos"
+                    UssdRequest.DATA_BALANCE -> "Consultando Datos"
+                    UssdRequest.MESSAGES_BALANCE -> "Consultando SMS"
+                    UssdRequest.PRINCIPAL_BALANCE -> "Consultando Saldo"
+                    UssdRequest.VOICE_BALANCE -> "Consultando Minutos"
+                    UssdRequest.CUSTOM -> ""
                 }
                 Toast.makeText(context, consultMessage, Toast.LENGTH_LONG).show()
             }
-            override fun onSuccess(ussdResponse: UssdResponse) {
-                when (ussdResponse) {
-                    is UssdResponse.BonusBalance -> {
+            override fun onSuccess(resquest: UssdRequest, ussdResponse: UssdResponse) {
+                when (resquest) {
+                    UssdRequest.BONUS_BALANCE -> {
                         // Contiene la informacion extraida de la consulta de bono (*222*266#).
                         // Es la ultima operacion en realizarse
                         Toast.makeText(
                             context,
-                            "${ussdResponse.credit}",
+                            "${(ussdResponse as BonusBalance).credit.balance}",
                             Toast.LENGTH_LONG
                         ).show()
                     }
-                    is UssdResponse.DataBalance -> {
+                    UssdRequest.DATA_BALANCE -> {
                         // Contiene la informacion extraida de la consulta de datos (*222*328#).
                         // Solo se ejecuta si se detecta paquetes de datos en el saldo principal.
                         Toast.makeText(
                             context,
-                            "${ussdResponse.usageBasedPricing}",
+                            "${(ussdResponse as DataBalance).usageBasedPricing}",
                             Toast.LENGTH_LONG
                         ).show()
                     }
-                    is UssdResponse.MessagesBalance -> {
+                    UssdRequest.MESSAGES_BALANCE -> {
                         // Contiene la informacion extraida de la consulta de mensajes (*222*767#).
                         // Solo se ejecuta si se detecta paquetes de SMS en el saldo principal.
                         Toast.makeText(
                             context,
-                            "${ussdResponse.count}",
+                            "${(ussdResponse as MessagesBalance).sms}",
                             Toast.LENGTH_LONG
                         ).show()
                     }
-                    is UssdResponse.PrincipalBalance -> {
+                    UssdRequest.PRINCIPAL_BALANCE -> {
                         // Contiene la informacion extraida de la consulta de saldo (*222#).
                         // Es la primera operacion en realizarse
                         Toast.makeText(
                             context,
-                            "${ussdResponse.credit}",
+                            "${(ussdResponse as PrincipalBalance).balance}",
                             Toast.LENGTH_LONG
                         ).show()
                     }
-                    is UssdResponse.VoiceBalance -> {
+                    UssdRequest.VOICE_BALANCE -> {
                         // Contiene la informacion extraida de la consulta de mensajes (*222*869#).
                         // Solo se ejecuta si se detecta paquetes de Voz en el saldo principal.
                         Toast.makeText(
                             context,
-                            "${ussdResponse.count}",
+                            "${(ussdResponse as VoiceBalance).seconds}",
                             Toast.LENGTH_LONG
                         ).show()
                     }
-                    is UssdResponse.Custom -> {
+                    UssdRequest.CUSTOM -> {
                         // No se ejecuta en la consulta de saldo automacica.
                     }
                 }
+            }
+
+            override fun onFailure(throwable: Throwable?) {
+                throwable?.let { throw it }
             }
         }
     )
@@ -200,74 +200,70 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
 ```java
 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-    SimCardExtensionKt.ussdExecute(firstSimCard, new ConsultBalanceCallBack() {
+    SimCardUtils.ussdExecute(firstSimCard, new ConsultBalanceCallBack() {
         @SuppressLint("MissingPermission")
         @Override
-        public void onRequesting(@NonNull UssdConsultType consultType) {
-            String consultMessage;
-            if (consultType instanceof UssdConsultType.BonusBalance) {
-                consultMessage = "Consultando Bonos...";
-            } else if (consultType instanceof UssdConsultType.DataBalance) {
-                consultMessage = "Consultando Datos...";
-            } else if (consultType instanceof UssdConsultType.MessagesBalance) {
-                consultMessage = "Consultando SMS...";
-            } else if (consultType instanceof UssdConsultType.PrincipalBalance) {
-                consultMessage = "Consultando Saldo...";
-            } else if (consultType instanceof UssdConsultType.VoiceBalance) {
-                consultMessage = "Consultando Minutos...";
-            } else {
-                consultMessage = "";
-            }
+        public void onRequesting(UssdRequest request) {
+            String consultMessage = switch (request) {
+                case BONUS_BALANCE -> "Consultando Bonos...";
+                case DATA_BALANCE -> "Consultando Datos...";
+                case MESSAGES_BALANCE -> "Consultando SMS...";
+                case PRINCIPAL_BALANCE -> "Consultando Saldo...";
+                case VOICE_BALANCE -> "Consultando Minutos...";
+                default -> "";
+            };
             Toast.makeText(context, consultMessage, Toast.LENGTH_LONG).show();
         }
 
         @Override
-        public void onSuccess(@NonNull UssdResponse ussdResponse) {
-            if (ussdResponse instanceof UssdResponse.BonusBalance) {
-                // Contiene la informacion extraida de la consulta de bono (*222*266#).
-                // Es la ultima operacion en realizarse
-                Toast.makeText(
-                    context,
-                    ((UssdResponse.BonusBalance) ussdResponse).getCredit(),
-                    Toast.LENGTH_LONG
-                ).show();
-            } else if (ussdResponse instanceof UssdResponse.DataBalance) {
-                // Contiene la informacion extraida de la consulta de datos (*222*328#).
-                // Solo se ejecuta si se detecta paquetes de datos en el saldo principal.
-                Toast.makeText(
-                    context,
-                    ((UssdResponse.DataBalance) ussdResponse).getUsageBasedPricing(),
-                    Toast.LENGTH_LONG
-                ).show();
-            } else if (ussdResponse instanceof UssdResponse.MessagesBalance) {
-                // Contiene la informacion extraida de la consulta de mensajes (*222*767#).
-                // Solo se ejecuta si se detecta paquetes de SMS en el saldo principal.
-                Toast.makeText(
-                    context,
-                    ((UssdResponse.MessagesBalance) ussdResponse).getCount(),
-                    Toast.LENGTH_LONG
-                ).show();
-            } else if (ussdResponse instanceof UssdResponse.PrincipalBalance) {
-                // Contiene la informacion extraida de la consulta de saldo (*222#).
-                // Es la primera operacion en realizarse
-                Toast.makeText(
-                    context,
-                    ((UssdResponse.PrincipalBalance) ussdResponse).getCredit(),
-                    Toast.LENGTH_LONG
-                ).show();
-            } else if (ussdResponse instanceof UssdResponse.VoiceBalance) {
-                // Contiene la informacion extraida de la consulta de mensajes (*222*869#).
-                // Solo se ejecuta si se detecta paquetes de Voz en el saldo principal.
-                Toast.makeText(
-                    context,
-                    ((UssdResponse.VoiceBalance) ussdResponse).getTime(),
-                    Toast.LENGTH_LONG
-                ).show();
+        public void onSuccess(UssdRequest request, UssdResponse response) {
+            switch (request) {
+                case PRINCIPAL_BALANCE ->
+                    // Contiene la informacion extraida de la consulta de saldo (*222#).
+                    // Es la primera operacion en realizarse
+                    Toast.makeText(
+                        context,
+                        ((PrincipalBalance) response).balance(),
+                        Toast.LENGTH_LONG
+                    ).show();
+                case DATA_BALANCE ->
+                    // Contiene la informacion extraida de la consulta de datos (*222*328#).
+                    // Solo se ejecuta si se detecta paquetes de datos en el saldo principal.
+                    Toast.makeText(
+                        context,
+                        ((DataBalance) response).usageBasedPricing(),
+                        Toast.LENGTH_LONG
+                    ).show();
+                case VOICE_BALANCE ->
+                    // Contiene la informacion extraida de la consulta de mensajes (*222*869#).
+                    // Solo se ejecuta si se detecta paquetes de Voz en el saldo principal.
+                    Toast.makeText(
+                        context,
+                        ((VoiceBalance) response).seconds(),
+                        Toast.LENGTH_LONG
+                    ).show();
+                case MESSAGES_BALANCE ->
+                    // Contiene la informacion extraida de la consulta de mensajes (*222*767#).
+                    // Solo se ejecuta si se detecta paquetes de SMS en el saldo principal.
+                    Toast.makeText(
+                        context,
+                        ((MessagesBalance) response).sms(),
+                        Toast.LENGTH_LONG
+                    ).show();
+                case BONUS_BALANCE ->
+                    // Contiene la informacion extraida de la consulta de bono (*222*266#).
+                    // Es la ultima operacion en realizarse
+                    Toast.makeText(
+                        context,
+                        ((BonusBalance) response).credit().balance(),
+                        Toast.LENGTH_LONG
+                    ).show();
+                default -> {}
             }
         }
 
         @Override
-        public void onFailure(@NonNull Throwable throwable) {
+        public void onFailure(Throwable throwable) {
             throwable.printStackTrace();
         }
     });

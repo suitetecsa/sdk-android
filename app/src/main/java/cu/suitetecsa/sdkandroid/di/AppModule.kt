@@ -1,7 +1,7 @@
 package cu.suitetecsa.sdkandroid.di
 
 import android.content.Context
-import cu.suitetecsa.sdk.android.SimCardsAPI
+import cu.suitetecsa.sdk.android.SimCardCollector
 import cu.suitetecsa.sdkandroid.data.source.PreferenceDataSource
 import dagger.Module
 import dagger.Provides
@@ -21,6 +21,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideSimCardApi(@ApplicationContext context: Context): SimCardsAPI =
-        SimCardsAPI.Builder(context).build()
+    fun provideSimCardApi(@ApplicationContext context: Context): SimCardCollector =
+        SimCardCollector.Builder().build(context)
 }
