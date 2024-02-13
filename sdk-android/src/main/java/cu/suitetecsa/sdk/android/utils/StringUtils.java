@@ -33,7 +33,7 @@ public class StringUtils {
 
     public static long toBytes(@NotNull String data) {
         String count = data.replaceAll("[GMKBT]", "");
-        String unit = data.split(" ")[data.split(" ").length - 1].toUpperCase();
+        String unit = data.split(" ")[data.split(" ").length - 1].toUpperCase(Locale.getDefault());
         return (long) (Double.parseDouble(count) * Math.pow(1024, "BKMGT".indexOf(unit.charAt(0))));
     }
 }
