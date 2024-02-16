@@ -15,12 +15,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Autorenew
 import androidx.compose.material.icons.outlined.SimCardAlert
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +32,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -45,6 +53,8 @@ import cu.suitetecsa.sdk.android.model.MainSms
 import cu.suitetecsa.sdk.android.model.MainVoice
 import cu.suitetecsa.sdk.android.model.SimCard
 import cu.suitetecsa.sdkandroid.R
+import cu.suitetecsa.sdkandroid.presentation.balance.component.ContactsBottomSheet
+import cu.suitetecsa.sdkandroid.presentation.balance.component.SheetContent
 import cu.suitetecsa.sdkandroid.presentation.balance.component.Spinner
 import cu.suitetecsa.sdkandroid.ui.theme.SDKAndroidTheme
 
@@ -84,7 +94,8 @@ fun BalanceRoute(
     BalanceScreen(
         topPadding = topPadding,
         state = state,
-        onTurnUsageBasedPricing = { balancesViewModel.onEvent(BalanceEvent.TurnUsageBasedPricing(it)) }
+        onTurnUsageBasedPricing = { balancesViewModel.onEvent(BalanceEvent.TurnUsageBasedPricing(it)) },
+        collectContacts = { balancesViewModel.onEvent(BalanceEvent.CollectContacts) }
     )
 }
 
@@ -93,12 +104,14 @@ fun BalanceScreen(
     topPadding: PaddingValues,
     state: BalanceState,
     onTurnUsageBasedPricing: (Boolean) -> Unit,
+    collectContacts: () -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+        var isSheetOpen by remember { mutableStateOf(false) }
         Box(modifier = Modifier.height(topPadding.calculateTopPadding())) {}
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             BalanceInfo(
@@ -109,6 +122,16 @@ fun BalanceScreen(
             Text(text = "Not supported")
         }
         Text(text = state.errorText ?: "")
+        Button(
+            onClick = {
+                collectContacts()
+                isSheetOpen = true
+            },
+            enabled = state.contacts.isEmpty()
+        ) {
+            Text(text = "Collect Contacts")
+        }
+        ContactsBottomSheet(contacts = state.contacts, isSheetOpen, setSheetOpen = { isSheetOpen = it })
     }
 }
 

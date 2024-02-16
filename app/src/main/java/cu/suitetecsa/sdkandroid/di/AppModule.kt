@@ -1,6 +1,7 @@
 package cu.suitetecsa.sdkandroid.di
 
 import android.content.Context
+import cu.suitetecsa.sdk.android.ContactsCollector
 import cu.suitetecsa.sdk.android.SimCardCollector
 import cu.suitetecsa.sdkandroid.data.source.PreferenceDataSource
 import dagger.Module
@@ -23,4 +24,9 @@ class AppModule {
     @Singleton
     fun provideSimCardApi(@ApplicationContext context: Context): SimCardCollector =
         SimCardCollector.Builder().build(context)
+
+    @Provides
+    @Singleton
+    fun provideContactsCollector(@ApplicationContext context: Context): ContactsCollector =
+        ContactsCollector.Builder().build(context)
 }
