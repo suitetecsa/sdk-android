@@ -9,6 +9,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cu.suitetecsa.sdk.android.ContactsCollector
 import cu.suitetecsa.sdk.android.SimCardCollector
 import cu.suitetecsa.sdk.android.balance.FetchBalanceCallBack
 import cu.suitetecsa.sdk.android.balance.consult.UssdRequest
@@ -45,6 +46,7 @@ import javax.inject.Inject
 class BalancesViewModel @Inject constructor(
     private val preferenceDataSource: PreferenceDataSource,
     private val simCardsCollector: SimCardCollector,
+    private val contactsCollector: ContactsCollector
 ) : ViewModel() {
     private val preferences: StateFlow<Preferences> = preferenceDataSource.preferences()
         .stateIn(
@@ -104,6 +106,10 @@ class BalancesViewModel @Inject constructor(
                     _state.value = _state.value.copy(loading = true)
                     turnUsageBasedPricing(event.isActive)
                 }
+            }
+
+            BalanceEvent.CollectContacts -> {
+                _state.value = _state.value.copy(contacts = contactsCollector.collect())
             }
         }
     }

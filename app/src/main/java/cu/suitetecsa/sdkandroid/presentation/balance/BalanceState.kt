@@ -4,6 +4,7 @@ import cu.suitetecsa.sdk.android.model.BonusCredit
 import cu.suitetecsa.sdk.android.model.BonusData
 import cu.suitetecsa.sdk.android.model.BonusDataCU
 import cu.suitetecsa.sdk.android.model.BonusUnlimitedData
+import cu.suitetecsa.sdk.android.model.Contact
 import cu.suitetecsa.sdk.android.model.DailyData
 import cu.suitetecsa.sdk.android.model.MailData
 import cu.suitetecsa.sdk.android.model.MainData
@@ -31,4 +32,5 @@ data class BalanceState(
     val consultMessage: String? = null,
     val error: String? = null,
     val errorText: String? = null,
+    val contacts: List<Contact> = listOf(),
 )

@@ -18,7 +18,7 @@ import cu.suitetecsa.sdk.android.model.SimCard;
 
 public class SimCardUtils {
     public static void makeCall(SimCard simCard, Context context, String phoneNumber) {
-        Intent intent = new Intent(Intent.ACTION_CALL).setData(Uri.parse("tel:" + phoneNumber));
+        Intent intent = new Intent(Intent.ACTION_CALL).setData(Uri.parse("tel:" + phoneNumber.replace("#", "%23")));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             intent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", String.valueOf(simCard.subscriptionId()));

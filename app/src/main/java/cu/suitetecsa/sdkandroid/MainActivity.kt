@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.CALL_PHONE,
+                    Manifest.permission.READ_CONTACTS,
                 ),
                 RequestCode
             )
@@ -78,6 +79,9 @@ class MainActivity : ComponentActivity() {
         ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
             this,
             Manifest.permission.CALL_PHONE
+        ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_CONTACTS
         ) != PackageManager.PERMISSION_GRANTED
     }
 }
