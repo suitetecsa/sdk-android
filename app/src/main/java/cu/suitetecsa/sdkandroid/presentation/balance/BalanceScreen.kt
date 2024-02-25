@@ -15,10 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -44,17 +41,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import cu.suitetecsa.sdk.android.kotlin.asRemainingDays
-import cu.suitetecsa.sdk.android.kotlin.asSizeString
-import cu.suitetecsa.sdk.android.kotlin.asTimeString
-import cu.suitetecsa.sdk.android.model.BonusDataCU
+import cu.suitetecsa.sdk.android.model.DataCu
 import cu.suitetecsa.sdk.android.model.MainData
-import cu.suitetecsa.sdk.android.model.MainSms
-import cu.suitetecsa.sdk.android.model.MainVoice
 import cu.suitetecsa.sdk.android.model.SimCard
+import cu.suitetecsa.sdk.android.model.Sms
+import cu.suitetecsa.sdk.android.model.Voice
+import cu.suitetecsa.sdk.android.utils.LongUtils.asSizeString
+import cu.suitetecsa.sdk.android.utils.LongUtils.asTimeString
 import cu.suitetecsa.sdkandroid.R
 import cu.suitetecsa.sdkandroid.presentation.balance.component.ContactsBottomSheet
-import cu.suitetecsa.sdkandroid.presentation.balance.component.SheetContent
 import cu.suitetecsa.sdkandroid.presentation.balance.component.Spinner
 import cu.suitetecsa.sdkandroid.ui.theme.SDKAndroidTheme
 
@@ -223,14 +218,14 @@ fun PlansSection(state: BalanceState) {
             DataPlan(
                 planTitle = "Bolsa diaria",
                 dataCount = dailyData.data.asSizeString,
-                dataExpire = dailyData.remainingHours()?.let { "$it horas" }
+                dataExpire = dailyData.remainingHours?.let { "$it horas" }
             )
         }
         state.mailData?.let { mailData ->
             DataPlan(
                 planTitle = "Bolsa correo",
                 dataCount = mailData.data.asSizeString,
-                dataExpire = mailData.remainingDays()?.let { "$it días" }
+                dataExpire = mailData.remainingDays?.let { "$it días" }
             )
         }
     }
@@ -248,7 +243,7 @@ fun BonusSection(state: BalanceState) {
             DataPlan(
                 planTitle = "Saldo",
                 dataCount = "$%.2f CUP".format(bonusCredit.balance),
-                dataExpire = "${bonusCredit.dueDate.asRemainingDays} dias"
+                dataExpire = "${bonusCredit.remainingDays} dias"
             )
         }
         state.bonusData?.let { bonusData ->
@@ -264,21 +259,21 @@ fun BonusSection(state: BalanceState) {
             DataPlan(
                 planTitle = "Datos",
                 dataCount = dataCount,
-                dataExpire = "${bonusData.dueDate.asRemainingDays} dias"
+                dataExpire = "${bonusData.remainingDays} dias"
             )
         }
-        state.bonusDataCU?.let { bonusDataCU ->
+        state.dataCu?.let { bonusDataCU ->
             DataPlan(
                 planTitle = "Datos CU",
                 dataCount = bonusDataCU.data.asSizeString,
-                dataExpire = "${bonusDataCU.dueDate.asRemainingDays} dias"
+                dataExpire = "${bonusDataCU.remainingDays} dias"
             )
         }
         state.bonusUnlimitedData?.let { bonusUnlimitedData ->
             DataPlan(
                 planTitle = "Datos Ilimitados",
                 dataCount = "12:00 a.m -> 7:00 a.m",
-                dataExpire = "${bonusUnlimitedData.dueDate.asRemainingDays} dias"
+                dataExpire = "${bonusUnlimitedData.remainingDays} dias"
             )
         }
     }
@@ -306,9 +301,9 @@ private fun BalanceInfoPreviewDark() {
                     activeUntil = "10/10/2022",
                     mainBalanceDueDate = "10/10/2022",
                     data = MainData(false, 8345369725, 29376382496, 25),
-                    bonusDataCU = BonusDataCU(236975200, 55665L),
-                    voice = MainVoice(586314L, 25),
-                    sms = MainSms(50, 25)
+                    dataCu = DataCu(236975200, 25),
+                    voice = Voice(586314L, 25),
+                    sms = Sms(50, 25)
                 )
             ) {}
         }
