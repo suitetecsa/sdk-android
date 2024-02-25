@@ -98,11 +98,11 @@ fun Contact(
             .clickable { onClick(contact) },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        ContactImage(photoUriString = contact.photoUri())
+        ContactImage(photoUriString = contact.photoUri)
         Spacer(modifier = Modifier.padding(4.dp))
         Column {
             Text(
-                text = contact.name(),
+                text = contact.name,
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
             )
             Text(
