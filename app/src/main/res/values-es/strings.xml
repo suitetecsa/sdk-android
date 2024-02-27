@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bug_send_message">La aplicación se ha detenido debido a un error. ¿Deseas ayudarnos enviando un informe de error para evitar que esto suceda en el futuro? Solo te tomará un momento.</string>
+    <string name="bug_send_title">Error Inesperado</string>
+</resources>

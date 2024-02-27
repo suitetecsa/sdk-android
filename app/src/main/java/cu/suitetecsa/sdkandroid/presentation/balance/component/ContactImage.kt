@@ -9,7 +9,6 @@ import android.provider.MediaStore
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,22 +20,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cu.suitetecsa.sdkandroid.R
 
+private const val Percent = 50
+
 @Composable
 fun ContactImage(
-    modifier: Modifier = Modifier.size(64.dp),
-    photoUriString: String?
+    photoUriString: String?,
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val bitmap = loadPicture(context, photoUriString)
 
     bitmap?.asImageBitmap()?.let {
         Image(
-            modifier = modifier.clip(RoundedCornerShape(50)),
+            modifier = modifier.size(64.dp).clip(RoundedCornerShape(Percent)),
             bitmap = it,
             contentDescription = "Contact Photo")
     } ?: run {
         Image(
-            modifier = modifier.clip(RoundedCornerShape(50)),
+            modifier = modifier.clip(RoundedCornerShape(Percent)),
             bitmap = ImageBitmap.imageResource(id = R.drawable.default_user_image),
             contentDescription = null
         )

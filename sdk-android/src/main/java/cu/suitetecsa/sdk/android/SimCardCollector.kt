@@ -1,6 +1,7 @@
 package cu.suitetecsa.sdk.android
 
 import android.content.Context
+import android.os.Build
 import cu.suitetecsa.sdk.android.model.SimCard
 
 /**
@@ -14,8 +15,8 @@ interface SimCardCollector {
      */
     fun collect(): List<SimCard>
     class Builder {
-        fun build(context: Context): SimCardCollector {
-            return SimCardCollectorImpl(context)
-        }
+        fun build(context: Context): SimCardCollector =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                SimCardCollectorApi26(context) else SimCardCollectorLegacy(context)
     }
 }

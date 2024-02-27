@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -34,7 +34,7 @@ import cu.suitetecsa.sdk.android.model.Contact
 fun ContactsBottomSheet(
     contacts: List<Contact> = listOf(),
     isSheetOpen: Boolean = false,
-    setSheetOpen: (Boolean) -> Unit = {},
+    onSetSheetOpen: (Boolean) -> Unit = {},
     onContactClick: (Contact) -> Unit = {}
 ) {
     val sheetState = rememberModalBottomSheetState()
@@ -42,7 +42,7 @@ fun ContactsBottomSheet(
     if (isSheetOpen) {
         ModalBottomSheet(
             sheetState = sheetState,
-            onDismissRequest = { setSheetOpen(false) },
+            onDismissRequest = { onSetSheetOpen(false) },
             dragHandle = {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
@@ -65,7 +65,7 @@ fun ContactsBottomSheet(
                         ),
                     )
                     Spacer(modifier = Modifier.height(10.dp))
-                    Divider()
+                    HorizontalDivider()
                 }
             }
         ) {

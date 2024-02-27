@@ -24,7 +24,7 @@ object MainDataParser {
                     this.extractUsageBasedPricing(),
                     it.groups["volume"]?.value?.let { v -> toBytes(v) },
                     it.groups["volumeLte"]?.value?.let { vl -> toBytes(vl) },
-                    it.groups["DueDate"]?.value?.let { dd -> toRemainingDays(toDateMillis(dd)) }
+                    it.groups["dueDate"]?.value?.toInt()
                 )
             } ?: run { throw ParseException(this.toString(), 0) }
 
