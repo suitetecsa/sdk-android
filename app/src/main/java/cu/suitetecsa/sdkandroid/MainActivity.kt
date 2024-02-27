@@ -3,8 +3,8 @@ package cu.suitetecsa.sdkandroid
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
+import com.arr.bugsend.BugSend
 import cu.suitetecsa.sdkandroid.presentation.balance.BalanceRoute
 import cu.suitetecsa.sdkandroid.presentation.balance.component.TopBar
 import cu.suitetecsa.sdkandroid.ui.theme.SDKAndroidTheme
@@ -25,9 +26,19 @@ import dagger.hilt.android.AndroidEntryPoint
 private const val RequestCode = 50
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        BugSend(this)
+            .setTitle(getString(R.string.bug_send_title))
+            .setIcon(R.drawable.outline_bug_report_24)
+            .setMessage(getString(R.string.bug_send_message))
+            .setEmail(BuildConfig.SUPPORT_EMAIL)
+            .setSubject("REPORT/PortalUsuario")
+            .setExtraText("App Version: ${BuildConfig.VERSION_NAME}")
+            .show()
+
         if (checkPermissions()) {
             ActivityCompat.requestPermissions(
                 this,

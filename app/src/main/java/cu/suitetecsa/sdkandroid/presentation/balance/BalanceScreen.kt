@@ -90,7 +90,7 @@ fun BalanceRoute(
         topPadding = topPadding,
         state = state,
         onTurnUsageBasedPricing = { balancesViewModel.onEvent(BalanceEvent.TurnUsageBasedPricing(it)) },
-        collectContacts = { balancesViewModel.onEvent(BalanceEvent.CollectContacts) }
+        onCollectContacts = { balancesViewModel.onEvent(BalanceEvent.CollectContacts) }
     )
 }
 
@@ -99,7 +99,7 @@ fun BalanceScreen(
     topPadding: PaddingValues,
     state: BalanceState,
     onTurnUsageBasedPricing: (Boolean) -> Unit,
-    collectContacts: () -> Unit,
+    onCollectContacts: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -119,14 +119,14 @@ fun BalanceScreen(
         Text(text = state.errorText ?: "")
         Button(
             onClick = {
-                collectContacts()
+                onCollectContacts()
                 isSheetOpen = true
             },
             enabled = state.contacts.isEmpty()
         ) {
             Text(text = "Collect Contacts")
         }
-        ContactsBottomSheet(contacts = state.contacts, isSheetOpen, setSheetOpen = { isSheetOpen = it })
+        ContactsBottomSheet(contacts = state.contacts, isSheetOpen, onSetSheetOpen = { isSheetOpen = it })
     }
 }
 

@@ -94,7 +94,9 @@ class BalancesViewModel @Inject constructor(
 
             is BalanceEvent.ChangeSimCard -> {
                 viewModelScope.launch {
-                    preferenceDataSource.updateCurrentSimCardId(event.simCard.serialNumber)
+                    preferenceDataSource.updateCurrentSimCardId(
+                        event.simCard.serialNumber ?: event.simCard.subscriptionId.toString()
+                    )
                     _state.value =
                         BalanceState(currentSimCard = currentSimCard, simCards = simCards)
                 }

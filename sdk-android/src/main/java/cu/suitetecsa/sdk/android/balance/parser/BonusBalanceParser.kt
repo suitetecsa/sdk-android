@@ -32,7 +32,7 @@ object BonusBalanceParser {
     }
 }
 
-val CharSequence.asBonusBalance: BonusBalance?
+val CharSequence.asBonusBalance: BonusBalance
     get() = BonusBalance(
         this.extractCredit(),
         this.extractUnlimitedData(),
