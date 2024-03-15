@@ -21,6 +21,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Autorenew
 import androidx.compose.material.icons.outlined.SimCardAlert
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +29,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -36,15 +41,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import cu.suitetecsa.sdk.android.kotlin.asRemainingDays
-import cu.suitetecsa.sdk.android.kotlin.asSizeString
-import cu.suitetecsa.sdk.android.kotlin.asTimeString
-import cu.suitetecsa.sdk.android.model.BonusDataCU
+import cu.suitetecsa.sdk.android.model.DataCu
 import cu.suitetecsa.sdk.android.model.MainData
-import cu.suitetecsa.sdk.android.model.MainSms
-import cu.suitetecsa.sdk.android.model.MainVoice
 import cu.suitetecsa.sdk.android.model.SimCard
+import cu.suitetecsa.sdk.android.model.Sms
+import cu.suitetecsa.sdk.android.model.Voice
+import cu.suitetecsa.sdk.android.utils.LongUtils.asSizeString
+import cu.suitetecsa.sdk.android.utils.LongUtils.asTimeString
 import cu.suitetecsa.sdkandroid.R
+import cu.suitetecsa.sdkandroid.presentation.balance.component.ContactsBottomSheet
 import cu.suitetecsa.sdkandroid.presentation.balance.component.Spinner
 import cu.suitetecsa.sdkandroid.ui.theme.SDKAndroidTheme
 
@@ -84,7 +89,8 @@ fun BalanceRoute(
     BalanceScreen(
         topPadding = topPadding,
         state = state,
-        onTurnUsageBasedPricing = { balancesViewModel.onEvent(BalanceEvent.TurnUsageBasedPricing(it)) }
+        onTurnUsageBasedPricing = { balancesViewModel.onEvent(BalanceEvent.TurnUsageBasedPricing(it)) },
+        onCollectContacts = { balancesViewModel.onEvent(BalanceEvent.CollectContacts) }
     )
 }
 
@@ -93,12 +99,14 @@ fun BalanceScreen(
     topPadding: PaddingValues,
     state: BalanceState,
     onTurnUsageBasedPricing: (Boolean) -> Unit,
+    onCollectContacts: () -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+        var isSheetOpen by remember { mutableStateOf(false) }
         Box(modifier = Modifier.height(topPadding.calculateTopPadding())) {}
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             BalanceInfo(
@@ -109,6 +117,16 @@ fun BalanceScreen(
             Text(text = "Not supported")
         }
         Text(text = state.errorText ?: "")
+        Button(
+            onClick = {
+                onCollectContacts()
+                isSheetOpen = true
+            },
+            enabled = state.contacts.isEmpty()
+        ) {
+            Text(text = "Collect Contacts")
+        }
+        ContactsBottomSheet(contacts = state.contacts, isSheetOpen, onSetSheetOpen = { isSheetOpen = it })
     }
 }
 
@@ -200,14 +218,14 @@ fun PlansSection(state: BalanceState) {
             DataPlan(
                 planTitle = "Bolsa diaria",
                 dataCount = dailyData.data.asSizeString,
-                dataExpire = dailyData.remainingHours()?.let { "$it horas" }
+                dataExpire = dailyData.remainingHours?.let { "$it horas" }
             )
         }
         state.mailData?.let { mailData ->
             DataPlan(
                 planTitle = "Bolsa correo",
                 dataCount = mailData.data.asSizeString,
-                dataExpire = mailData.remainingDays()?.let { "$it días" }
+                dataExpire = mailData.remainingDays?.let { "$it días" }
             )
         }
     }
@@ -225,7 +243,7 @@ fun BonusSection(state: BalanceState) {
             DataPlan(
                 planTitle = "Saldo",
                 dataCount = "$%.2f CUP".format(bonusCredit.balance),
-                dataExpire = "${bonusCredit.dueDate.asRemainingDays} dias"
+                dataExpire = "${bonusCredit.remainingDays} dias"
             )
         }
         state.bonusData?.let { bonusData ->
@@ -241,21 +259,21 @@ fun BonusSection(state: BalanceState) {
             DataPlan(
                 planTitle = "Datos",
                 dataCount = dataCount,
-                dataExpire = "${bonusData.dueDate.asRemainingDays} dias"
+                dataExpire = "${bonusData.remainingDays} dias"
             )
         }
-        state.bonusDataCU?.let { bonusDataCU ->
+        state.dataCu?.let { bonusDataCU ->
             DataPlan(
                 planTitle = "Datos CU",
                 dataCount = bonusDataCU.data.asSizeString,
-                dataExpire = "${bonusDataCU.dueDate.asRemainingDays} dias"
+                dataExpire = "${bonusDataCU.remainingDays} dias"
             )
         }
         state.bonusUnlimitedData?.let { bonusUnlimitedData ->
             DataPlan(
                 planTitle = "Datos Ilimitados",
                 dataCount = "12:00 a.m -> 7:00 a.m",
-                dataExpire = "${bonusUnlimitedData.dueDate.asRemainingDays} dias"
+                dataExpire = "${bonusUnlimitedData.remainingDays} dias"
             )
         }
     }
@@ -283,9 +301,9 @@ private fun BalanceInfoPreviewDark() {
                     activeUntil = "10/10/2022",
                     mainBalanceDueDate = "10/10/2022",
                     data = MainData(false, 8345369725, 29376382496, 25),
-                    bonusDataCU = BonusDataCU(236975200, 55665L),
-                    voice = MainVoice(586314L, 25),
-                    sms = MainSms(50, 25)
+                    dataCu = DataCu(236975200, 25),
+                    voice = Voice(586314L, 25),
+                    sms = Sms(50, 25)
                 )
             ) {}
         }

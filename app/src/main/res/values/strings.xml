@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SDKAndroid</string>
+    <string name="bug_send_message">The application has stopped due to an error. Would you like to help us by sending an error report to prevent this from happening in the future? It will only take a moment.</string>
+    <string name="bug_send_title">Unexpected Error</string>
 </resources>

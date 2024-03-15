@@ -5,23 +5,25 @@ core-ktx = "1.12.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
-lifecycle-runtime-ktx = "2.6.2"
+lifecycle-runtime-ktx = "2.7.0"
 activity-compose = "1.8.2"
-compose-bom = "2023.10.01"
+compose-bom = "2024.02.01"
 arturbosch-detekt = "1.23.1"
 detekt-rules-compose = "1.3.0"
 appcompat = "1.6.1"
 material = "1.11.0"
 datastore-preferences = "1.0.0"
-material-icons-extended = "1.5.4"
+material-icons-extended = "1.6.2"
 
-navigation-compose = "2.7.6"
-hilt-navigation-compose = "1.1.0"
+navigation-compose = "2.7.7"
+hilt-navigation-compose = "1.2.0"
 
 hilt-android = "2.50"
-devtools-ksp = "1.9.21-1.0.16"
+devtools-ksp = "1.9.22-1.0.17"
 
 net-monster = "1.2.0"
+
+applifycu-bugsend = "1.0.4-alpha3"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -51,6 +53,8 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }
 
 net-monster = { group = "app.netmonster", name = "core", version.ref = "net-monster" }
+
+applifycu-bugsend = { group = "com.github.applifycu", name = "bugsend", version.ref = "applifycu-bugsend" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
