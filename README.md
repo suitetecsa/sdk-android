@@ -1,16 +1,15 @@
 SDK Android para SuiteEtecsa
 ============================
 
-[![](https://jitpack.io/v/suitetecsa/sdk-android.svg)](https://jitpack.io/#suitetecsa/sdk-android)
-
 Esta es una librería que facilita la creación de aplicaciones Android dedicadas a gestionar los servicios de [ETECSA](https://www.etecsa.cu).
 
 ## Cómo usar
 
 Agrega la dependencia a tu archivo build.gradle/.kts:
+[![](https://img.shields.io/maven-central/v/io.github.suitetecsa.sdk/android.svg)](https://img.shields.io/maven-central/v/io.github.suitetecsa.sdk/android.svg)
 
 ```kotlin
-implementation("com.github.suitetecsa.sdk-android:{última-versión}")
+implementation("io.github.suitetecsa.sdk:android:{última-versión}")
 ```
 
 ### Obtener información de las tarjetas SIM

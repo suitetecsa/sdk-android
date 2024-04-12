@@ -1,6 +1,6 @@
 package cu.suitetecsa.sdkandroid.presentation.balance
 
-import cu.suitetecsa.sdk.android.model.SimCard
+import io.github.suitetecsa.sdk.android.model.SimCard
 
 sealed class BalanceEvent {
     data object UpdateBalance : BalanceEvent()
