@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package cu.suitetecsa.sdk.android.balance.parser
 
 import android.os.Build
@@ -18,8 +20,10 @@ object DailyDataParser {
     @Contract("_ -> new")
     @Throws(ParseException::class)
     fun parseDailyData(input: CharSequence): DailyData =
-        ("""Diaria:\s+(?<volume>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+no activos)?""" +
-                """(\s+validos\s+(?<dueDate>(\d+))\s+horas)?\.""").toRegex().find(input)?.let {
+        (
+            """Diaria:\s+(?<volume>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+no activos)?""" +
+                """(\s+validos\s+(?<dueDate>(\d+))\s+horas)?\."""
+            ).toRegex().find(input)?.let {
             DailyData(
                 StringUtils.toBytes(it.groups["volume"]!!.value),
                 it.groups["dueDate"]?.value?.toInt()

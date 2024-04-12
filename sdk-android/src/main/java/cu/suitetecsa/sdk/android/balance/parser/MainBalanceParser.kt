@@ -12,9 +12,13 @@ import cu.suitetecsa.sdk.android.utils.StringUtils.toSeconds
 import java.text.ParseException
 
 object MainBalanceParser {
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun CharSequence.extractCredit() =
-        ("""Saldo:\s+(?<volume>([\d.]+))\s+CUP\.\s+([^"]*?)Linea activa hasta\s+""" +
-            """(?<activeUntil>(\d{2}-\d{2}-\d{2}))\s+vence\s+(?<dueDate>(\d{2}-\d{2}-\d{2}))\.""")
+        (
+            """Saldo:\s+(?<volume>([\d.]+))\s+CUP\.\s+([^"]*?)Linea activa hasta\s+""" +
+                """(?<activeUntil>(\d{2}-\d{2}-\d{2}))\s+vence\s+(?<dueDate>(\d{2}-\d{2}-\d{2}))\."""
+            )
             .toRegex().find(this)?.let {
                 Triple(
                     it.groups["volume"]!!.value.toDouble(),
@@ -23,9 +27,12 @@ object MainBalanceParser {
                 )
             } ?: run { throw ParseException(this.toString(), 0) }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun CharSequence.extractData() =
-        ("""Datos:\s+(?<volume>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+\+\s+)?""" +
-                """((?<volumeLte>(\d+(\.\d+)?)(\s)*([GMK])?B)\s+LTE)\.""")
+        (
+            """Datos:\s+(?<volume>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+\+\s+)?""" +
+                """((?<volumeLte>(\d+(\.\d+)?)(\s)*([GMK])?B)\s+LTE)\."""
+            )
             .toRegex().find(this)?.let {
                 MainData(
                     false,
@@ -35,11 +42,13 @@ object MainBalanceParser {
                 )
             }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun CharSequence.extractVoice() =
         """Voz:\s+(?<volume>(\d{1,3}:\d{2}:\d{2}))\.""".toRegex().find(this)?.let {
             Voice(toSeconds(it.groups["volume"]!!.value), null)
         }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun CharSequence.extractSms() =
         """SMS:\s+(?<volume>(\d+))\.""".toRegex().find(this)?.let {
             Sms(it.groups["volume"]!!.value.toLong(), null)

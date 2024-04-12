@@ -1,5 +1,7 @@
 package cu.suitetecsa.sdk.android.balance.parser
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import cu.suitetecsa.sdk.android.balance.response.BonusBalance
 import cu.suitetecsa.sdk.android.model.BonusCredit
 import cu.suitetecsa.sdk.android.model.BonusData
@@ -19,6 +21,7 @@ object BonusBalanceParser {
      * @param input CharSequence containing the text to parse.
      * @return BonusBalance object containing parsed bonus credit, data, and other specific bonuses.
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     @JvmStatic
     fun extractBonusBalance(input: CharSequence): BonusBalance {
         return BonusBalance(
@@ -33,6 +36,7 @@ object BonusBalanceParser {
 }
 
 val CharSequence.asBonusBalance: BonusBalance
+    @RequiresApi(Build.VERSION_CODES.O)
     get() = BonusBalance(
         this.extractCredit(),
         this.extractUnlimitedData(),
@@ -42,6 +46,7 @@ val CharSequence.asBonusBalance: BonusBalance
         this.extractSms()
     )
 
+@RequiresApi(Build.VERSION_CODES.O)
 private fun CharSequence.extractCredit() =
     """\$(?<volume>([\d.]+))\s+vence\s+(?<dueDate>(\d{2}-\d{2}-\d{2}))\.""".toRegex().find(this)?.let {
         BonusCredit(
@@ -50,15 +55,17 @@ private fun CharSequence.extractCredit() =
         )
     }
 
+@RequiresApi(Build.VERSION_CODES.O)
 private fun CharSequence.extractData(): BonusData? {
     val dataCountPattern = """(\d+(\.\d+)?)(\s)*([GMK])?B"""
-    val dataCountGroup = """(?<volume>${dataCountPattern})"""
-    val dataCountLtePattern = """(?<volumeLte>${dataCountPattern})\s+LTE"""
+    val dataCountGroup = """(?<volume>$dataCountPattern)"""
+    val dataCountLtePattern = """(?<volumeLte>$dataCountPattern)\s+LTE"""
     val dataDueDatePattern = """(?<dueDate>(\d{2}-\d{2}-\d{2}))"""
     val fullDataCountPattern =
-        """(${dataCountGroup})?(\s+)?(\+)?(\s+)?(${dataCountLtePattern})?\s+vence\s+${dataDueDatePattern}(\.)?"""
+        """($dataCountGroup)?(\s+)?(\+)?(\s+)?($dataCountLtePattern)?\s+vence\s+$dataDueDatePattern(\.)?"""
     val unlimitedDataPattern = """ilimitados\s+vence\s+(?<unlimitedData>(\d{2}-\d{2}-\d{2}))\."""
-    val dataRegex = """Datos:\s+($unlimitedDataPattern)?(\s+)?($fullDataCountPattern)?""".toRegex()
+    val dataRegex =
+        """Datos:\s+($unlimitedDataPattern)?(\s+)?($fullDataCountPattern)?""".toRegex()
 
     return dataRegex.find(this)?.let {
         val volume = it.groups["volume"]?.value
@@ -72,6 +79,7 @@ private fun CharSequence.extractData(): BonusData? {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 private fun CharSequence.extractUnlimitedData() =
     """ilimitados\s+vence\s+(?<dueDate>(\d{2}-\d{2}-\d{2}))\."""
         .toRegex().find(this)?.let {
@@ -80,6 +88,7 @@ private fun CharSequence.extractUnlimitedData() =
             }
         }
 
+@RequiresApi(Build.VERSION_CODES.O)
 private fun CharSequence.extractDataCu() =
     """Datos\.cu\s+(?<volume>(\d+(\.\d+)?)(\s)*([GMK])?B)?\s+vence\s+(?<dueDate>(\d{2}-\d{2}-\d{2}))\."""
         .toRegex().find(this)?.let {
@@ -89,6 +98,7 @@ private fun CharSequence.extractDataCu() =
             )
         }
 
+@RequiresApi(Build.VERSION_CODES.O)
 private fun CharSequence.extractVoice() =
     """Voz:\s+(?<volume>(\d{2}:\d{2}:\d{2}))\s+vence\s+(?<dueDate>(\d{2}-\d{2}-\d{2}))\."""
         .toRegex().find(this)?.let {
@@ -98,6 +108,7 @@ private fun CharSequence.extractVoice() =
             )
         }
 
+@RequiresApi(Build.VERSION_CODES.O)
 private fun CharSequence.extractSms() =
     """SMS:\s+(?<volume>(\d+))\s+vence\s+(?<dueDate>(\d{2}-\d{2}-\d{2}))\."""
         .toRegex().find(this)?.let {

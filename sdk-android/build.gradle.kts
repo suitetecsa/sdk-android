@@ -38,7 +38,7 @@ android {
     detekt {
         buildUponDefaultConfig = true
         allRules = false
-        config = files("${rootProject.projectDir}/detekt.yml")
+        config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
         autoCorrect = true
     }
     kotlinOptions {

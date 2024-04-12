@@ -8,6 +8,6 @@ import dagger.hilt.android.HiltAndroidApp
 class BalanceApp : Application() {
     override fun onCreate() {
         super.onCreate()
-        Thread.setDefaultUncaughtExceptionHandler(HandlerUtil(this));
+        Thread.setDefaultUncaughtExceptionHandler(HandlerUtil(this))
     }
 }

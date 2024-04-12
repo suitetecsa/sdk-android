@@ -12,14 +12,14 @@ fun CustomLinearProgressBar(
     color: Color = MaterialTheme.colorScheme.primary,
     progress: Float? = null
 ) {
-    if (progress != null) {
+    progress?.let {
         LinearProgressIndicator(
-            progress = progress,
+            progress = { progress },
             modifier = modifier,
             color = color,
             trackColor = Color.Transparent
         )
-    } else {
+    } ?: run {
         LinearProgressIndicator(
             modifier = modifier,
             color = color,

@@ -18,8 +18,10 @@ object MailDataParser {
     @Contract("_ -> new")
     @Throws(ParseException::class)
     fun parseMailData(input: CharSequence): MailData =
-        ("""Mensajeria:\s+(?<volume>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+no activos)?""" +
-                """(\s+validos\s+(?<dueDate>(\d+))\s+dias)?\.""").toRegex().find(input)?.let {
+        (
+            """Mensajeria:\s+(?<volume>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+no activos)?""" +
+                """(\s+validos\s+(?<dueDate>(\d+))\s+dias)?\."""
+            ).toRegex().find(input)?.let {
             MailData(
                 StringUtils.toBytes(it.groups["volume"]!!.value),
                 it.groups["dueDate"]?.value?.toInt()

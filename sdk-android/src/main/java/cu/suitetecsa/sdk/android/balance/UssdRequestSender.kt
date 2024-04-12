@@ -29,6 +29,8 @@ interface UssdRequestSender {
     fun send(ussdCode: String, callback: RequestCallback)
     class Builder {
         private var delayMillis: Long? = null
+
+        @Suppress("unused")
         fun withDelay(delay: Long): Builder {
             delayMillis = delay
             return this

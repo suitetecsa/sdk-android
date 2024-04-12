@@ -18,8 +18,10 @@ object MainVoiceParser {
     @Contract("_ -> new")
     @Throws(ParseException::class)
     fun extractVoice(input: CharSequence): VoiceBalance =
-        ("""Usted dispone de\s+(?<volume>(\d+:\d{2}:\d{2}))\s+MIN(\s+no activos)?""" +
-                """(\s+validos por\s+(?<dueDate>(\d+))\s+dias)?""").toRegex().find(input)?.let {
+        (
+            """Usted dispone de\s+(?<volume>(\d+:\d{2}:\d{2}))\s+MIN(\s+no activos)?""" +
+                """(\s+validos por\s+(?<dueDate>(\d+))\s+dias)?"""
+            ).toRegex().find(input)?.let {
             VoiceBalance(
                 StringUtils.toSeconds(it.groups["volume"]!!.value),
                 it.groups["dueDate"]?.value?.toInt()
