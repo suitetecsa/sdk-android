@@ -25,12 +25,17 @@ android {
     }
 
     buildTypes {
+        val supportEmail = System.getenv("SUPPORT_EMAIL")
         release {
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "SUPPORT_EMAIL", "\"$supportEmail\"")
+        }
+        debug {
+            buildConfigField("String", "SUPPORT_EMAIL", "\"$supportEmail\"")
         }
     }
     compileOptions {
@@ -52,6 +57,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.11"
@@ -74,6 +80,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(project(":sdk-android"))
+    implementation(libs.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -95,4 +102,7 @@ dependencies {
 
     // Detekt rules
     detektPlugins(libs.detekt.rules.compose)
+
+    // BugSend
+    implementation(libs.applifycu.bugsend)
 }

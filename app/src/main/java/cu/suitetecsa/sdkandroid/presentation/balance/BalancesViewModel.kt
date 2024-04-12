@@ -9,6 +9,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cu.suitetecsa.sdk.android.ContactsCollector
 import cu.suitetecsa.sdk.android.SimCardCollector
 import cu.suitetecsa.sdk.android.balance.FetchBalanceCallBack
 import cu.suitetecsa.sdk.android.balance.consult.UssdRequest
@@ -25,13 +26,13 @@ import cu.suitetecsa.sdk.android.balance.response.MessagesBalance
 import cu.suitetecsa.sdk.android.balance.response.PrincipalBalance
 import cu.suitetecsa.sdk.android.balance.response.UssdResponse
 import cu.suitetecsa.sdk.android.balance.response.VoiceBalance
-import cu.suitetecsa.sdk.android.kotlin.asDateString
-import cu.suitetecsa.sdk.android.kotlin.smartFetchBalance
-import cu.suitetecsa.sdk.android.kotlin.ussdFetch
 import cu.suitetecsa.sdk.android.model.MainData
-import cu.suitetecsa.sdk.android.model.MainSms
-import cu.suitetecsa.sdk.android.model.MainVoice
 import cu.suitetecsa.sdk.android.model.SimCard
+import cu.suitetecsa.sdk.android.model.Sms
+import cu.suitetecsa.sdk.android.model.Voice
+import cu.suitetecsa.sdk.android.utils.LongUtils.asDateString
+import cu.suitetecsa.sdk.android.utils.smartFetchBalance
+import cu.suitetecsa.sdk.android.utils.ussdFetch
 import cu.suitetecsa.sdkandroid.data.source.PreferenceDataSource
 import cu.suitetecsa.sdkandroid.domain.model.Preferences
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,6 +46,7 @@ import javax.inject.Inject
 class BalancesViewModel @Inject constructor(
     private val preferenceDataSource: PreferenceDataSource,
     private val simCardsCollector: SimCardCollector,
+    private val contactsCollector: ContactsCollector
 ) : ViewModel() {
     private val preferences: StateFlow<Preferences> = preferenceDataSource.preferences()
         .stateIn(
@@ -61,7 +63,7 @@ class BalancesViewModel @Inject constructor(
         get() {
             return if (currentSimCardId.isNotBlank()) {
                 simCards.firstOrNull {
-                    it.serialNumber() == preferences.value.currentSimCardId
+                    it.serialNumber == preferences.value.currentSimCardId
                 }.let { it ?: simCards.firstOrNull() }
             } else {
                 simCards.firstOrNull()
@@ -92,7 +94,9 @@ class BalancesViewModel @Inject constructor(
 
             is BalanceEvent.ChangeSimCard -> {
                 viewModelScope.launch {
-                    preferenceDataSource.updateCurrentSimCardId(event.simCard.serialNumber)
+                    preferenceDataSource.updateCurrentSimCardId(
+                        event.simCard.serialNumber ?: event.simCard.subscriptionId.toString()
+                    )
                     _state.value =
                         BalanceState(currentSimCard = currentSimCard, simCards = simCards)
                 }
@@ -104,6 +108,14 @@ class BalancesViewModel @Inject constructor(
                     _state.value = _state.value.copy(loading = true)
                     turnUsageBasedPricing(event.isActive)
                 }
+            }
+
+            BalanceEvent.CollectContacts -> {
+                _state.value = _state.value.copy(
+                    contacts = contactsCollector.collect().filter {
+                        it.shortNumber != null
+                    }
+                )
             }
         }
     }
@@ -128,15 +140,15 @@ class BalancesViewModel @Inject constructor(
 
                 override fun onSuccess(
                     request: UssdRequest,
-                    ussdResponse: UssdResponse
+                    response: UssdResponse
                 ) {
                     when (request) {
                         BONUS_BALANCE -> {
                             _state.value = _state.value.copy(
-                                bonusCredit = (ussdResponse as BonusBalance).credit(),
-                                bonusData = ussdResponse.data(),
-                                bonusDataCU = ussdResponse.dataCu(),
-                                bonusUnlimitedData = ussdResponse.unlimitedData(),
+                                bonusCredit = (response as BonusBalance).credit,
+                                bonusData = response.data,
+                                dataCu = response.dataCu,
+                                bonusUnlimitedData = response.unlimitedData,
                             )
                             _state.value = _state.value.copy(
                                 consultMessage = null,
@@ -148,38 +160,38 @@ class BalancesViewModel @Inject constructor(
                         DATA_BALANCE -> {
                             _state.value = _state.value.copy(
                                 data = MainData(
-                                    (ussdResponse as DataBalance).usageBasedPricing,
-                                    ussdResponse.data(),
-                                    ussdResponse.dataLte(),
-                                    ussdResponse.remainingDays()
+                                    (response as DataBalance).usageBasedPricing,
+                                    response.data,
+                                    response.dataLte,
+                                    response.remainingDays
                                 ),
-                                mailData = ussdResponse.mailData(),
-                                dailyData = ussdResponse.dailyData()
+                                mailData = response.mailData,
+                                dailyData = response.dailyData
                             )
                         }
 
                         MESSAGES_BALANCE -> {
                             _state.value = _state.value.copy(
-                                sms = MainSms(
-                                    (ussdResponse as MessagesBalance).sms(),
-                                    ussdResponse.remainingDays()
+                                sms = Sms(
+                                    (response as MessagesBalance).sms,
+                                    response.remainingDays
                                 )
                             )
                         }
 
                         PRINCIPAL_BALANCE -> {
                             _state.value = _state.value.copy(
-                                balance = (ussdResponse as PrincipalBalance).balance().toFloat(),
-                                activeUntil = ussdResponse.activeUntil().asDateString,
-                                mainBalanceDueDate = ussdResponse.dueDate().asDateString,
+                                balance = (response as PrincipalBalance).balance.toFloat(),
+                                activeUntil = response.activeUntil.asDateString,
+                                mainBalanceDueDate = response.dueDate.asDateString,
                             )
                         }
 
                         VOICE_BALANCE -> {
                             _state.value = _state.value.copy(
-                                voice = MainVoice(
-                                    (ussdResponse as VoiceBalance).seconds(),
-                                    ussdResponse.remainingDays()
+                                voice = Voice(
+                                    (response as VoiceBalance).seconds,
+                                    response.remainingDays
                                 )
                             )
                         }
@@ -225,11 +237,11 @@ class BalancesViewModel @Inject constructor(
 
                     override fun onSuccess(
                         request: UssdRequest,
-                        ussdResponse: UssdResponse
+                        response: UssdResponse
                     ) {
                         when (request) {
                             CUSTOM -> {
-                                if ((ussdResponse as Custom).response() == UssdResponse.PROCESSING_RESPONSE) {
+                                if ((response as Custom).response == UssdResponse.PROCESSING_RESPONSE) {
                                     _state.value.data?.let { data ->
                                         _state.value = _state.value.copy(
                                             data = MainData(

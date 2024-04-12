@@ -41,6 +41,7 @@ console-reports:
      - 'FileBasedFindingsReport'
   #  - 'LiteFindingsReport'
 
+# noinspection YAMLSchemaValidation
 output-reports:
   active: true
   exclude:
