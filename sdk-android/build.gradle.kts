@@ -1,13 +1,17 @@
+import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
+import com.vanniktech.maven.publish.SonatypeHost
+
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.arturbosch.detekt)
+    alias(libs.plugins.vanniktech.maven.publish)
     `maven-publish`
 }
 
 android {
-    namespace = "cu.suitetecsa.sdk.android"
+    namespace = "io.github.suitetecsa.sdk.android"
     compileSdk = 34
 
     defaultConfig {
@@ -26,21 +30,25 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     lint {
         lintConfig = file("$rootDir/android-lint.xml")
         abortOnError = false
         sarifReport = true
     }
+
     detekt {
         buildUponDefaultConfig = true
         allRules = false
         config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
         autoCorrect = true
     }
+
     kotlinOptions {
         jvmTarget = "17"
     }
@@ -58,22 +66,43 @@ dependencies {
     implementation(libs.net.monster)
 }
 
-publishing {
-    publications {
-        register<MavenPublication>("release") {
-            groupId = "com.github.suitetecsa"
-            artifactId = "sdk-android"
-            version = "2.0"
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
+    configure(
+        AndroidSingleVariantLibrary(
+            // the published variant
+            variant = "release",
+            // whether to publish a sources jar
+            sourcesJar = true,
+            // whether to publish a javadoc jar
+            publishJavadocJar = true,
+        )
+    )
 
-            afterEvaluate {
-                from(components["release"])
+    coordinates("io.github.suitetecsa.sdk", "android", "0.1.0-alpha01")
+    pom {
+        name.set(project.name)
+        description.set("A tool designed to interact with ETECSA services from android app.")
+        url.set("https://github.com/suitetecsa/sdk-android")
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("http://github.com/suitetecsa/sdk-android/blob/master/LICENSE")
+                distribution.set("repo")
             }
         }
-    }
-    repositories {
-        maven {
-            name = "jitpack"
-            url = uri("https://jitpack.io")
+        developers {
+            developer {
+                id.set("lesclaz")
+                name.set("Lesly Cintra")
+                email.set("lesclaz95@gmail.com")
+            }
+        }
+        scm {
+            url.set("http://github.com/suitetecsa/sdk-android/tree/master")
+            connection.set("scm:git:git://github.com/suitetecsa/sdk-android.git")
+            developerConnection.set("scm:git:ssh://github.com/suitetecsa/sdk-android.git")
         }
     }
 }
