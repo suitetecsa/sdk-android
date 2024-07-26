@@ -25,7 +25,9 @@ class SimCardCollectorApi26(private val context: Context) : SimCardCollector {
             info.number
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             manager.getPhoneNumber(info.subscriptionId)
-        } else null
+        } else {
+            null
+        }
 
     @RequiresApi(Build.VERSION_CODES.O)
     @RequiresPermission(Manifest.permission.READ_PHONE_NUMBERS)

@@ -13,7 +13,8 @@ internal class ContactsCollectorImpl
  * Constructor for [ContactsCollectorImpl].
  *
  * @param context the [Context] used to access the contacts.
- */(private val context: Context) : ContactsCollector {
+ */
+(private val context: Context) : ContactsCollector {
     /**
      * Collects contact information from the device.
      *
@@ -27,7 +28,8 @@ internal class ContactsCollectorImpl
     override fun collect(): List<Contact> {
         val contactsMap: MutableMap<String, Contact> = HashMap()
         val cursor = context.contentResolver.query(
-            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, arrayOf(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+            arrayOf(
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
                 ContactsContract.CommonDataKinds.Phone.NUMBER,
                 ContactsContract.Contacts.PHOTO_URI
@@ -38,11 +40,16 @@ internal class ContactsCollectorImpl
         )
         if (cursor != null && cursor.moveToFirst()) {
             while (!cursor.isAfterLast) {
-                @SuppressLint("Range") val name =
+                @SuppressLint("Range")
+                val name =
                     cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                @SuppressLint("Range") val phoneNumber =
+
+                @SuppressLint("Range")
+                val phoneNumber =
                     cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                @SuppressLint("Range") val photoUri =
+
+                @SuppressLint("Range")
+                val photoUri =
                     cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI))
                 if (!contactsMap.containsKey(name)) {
                     contactsMap[name] = Contact(name, phoneNumber, photoUri)

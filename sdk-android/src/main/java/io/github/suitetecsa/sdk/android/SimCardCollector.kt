@@ -16,7 +16,10 @@ interface SimCardCollector {
     fun collect(): List<SimCard>
     class Builder {
         fun build(context: Context): SimCardCollector =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                SimCardCollectorApi26(context) else SimCardCollectorLegacy(context)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                SimCardCollectorApi26(context)
+            } else {
+                SimCardCollectorLegacy(context)
+            }
     }
 }
