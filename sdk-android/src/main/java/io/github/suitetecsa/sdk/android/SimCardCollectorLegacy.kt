@@ -1,6 +1,7 @@
 package io.github.suitetecsa.sdk.android
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.telephony.SubscriptionManager
@@ -14,8 +15,9 @@ import io.github.suitetecsa.sdk.android.utils.SimCardCollectScope
  * Implementation of the SimCardCollector interface for collecting SIM card information.
  */
 internal class SimCardCollectorLegacy(private val context: Context) : SimCardCollector {
+    @SuppressLint("MissingPermission")
     private fun mapSimCard(scope: SimCardCollectScope) = SimCard(
-        null,
+        scope.telephonyManager?.subscriberId,
         scope.subscribedNetwork!!.displayName.toString(),
         null,
         scope.subscribedNetwork!!.simSlotIndex,
@@ -32,7 +34,7 @@ internal class SimCardCollectorLegacy(private val context: Context) : SimCardCol
         allOf = [
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.READ_PHONE_STATE
+            Manifest.permission.READ_PHONE_STATE,
         ]
     )
     override fun collect(): List<SimCard> {
