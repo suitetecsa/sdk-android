@@ -6,22 +6,22 @@ import android.os.Build
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
 import androidx.annotation.RequiresPermission
+import cz.mroczis.netmonster.core.factory.NetMonsterFactory.getSubscription
 import io.github.suitetecsa.sdk.android.model.SimCard
 import io.github.suitetecsa.sdk.android.utils.SimCardCollectScope
-import cz.mroczis.netmonster.core.factory.NetMonsterFactory.getSubscription
 
 /**
  * Implementation of the SimCardCollector interface for collecting SIM card information.
  */
 internal class SimCardCollectorLegacy(private val context: Context) : SimCardCollector {
     private fun mapSimCard(scope: SimCardCollectScope) = SimCard(
-            null,
-            scope.subscribedNetwork!!.displayName.toString(),
-            null,
-            scope.subscribedNetwork!!.simSlotIndex,
-            scope.subscribedNetwork!!.subscriptionId,
-            scope.telephonyManager
-        )
+        null,
+        scope.subscribedNetwork!!.displayName.toString(),
+        null,
+        scope.subscribedNetwork!!.simSlotIndex,
+        scope.subscribedNetwork!!.subscriptionId,
+        scope.telephonyManager
+    )
 
     /**
      * Collects the SIM card information.
@@ -58,7 +58,8 @@ internal class SimCardCollectorLegacy(private val context: Context) : SimCardCol
         @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
         @JvmStatic
         fun getSimCards(
-            context: Context, manager: SubscriptionManager,
+            context: Context,
+            manager: SubscriptionManager,
             block: SimCardCollectScope.() -> SimCard
         ): List<SimCard> {
             val simCards: MutableList<SimCard> = ArrayList()
