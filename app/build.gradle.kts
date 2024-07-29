@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.arturbosch.detekt)
+    alias(libs.plugins.compose)
 }
 
 android {
@@ -59,8 +60,8 @@ android {
         compose = true
         buildConfig = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11"
+    composeCompiler {
+        enableStrongSkippingMode = true
     }
     packaging {
         resources {

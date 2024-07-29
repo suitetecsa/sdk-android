@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.devtools.ksp) apply false
     alias(libs.plugins.hilt.android) apply false
+    alias(libs.plugins.compose) apply false
 }
 
 tasks.withType<Detekt>().configureEach {

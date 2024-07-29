@@ -61,6 +61,7 @@ applifycu-bugsend = { group = "com.github.applifycu", name = "bugsend", version.
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "arturbosch-detekt" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 
