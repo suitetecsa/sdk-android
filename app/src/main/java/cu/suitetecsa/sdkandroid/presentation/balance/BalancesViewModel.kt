@@ -60,10 +60,11 @@ class BalancesViewModel @Inject constructor(
         @SuppressLint("MissingPermission")
         get() = simCardsCollector.collect()
     private val currentSimCard: SimCard?
+        @SuppressLint("MissingPermission", "HardwareIds")
         get() {
             return if (currentSimCardId.isNotBlank()) {
                 simCards.firstOrNull {
-                    it.serialNumber == preferences.value.currentSimCardId
+                    it.telephony.subscriberId == preferences.value.currentSimCardId
                 }.let { it ?: simCards.firstOrNull() }
             } else {
                 simCards.firstOrNull()
@@ -79,7 +80,7 @@ class BalancesViewModel @Inject constructor(
     var consultType: UssdRequest? = null
         private set
 
-    @SuppressLint("MissingPermission", "NewApi")
+    @SuppressLint("MissingPermission", "NewApi", "HardwareIds")
     fun onEvent(event: BalanceEvent) {
         when (event) {
             is BalanceEvent.UpdateBalance -> {
@@ -94,9 +95,7 @@ class BalancesViewModel @Inject constructor(
 
             is BalanceEvent.ChangeSimCard -> {
                 viewModelScope.launch {
-                    preferenceDataSource.updateCurrentSimCardId(
-                        event.simCard.serialNumber ?: event.simCard.subscriptionId.toString()
-                    )
+                    preferenceDataSource.updateCurrentSimCardId(event.simCard.telephony.subscriberId)
                     _state.value =
                         BalanceState(currentSimCard = currentSimCard, simCards = simCards)
                 }
