@@ -16,11 +16,10 @@ import io.github.suitetecsa.sdk.android.utils.SimCardCollectScope
 internal class SimCardCollectorLegacy(private val context: Context) : SimCardCollector {
     @SuppressLint("MissingPermission")
     private fun mapSimCard(scope: SimCardCollectScope) = SimCard(
-        scope.telephonyManager?.subscriberId,
-        scope.subscribedNetwork!!.displayName.toString(),
+        scope.subscribedNetwork.displayName.toString(),
         null,
-        scope.subscribedNetwork!!.simSlotIndex,
-        scope.subscribedNetwork!!.subscriptionId,
+        scope.subscribedNetwork.simSlotIndex,
+        scope.subscribedNetwork.subscriptionId,
         scope.telephonyManager
     )
 

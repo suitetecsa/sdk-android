@@ -4,7 +4,6 @@ import android.telephony.TelephonyManager
 
 @JvmRecord
 data class SimCard(
-    val serialNumber: String?,
     val displayName: String?,
     val phoneNumber: String?,
     val slotIndex: Int,
