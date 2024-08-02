@@ -37,8 +37,10 @@ object StringUtils {
     fun toBytes(data: String): Long {
         val count = data.replace("[GMKBT]".toRegex(), "")
         val unit = data.split(" ".toRegex()).dropLastWhile { it.isEmpty() }
-            .toTypedArray()[data.split(" ".toRegex()).dropLastWhile { it.isEmpty() }
-            .toTypedArray().size - 1].uppercase(Locale.getDefault())
+            .toTypedArray()[
+            data.split(" ".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray().size - 1
+        ].uppercase(Locale.getDefault())
         return (count.toDouble() * 1024.0.pow("BKMGT".indexOf(unit[0]).toDouble())).toLong()
     }
 }

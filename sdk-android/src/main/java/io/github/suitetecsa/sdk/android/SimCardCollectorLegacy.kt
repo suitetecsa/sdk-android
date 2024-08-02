@@ -3,7 +3,6 @@ package io.github.suitetecsa.sdk.android
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
 import androidx.annotation.RequiresPermission
@@ -68,12 +67,8 @@ internal class SimCardCollectorLegacy(private val context: Context) : SimCardCol
             val scope = SimCardCollectScope(manager)
             for (subscribedNetwork in manager.activeSubscriptionInfoList) {
                 scope.subscribedNetwork = subscribedNetwork
-                var telephonyManager: TelephonyManager? = null
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    telephonyManager = (context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager)
-                        .createForSubscriptionId(subscribedNetwork.subscriptionId)
-                }
-                scope.telephonyManager = telephonyManager
+                scope.telephonyManager = (context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager)
+                    .createForSubscriptionId(subscribedNetwork.subscriptionId)
                 simCards.add(scope.block())
             }
             return simCards

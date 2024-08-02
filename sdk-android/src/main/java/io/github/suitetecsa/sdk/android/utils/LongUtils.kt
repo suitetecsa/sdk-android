@@ -50,9 +50,11 @@ object LongUtils {
         val diffInMillis = date - calendar.getTimeInMillis()
         return (diffInMillis / (HOURS_PER_DAY * MINUTES_PER_HOUR * MINUTES_PER_HOUR * MILLISECONDS) + 1).toInt()
     }
-    
+
     val Long.asDateString: String get() = toDateString(this)
     val Long.asSizeString: String get() = toSizeString(this)
     val Long.asTimeString: String get() = toTimeString(this)
-    @Suppress("unused") val Long.asRemainingDays: Int get() = toRemainingDays(this)
+
+    @Suppress("unused")
+    val Long.asRemainingDays: Int get() = toRemainingDays(this)
 }
