@@ -6,5 +6,5 @@ import android.telephony.TelephonyManager
 
 class SimCardCollectScope(val manager: SubscriptionManager) {
     var subscribedNetwork: SubscriptionInfo? = null
-    var telephonyManager: TelephonyManager? = null
+    lateinit var telephonyManager: TelephonyManager
 }

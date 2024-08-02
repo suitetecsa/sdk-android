@@ -41,7 +41,7 @@ object SimCardUtils {
     @RequiresPermission(Manifest.permission.CALL_PHONE)
     fun smartFetchBalance(simCard: SimCard, callBack: FetchBalanceCallBack) {
         val requestCallback: RequestCallback = object : RequestCallback {
-            override val telephonyManager: TelephonyManager?
+            override val telephonyManager: TelephonyManager
                 get() = simCard.telephony
 
             override fun onRequesting(request: UssdRequest) {
@@ -64,7 +64,7 @@ object SimCardUtils {
     @RequiresPermission(Manifest.permission.CALL_PHONE)
     fun ussdFetch(simCard: SimCard, ussdCode: String, callBack: FetchBalanceCallBack) {
         val requestCallback: RequestCallback = object : RequestCallback {
-            override val telephonyManager: TelephonyManager?
+            override val telephonyManager: TelephonyManager
                 get() = simCard.telephony
 
             override fun onRequesting(request: UssdRequest) {

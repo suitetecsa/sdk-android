@@ -9,5 +9,5 @@ data class SimCard(
     val phoneNumber: String?,
     val slotIndex: Int,
     @JvmField val subscriptionId: Int,
-    @JvmField val telephony: TelephonyManager?
+    @JvmField val telephony: TelephonyManager
 )
