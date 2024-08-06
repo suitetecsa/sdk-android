@@ -10,7 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - arregla el workflow publish [`89373a1`](https://github.com/suitetecsa/sdk-android/commit/89373a1)
 - refactoriza los workflows [`65fa765`](https://github.com/suitetecsa/sdk-android/commit/65fa765)
 
+### Performance Improvements
+- eliminación de verificación de versión sdk_int obsoleta [`e559594`](https://github.com/suitetecsa/sdk-android/commit/e559594)
+
 ### Documentation
+- :robot: changelog file generated [`fb437fd`](https://github.com/suitetecsa/sdk-android/commit/fb437fd)
 - :robot: changelog file generated [`59bf78b`](https://github.com/suitetecsa/sdk-android/commit/59bf78b)
 
 ### Chore
