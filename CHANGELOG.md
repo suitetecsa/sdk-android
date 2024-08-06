@@ -14,11 +14,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - eliminación de verificación de versión sdk_int obsoleta [`e559594`](https://github.com/suitetecsa/sdk-android/commit/e559594)
 
 ### Documentation
+- :robot: changelog file generated [`1748a1a`](https://github.com/suitetecsa/sdk-android/commit/1748a1a)
 - :robot: changelog file generated [`915dade`](https://github.com/suitetecsa/sdk-android/commit/915dade)
 - :robot: changelog file generated [`fb437fd`](https://github.com/suitetecsa/sdk-android/commit/fb437fd)
 - :robot: changelog file generated [`59bf78b`](https://github.com/suitetecsa/sdk-android/commit/59bf78b)
 
 ### Chore
+- update actions/checkout action to v4 [`286a0c3`](https://github.com/suitetecsa/sdk-android/commit/286a0c3)
 - update agenthunt/conventional-commit-checker-action action to v2 [`058dee0`](https://github.com/suitetecsa/sdk-android/commit/058dee0)
 - update actions/setup-java action to v4.2.2 [`6e115d4`](https://github.com/suitetecsa/sdk-android/commit/6e115d4)
 - update actions/upload-artifact action to v4.3.5 [`164a304`](https://github.com/suitetecsa/sdk-android/commit/164a304)
