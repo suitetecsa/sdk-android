@@ -10,7 +10,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - arregla el workflow publish [`89373a1`](https://github.com/suitetecsa/sdk-android/commit/89373a1)
 - refactoriza los workflows [`65fa765`](https://github.com/suitetecsa/sdk-android/commit/65fa765)
 
+### Documentation
+- :robot: changelog file generated [`59bf78b`](https://github.com/suitetecsa/sdk-android/commit/59bf78b)
+
 ### Chore
+- update actions/setup-java action to v4.2.2 [`6e115d4`](https://github.com/suitetecsa/sdk-android/commit/6e115d4)
+- update actions/upload-artifact action to v4.3.5 [`164a304`](https://github.com/suitetecsa/sdk-android/commit/164a304)
 - update hilt.android to v2.52 [`8cc00e9`](https://github.com/suitetecsa/sdk-android/commit/8cc00e9)
 - update actions/setup-java action to v4.2.2 [`dca9e98`](https://github.com/suitetecsa/sdk-android/commit/dca9e98)
 - update actions/upload-artifact action to v4.3.5 [`1db87f0`](https://github.com/suitetecsa/sdk-android/commit/1db87f0)
