@@ -14,12 +14,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - eliminación de verificación de versión sdk_int obsoleta [`e559594`](https://github.com/suitetecsa/sdk-android/commit/e559594)
 
 ### Documentation
+- :robot: changelog file generated [`519a10d`](https://github.com/suitetecsa/sdk-android/commit/519a10d)
 - :robot: changelog file generated [`1748a1a`](https://github.com/suitetecsa/sdk-android/commit/1748a1a)
 - :robot: changelog file generated [`915dade`](https://github.com/suitetecsa/sdk-android/commit/915dade)
 - :robot: changelog file generated [`fb437fd`](https://github.com/suitetecsa/sdk-android/commit/fb437fd)
 - :robot: changelog file generated [`59bf78b`](https://github.com/suitetecsa/sdk-android/commit/59bf78b)
 
 ### Chore
+- update kotlin to v2.0.10 [`085715e`](https://github.com/suitetecsa/sdk-android/commit/085715e)
 - update actions/checkout action to v4 [`286a0c3`](https://github.com/suitetecsa/sdk-android/commit/286a0c3)
 - update agenthunt/conventional-commit-checker-action action to v2 [`058dee0`](https://github.com/suitetecsa/sdk-android/commit/058dee0)
 - update actions/setup-java action to v4.2.2 [`6e115d4`](https://github.com/suitetecsa/sdk-android/commit/6e115d4)
@@ -29,6 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update actions/upload-artifact action to v4.3.5 [`1db87f0`](https://github.com/suitetecsa/sdk-android/commit/1db87f0)
 
 ### Other
+- Merge pull request #111 from suitetecsa/renovate/kotlin [`912fa9d`](https://github.com/suitetecsa/sdk-android/commit/912fa9d)
 - Merge pull request #101 from suitetecsa/renovate/hilt.android [`2b5d117`](https://github.com/suitetecsa/sdk-android/commit/2b5d117)
 - Merge pull request #100 from suitetecsa/renovate/actions-setup-java-4.x [`151e3bb`](https://github.com/suitetecsa/sdk-android/commit/151e3bb)
 - Merge pull request #99 from suitetecsa/renovate/actions-upload-artifact-4.x [`4b4540e`](https://github.com/suitetecsa/sdk-android/commit/4b4540e)
