@@ -32,6 +32,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref, 'refs/tags/v') && contains(github.repository_owner, 'suitetecsa') }}
     permissions:
       contents: write
     steps:
