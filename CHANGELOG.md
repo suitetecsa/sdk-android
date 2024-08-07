@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - eliminación de verificación de versión sdk_int obsoleta [`e559594`](https://github.com/suitetecsa/sdk-android/commit/e559594)
 
 ### Documentation
+- :robot: changelog file generated [`23014a2`](https://github.com/suitetecsa/sdk-android/commit/23014a2)
 - :robot: changelog file generated [`2cf9434`](https://github.com/suitetecsa/sdk-android/commit/2cf9434)
 - :robot: changelog file generated [`40bad50`](https://github.com/suitetecsa/sdk-android/commit/40bad50)
 - :robot: changelog file generated [`519a10d`](https://github.com/suitetecsa/sdk-android/commit/519a10d)
@@ -23,6 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`59bf78b`](https://github.com/suitetecsa/sdk-android/commit/59bf78b)
 
 ### Chore
+- update gradle/actions action to v4 [`53c2c9b`](https://github.com/suitetecsa/sdk-android/commit/53c2c9b)
 - update dependency com.google.devtools.ksp to v2.0.10-1.0.24 [`24c3a12`](https://github.com/suitetecsa/sdk-android/commit/24c3a12)
 - update github/codeql-action action to v3.26.0 [`d1c6d88`](https://github.com/suitetecsa/sdk-android/commit/d1c6d88)
 - update kotlin to v2.0.10 [`085715e`](https://github.com/suitetecsa/sdk-android/commit/085715e)
@@ -36,6 +38,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update actions/upload-artifact action to v4.3.5 [`1db87f0`](https://github.com/suitetecsa/sdk-android/commit/1db87f0)
 
 ### Other
+- Merge pull request #114 from suitetecsa/renovate/gradle-actions-4.x [`3df001f`](https://github.com/suitetecsa/sdk-android/commit/3df001f)
 - Merge pull request #113 from suitetecsa/renovate/devtools.ksp [`de46ec9`](https://github.com/suitetecsa/sdk-android/commit/de46ec9)
 - Merge pull request #112 from suitetecsa/renovate/github-codeql-action-3.x [`ca8e438`](https://github.com/suitetecsa/sdk-android/commit/ca8e438)
 - Merge pull request #110 from suitetecsa/renovate/actions-upload-artifact-4.x [`8862bc2`](https://github.com/suitetecsa/sdk-android/commit/8862bc2)
