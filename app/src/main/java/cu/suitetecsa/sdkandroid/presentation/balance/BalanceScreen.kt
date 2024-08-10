@@ -219,7 +219,8 @@ fun PlansSection(state: BalanceState) {
             DataPlan(
                 planTitle = "Bolsa diaria",
                 dataCount = dailyData.data,
-                dataExpire = dailyData.expires.takeIf { it.isActive }?.asDateMillis?.asRemainingDays?.let { "$it horas" }
+                dataExpire = dailyData.expires.takeIf { it.isActive }?.asDateMillis?.asRemainingDays
+                    ?.let { "$it horas" }
             )
         }
         state.mailData?.let { mailData ->
