@@ -17,8 +17,8 @@ object MainSmsParser {
     @Contract("_ -> new")
     @Throws(ParseException::class)
     fun extractSms(input: CharSequence) =
-        """Usted dispone de\s+(?<volume>(\d+))\s+SMS(\s+no activos)?(\s+validos por\s+(?<dueDate>(\d+))\s+dias)?(\.)?"""
+        """Usted dispone de\s+(?<data>(\d+))\s+SMS(\s+no activos)?(\s+validos por\s+(?<expires>(\d+))\s+dias)?(\.)?"""
             .toRegex().find(input)?.let {
-                MessagesBalance(it.groups["volume"]!!.value.toLong(), it.groups["dueDate"]?.value?.toInt())
+                MessagesBalance("${it.groups[" data "]!!.value} SMS", it.groups["expires"]?.value ?: "no activos")
             } ?: run { throw ParseException(input.toString(), 0) }
 }

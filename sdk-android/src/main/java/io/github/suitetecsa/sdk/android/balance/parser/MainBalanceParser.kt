@@ -6,9 +6,6 @@ import io.github.suitetecsa.sdk.android.model.MainBalance
 import io.github.suitetecsa.sdk.android.model.MainData
 import io.github.suitetecsa.sdk.android.model.Sms
 import io.github.suitetecsa.sdk.android.model.Voice
-import io.github.suitetecsa.sdk.android.utils.StringUtils.toBytes
-import io.github.suitetecsa.sdk.android.utils.StringUtils.toDateMillis
-import io.github.suitetecsa.sdk.android.utils.StringUtils.toSeconds
 import java.text.ParseException
 
 object MainBalanceParser {
@@ -16,42 +13,46 @@ object MainBalanceParser {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun CharSequence.extractCredit() =
         (
-            """Saldo:\s+(?<volume>([\d.]+))\s+CUP\.\s+([^"]*?)Linea activa hasta\s+""" +
-                """(?<activeUntil>(\d{2}-\d{2}-\d{2}))\s+vence\s+(?<dueDate>(\d{2}-\d{2}-\d{2}))\."""
+            """Saldo:\s+(?<balance>([\d.]+))\s+CUP\.\s+([^"]*?)Linea activa hasta\s+""" +
+                """(?<lockDate>(\d{2}-\d{2}-\d{2}))\s+vence\s+(?<deletionDate>(\d{2}-\d{2}-\d{2}))\."""
             )
             .toRegex().find(this)?.let {
                 Triple(
-                    it.groups["volume"]!!.value.toDouble(),
-                    toDateMillis(it.groups["activeUntil"]!!.value),
-                    toDateMillis(it.groups["dueDate"]!!.value)
+                    it.groups["balance"]!!.value,
+                    it.groups["lockDate"]!!.value,
+                    it.groups["deletionDate"]!!.value
                 )
             } ?: run { throw ParseException(this.toString(), 0) }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun CharSequence.extractData() =
         (
-            """Datos:\s+(?<volume>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+\+\s+)?""" +
-                """((?<volumeLte>(\d+(\.\d+)?)(\s)*([GMK])?B)\s+LTE)\."""
+            """Datos:\s+(?<data>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+\+\s+)?""" +
+                """((?<dataLte>(\d+(\.\d+)?)(\s)*([GMK])?B)\s+LTE)\."""
             )
             .toRegex().find(this)?.let {
                 MainData(
                     false,
-                    it.groups["volume"]?.value?.let { v -> toBytes(v) },
-                    it.groups["volumeLte"]?.value?.let { vl -> toBytes(vl) },
-                    null
+                    it.groups["data"]?.value,
+                    it.groups["dataLte"]?.value,
+                    if (it.groups["data"]?.value != null || it.groups["dataLte"]?.value != null) {
+                        "no activos"
+                    } else {
+                        null
+                    }
                 )
             }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun CharSequence.extractVoice() =
-        """Voz:\s+(?<volume>(\d{1,3}:\d{2}:\d{2}))\.""".toRegex().find(this)?.let {
-            Voice(toSeconds(it.groups["volume"]!!.value), null)
+        """Voz:\s+(?<data>(\d{1,3}:\d{2}:\d{2}))\.""".toRegex().find(this)?.let {
+            Voice(it.groups["data"]!!.value, "No activa")
         }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun CharSequence.extractSms() =
-        """SMS:\s+(?<volume>(\d+))\.""".toRegex().find(this)?.let {
-            Sms(it.groups["volume"]!!.value.toLong(), null)
+        """SMS:\s+(?<data>(\d+))\.""".toRegex().find(this)?.let {
+            Sms(it.groups["data"]!!.value, "No activa")
         }
 
     /**
@@ -62,16 +63,17 @@ object MainBalanceParser {
     @JvmStatic
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Throws(ParseException::class)
-    fun extractMainBalance(input: CharSequence) = input.extractCredit().let { (credit, activeUntil, dueDate) ->
-        MainBalance(
-            credit,
-            input.extractData(),
-            input.extractVoice(),
-            input.extractSms(),
-            null,
-            null,
-            activeUntil,
-            dueDate
-        )
-    }
+    fun extractMainBalance(input: CharSequence) = input.extractCredit()
+        .let { (balance, lockDate, deletionDate) ->
+            MainBalance(
+                balance,
+                input.extractData(),
+                input.extractVoice(),
+                input.extractSms(),
+                null,
+                null,
+                lockDate,
+                deletionDate
+            )
+        }
 }

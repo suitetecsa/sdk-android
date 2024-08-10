@@ -81,8 +81,8 @@ internal class UssdRequestSenderImpl(private val delayMillis: Long) : UssdReques
                                     ussdRequest,
                                     PrincipalBalance(
                                         balance.balance,
-                                        balance.activeUntil,
-                                        balance.dueDate,
+                                        balance.lockDate,
+                                        balance.deletionDate,
                                         ArrayList(requestsTypes)
                                     )
                                 )
@@ -94,10 +94,10 @@ internal class UssdRequestSenderImpl(private val delayMillis: Long) : UssdReques
                                     callback.onSuccess(
                                         ussdRequest,
                                         DataBalance(
-                                            mainData.usageBasedPricing,
+                                            mainData.consumptionRate,
                                             mainData.data,
                                             mainData.dataLte,
-                                            mainData.remainingDays,
+                                            mainData.expires,
                                             parseDailyData(response),
                                             parseMailData(response)
                                         )

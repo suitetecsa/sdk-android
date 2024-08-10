@@ -9,9 +9,9 @@ import io.github.suitetecsa.sdk.android.model.MailData
 @JvmRecord
 data class DataBalance(
     val usageBasedPricing: Boolean,
-    val data: Long?,
-    val dataLte: Long?,
-    val remainingDays: Int?,
+    val data: String?,
+    val dataLte: String?,
+    val expires: String?,
     val dailyData: DailyData?,
     val mailData: MailData?
 ) : UssdResponse

@@ -41,17 +41,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import cu.suitetecsa.sdkandroid.R
+import cu.suitetecsa.sdkandroid.presentation.balance.component.ContactsBottomSheet
+import cu.suitetecsa.sdkandroid.presentation.balance.component.Spinner
+import cu.suitetecsa.sdkandroid.ui.theme.SDKAndroidTheme
 import io.github.suitetecsa.sdk.android.model.DataCu
 import io.github.suitetecsa.sdk.android.model.MainData
 import io.github.suitetecsa.sdk.android.model.SimCard
 import io.github.suitetecsa.sdk.android.model.Sms
 import io.github.suitetecsa.sdk.android.model.Voice
-import io.github.suitetecsa.sdk.android.utils.LongUtils.asSizeString
-import io.github.suitetecsa.sdk.android.utils.LongUtils.asTimeString
-import cu.suitetecsa.sdkandroid.R
-import cu.suitetecsa.sdkandroid.presentation.balance.component.ContactsBottomSheet
-import cu.suitetecsa.sdkandroid.presentation.balance.component.Spinner
-import cu.suitetecsa.sdkandroid.ui.theme.SDKAndroidTheme
+import io.github.suitetecsa.sdk.android.utils.LongUtils.asRemainingDays
+import io.github.suitetecsa.sdk.android.utils.asDateMillis
+import io.github.suitetecsa.sdk.android.utils.isActive
 
 @Composable
 fun BalanceRoute(
@@ -165,7 +166,7 @@ fun BalanceInfo(
             ) {
                 Text(text = "Tarifa por consumo")
                 Switch(
-                    checked = state.data?.usageBasedPricing ?: true,
+                    checked = state.data?.consumptionRate ?: true,
                     onCheckedChange = onTurnUsageBasedPricing,
                     enabled = !state.loading
                 )
@@ -188,44 +189,44 @@ fun PlansSection(state: BalanceState) {
     ) {
         state.data?.let { data ->
             val dataCount = if (data.data != null && data.dataLte != null) {
-                "${data.data!!.asSizeString} + ${data.dataLte!!.asSizeString} LTE"
+                "${data.data} + ${data.dataLte} LTE"
             } else if (data.data != null) {
-                data.data!!.asSizeString
+                data.data!!
             } else {
-                "${data.dataLte!!.asSizeString} LTE"
+                "${data.dataLte} LTE"
             }
             DataPlan(
                 planTitle = "Datos",
                 dataCount = dataCount,
-                dataExpire = data.remainingDays?.let { "$it días" }
+                dataExpire = data.expires?.takeIf { it.isActive }?.asDateMillis?.asRemainingDays?.let { "$it días" }
             )
         }
         state.voice?.let { voice ->
             DataPlan(
                 planTitle = "Voz",
-                dataCount = voice.seconds.asTimeString,
-                dataExpire = voice.remainingDays?.let { "$it días" }
+                dataCount = voice.data,
+                dataExpire = voice.expires.takeIf { it.isActive }?.asDateMillis?.asRemainingDays?.let { "$it días" }
             )
         }
         state.sms?.let { sms ->
             DataPlan(
                 planTitle = "SMS",
-                dataCount = "${sms.sms} SMS",
-                dataExpire = sms.remainingDays?.let { "$it días" }
+                dataCount = sms.data,
+                dataExpire = sms.expires.takeIf { it.isActive }?.asDateMillis?.asRemainingDays?.let { "$it días" }
             )
         }
         state.dailyData?.let { dailyData ->
             DataPlan(
                 planTitle = "Bolsa diaria",
-                dataCount = dailyData.data.asSizeString,
-                dataExpire = dailyData.remainingHours?.let { "$it horas" }
+                dataCount = dailyData.data,
+                dataExpire = dailyData.expires.takeIf { it.isActive }?.asDateMillis?.asRemainingDays?.let { "$it horas" }
             )
         }
         state.mailData?.let { mailData ->
             DataPlan(
                 planTitle = "Bolsa correo",
-                dataCount = mailData.data.asSizeString,
-                dataExpire = mailData.remainingDays?.let { "$it días" }
+                dataCount = mailData.data,
+                dataExpire = mailData.expires.takeIf { it.isActive }?.asDateMillis?.asRemainingDays?.let { "$it días" }
             )
         }
     }
@@ -242,38 +243,37 @@ fun BonusSection(state: BalanceState) {
         state.bonusCredit?.let { bonusCredit ->
             DataPlan(
                 planTitle = "Saldo",
-                dataCount = "$%.2f CUP".format(bonusCredit.balance),
-                dataExpire = "${bonusCredit.remainingDays} dias"
+                dataCount = "$%.2f CUP".format(bonusCredit.data),
+                dataExpire = "${bonusCredit.expires.asDateMillis.asRemainingDays} dias"
             )
         }
         state.bonusData?.let { bonusData ->
             val dataCount =
                 if (bonusData.data != null && bonusData.dataLte != null) {
-                    "${bonusData.data!!.asSizeString} + " +
-                            "${bonusData.dataLte!!.asSizeString} LTE"
+                    "${bonusData.data!!} + ${bonusData.dataLte!!} LTE"
                 } else if (bonusData.data != null) {
-                    bonusData.data!!.asSizeString
+                    bonusData.data!!
                 } else {
-                    "${bonusData.dataLte!!.asSizeString} LTE"
+                    "${bonusData.dataLte!!} LTE"
                 }
             DataPlan(
                 planTitle = "Datos",
                 dataCount = dataCount,
-                dataExpire = "${bonusData.remainingDays} dias"
+                dataExpire = "${bonusData.expires.asDateMillis.asRemainingDays} dias"
             )
         }
         state.dataCu?.let { bonusDataCU ->
             DataPlan(
                 planTitle = "Datos CU",
-                dataCount = bonusDataCU.data.asSizeString,
-                dataExpire = "${bonusDataCU.remainingDays} dias"
+                dataCount = bonusDataCU.data,
+                dataExpire = "${bonusDataCU.expires.asDateMillis.asRemainingDays} dias"
             )
         }
         state.bonusUnlimitedData?.let { bonusUnlimitedData ->
             DataPlan(
                 planTitle = "Datos Ilimitados",
                 dataCount = "12:00 a.m -> 7:00 a.m",
-                dataExpire = "${bonusUnlimitedData.remainingDays} dias"
+                dataExpire = "${bonusUnlimitedData.expires.asDateMillis.asRemainingDays} dias"
             )
         }
     }
@@ -300,10 +300,10 @@ private fun BalanceInfoPreviewDark() {
                     balance = 123.45f,
                     activeUntil = "10/10/2022",
                     mainBalanceDueDate = "10/10/2022",
-                    data = MainData(false, 8345369725, 29376382496, 25),
-                    dataCu = DataCu(236975200, 25),
-                    voice = Voice(586314L, 25),
-                    sms = Sms(50, 25)
+                    data = MainData(false, "3.5 BG", "4.5 GB", "30/8/2024"),
+                    dataCu = DataCu("300 MB", "30/8/2024"),
+                    voice = Voice("1:00:00", "30/8/2024"),
+                    sms = Sms("50 SMS", "30/8/2024")
                 )
             ) {}
         }

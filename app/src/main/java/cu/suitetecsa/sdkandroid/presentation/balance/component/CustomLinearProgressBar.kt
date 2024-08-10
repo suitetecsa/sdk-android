@@ -26,5 +26,4 @@ fun CustomLinearProgressBar(
             trackColor = Color.Transparent
         )
     }
-
 }

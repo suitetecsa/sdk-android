@@ -34,7 +34,8 @@ fun ContactImage(
         Image(
             modifier = modifier.size(64.dp).clip(RoundedCornerShape(Percent)),
             bitmap = it,
-            contentDescription = "Contact Photo")
+            contentDescription = "Contact Photo"
+        )
     } ?: run {
         Image(
             modifier = modifier.clip(RoundedCornerShape(Percent)),

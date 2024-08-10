@@ -33,7 +33,6 @@ import io.github.suitetecsa.sdk.android.model.MainData
 import io.github.suitetecsa.sdk.android.model.SimCard
 import io.github.suitetecsa.sdk.android.model.Sms
 import io.github.suitetecsa.sdk.android.model.Voice
-import io.github.suitetecsa.sdk.android.utils.LongUtils.asDateString
 import io.github.suitetecsa.sdk.android.utils.smartFetchBalance
 import io.github.suitetecsa.sdk.android.utils.ussdFetch
 import kotlinx.coroutines.flow.SharingStarted
@@ -162,7 +161,7 @@ class BalancesViewModel @Inject constructor(
                                     (response as DataBalance).usageBasedPricing,
                                     response.data,
                                     response.dataLte,
-                                    response.remainingDays
+                                    response.expires
                                 ),
                                 mailData = response.mailData,
                                 dailyData = response.dailyData
@@ -172,8 +171,8 @@ class BalancesViewModel @Inject constructor(
                         MESSAGES_BALANCE -> {
                             _state.value = _state.value.copy(
                                 sms = Sms(
-                                    (response as MessagesBalance).sms,
-                                    response.remainingDays
+                                    (response as MessagesBalance).data,
+                                    response.expires
                                 )
                             )
                         }
@@ -181,16 +180,16 @@ class BalancesViewModel @Inject constructor(
                         PRINCIPAL_BALANCE -> {
                             _state.value = _state.value.copy(
                                 balance = (response as PrincipalBalance).balance.toFloat(),
-                                activeUntil = response.activeUntil.asDateString,
-                                mainBalanceDueDate = response.dueDate.asDateString,
+                                activeUntil = response.blockDate,
+                                mainBalanceDueDate = response.deletionDate,
                             )
                         }
 
                         VOICE_BALANCE -> {
                             _state.value = _state.value.copy(
                                 voice = Voice(
-                                    (response as VoiceBalance).seconds,
-                                    response.remainingDays
+                                    (response as VoiceBalance).data,
+                                    response.expires
                                 )
                             )
                         }
@@ -247,7 +246,7 @@ class BalancesViewModel @Inject constructor(
                                                 isActive,
                                                 data.data,
                                                 data.dataLte,
-                                                data.remainingDays
+                                                data.expires
                                             )
                                         )
                                     } ?: run {

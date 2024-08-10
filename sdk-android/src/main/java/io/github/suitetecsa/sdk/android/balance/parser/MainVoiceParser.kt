@@ -3,7 +3,6 @@ package io.github.suitetecsa.sdk.android.balance.parser
 import android.os.Build
 import androidx.annotation.RequiresApi
 import io.github.suitetecsa.sdk.android.balance.response.VoiceBalance
-import io.github.suitetecsa.sdk.android.utils.StringUtils
 import org.jetbrains.annotations.Contract
 import java.text.ParseException
 
@@ -19,12 +18,9 @@ object MainVoiceParser {
     @Throws(ParseException::class)
     fun extractVoice(input: CharSequence): VoiceBalance =
         (
-            """Usted dispone de\s+(?<volume>(\d+:\d{2}:\d{2}))\s+MIN(\s+no activos)?""" +
-                """(\s+validos por\s+(?<dueDate>(\d+))\s+dias)?"""
+            """Usted dispone de\s+(?<data>(\d+:\d{2}:\d{2}))\s+MIN(\s+no activos)?""" +
+                """(\s+validos por\s+(?<expires>(\d+))\s+dias)?"""
             ).toRegex().find(input)?.let {
-            VoiceBalance(
-                StringUtils.toSeconds(it.groups["volume"]!!.value),
-                it.groups["dueDate"]?.value?.toInt()
-            )
+            VoiceBalance(it.groups["data"]!!.value, it.groups["expires"]?.value ?: "no activos")
         } ?: run { throw ParseException(input.toString(), 0) }
 }
