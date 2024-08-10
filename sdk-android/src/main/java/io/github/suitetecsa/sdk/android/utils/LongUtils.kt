@@ -51,8 +51,13 @@ object LongUtils {
         return (diffInMillis / (HOURS_PER_DAY * MINUTES_PER_HOUR * MINUTES_PER_HOUR * MILLISECONDS) + 1).toInt()
     }
 
+    @Suppress("unused")
     val Long.asDateString: String get() = toDateString(this)
+
+    @Suppress("unused")
     val Long.asSizeString: String get() = toSizeString(this)
+
+    @Suppress("unused")
     val Long.asTimeString: String get() = toTimeString(this)
 
     @Suppress("unused")

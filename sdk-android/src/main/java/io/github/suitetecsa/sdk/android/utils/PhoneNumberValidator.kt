@@ -16,7 +16,9 @@ private const val END_INDEX = 12
 fun validateFormat(text: String): String? {
     val completeRegex =
         """^(5\d{7}|05\d{7}|535\d{7}|\+535\d{7}|99535\d{7}99|\+5399535\d{7}|\*995\d{7}|\+\*995\d{7})$""".toRegex()
-    return if (!text.matches(completeRegex)) null else text
+    val newNumbersRegex =
+        """^(6\d{7}|06\d{7}|536\d{7}|\+536\d{7}|99536\d{7}99|\+5399536\d{7}|\*996\d{7}|\+\*996\d{7})$""".toRegex()
+    return if (!text.matches(completeRegex) && !text.matches(newNumbersRegex)) null else text
 }
 
 /**
@@ -33,10 +35,12 @@ fun extractShortNumber(text: String): String? {
     val validatedText = validateFormat(text) ?: return null
 
     return when {
-        validatedText.startsWith("5") && validatedText.length == SHORT_NUMBER_LENGTH -> validatedText
+        (validatedText.startsWith("5") || validatedText.startsWith("6")) &&
+            validatedText.length == SHORT_NUMBER_LENGTH -> validatedText
         validatedText.length > SHORT_NUMBER_LENGTH -> {
             when {
-                validatedText.startsWith("99535") -> validatedText.substring(START_INDEX, END_INDEX)
+                validatedText.startsWith("99535") || validatedText.startsWith("99536") ->
+                    validatedText.substring(START_INDEX, END_INDEX)
                 else -> validatedText.takeLast(SHORT_NUMBER_LENGTH)
             }
         }

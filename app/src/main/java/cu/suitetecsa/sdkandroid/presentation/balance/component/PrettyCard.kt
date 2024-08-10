@@ -69,7 +69,8 @@ private fun PrettyCardPreviewDark() {
     SDKAndroidTheme {
         Surface(
             Modifier
-                .background(MaterialTheme.colorScheme.background)) {
+                .background(MaterialTheme.colorScheme.background)
+        ) {
             PrettyCard(
                 modifier = Modifier.padding(16.dp),
                 isLoading = true,

@@ -3,7 +3,6 @@ package io.github.suitetecsa.sdk.android.balance.parser
 import android.os.Build
 import androidx.annotation.RequiresApi
 import io.github.suitetecsa.sdk.android.model.MailData
-import io.github.suitetecsa.sdk.android.utils.StringUtils
 import org.jetbrains.annotations.Contract
 import java.text.ParseException
 
@@ -19,12 +18,9 @@ object MailDataParser {
     @Throws(ParseException::class)
     fun parseMailData(input: CharSequence): MailData =
         (
-            """Mensajeria:\s+(?<volume>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+no activos)?""" +
-                """(\s+validos\s+(?<dueDate>(\d+))\s+dias)?\."""
+            """Mensajeria:\s+(?<data>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+no activos)?""" +
+                """(\s+validos\s+(?<expires>(\d+))\s+dias)?\."""
             ).toRegex().find(input)?.let {
-            MailData(
-                StringUtils.toBytes(it.groups["volume"]!!.value),
-                it.groups["dueDate"]?.value?.toInt()
-            )
+            MailData(it.groups["data"]!!.value, it.groups["expires"]?.value ?: "no activos")
         } ?: run { throw ParseException(input.toString(), 0) }
 }

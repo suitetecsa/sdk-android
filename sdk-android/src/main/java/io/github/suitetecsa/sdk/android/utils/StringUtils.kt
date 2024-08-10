@@ -7,7 +7,7 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.pow
 
-private const val SECONDS_PER_MINUTE = 60
+private const val SecondsPerMinute = 60
 
 object StringUtils {
     @JvmStatic
@@ -15,23 +15,28 @@ object StringUtils {
         val parts = time.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         var totalSeconds: Long = 0
         for (part in parts) {
-            totalSeconds = totalSeconds * SECONDS_PER_MINUTE + part.toLong()
+            totalSeconds = totalSeconds * SecondsPerMinute + part.toLong()
         }
         return totalSeconds
     }
 
     @JvmStatic
+    fun isActive(data: String): Boolean = data != "no activos"
+
+    @JvmStatic
     @Throws(ParseException::class)
-    fun toDateMillis(date: String?): Long {
+    fun toDateMillis(date: String): Long {
         val calendar = Calendar.getInstance()
         toDate(date)?.let { calendar.setTime(it) }
         return calendar.getTimeInMillis()
     }
 
     @Throws(ParseException::class)
-    fun toDate(date: String?): Date? {
-        return date?.let { SimpleDateFormat("dd-MM-yy", Locale.getDefault()).parse(it) }
-    }
+    fun toDate(date: String): Date? =
+        date.let { SimpleDateFormat("dd-MM-yy", Locale.getDefault()).parse(it) }
+
+    @JvmStatic
+    fun fixDateString(date: String): String = date.replace("-", "/")
 
     @JvmStatic
     fun toBytes(data: String): Long {

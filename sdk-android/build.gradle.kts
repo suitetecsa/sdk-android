@@ -80,7 +80,7 @@ mavenPublishing {
         )
     )
 
-    coordinates("io.github.suitetecsa.sdk", "android", "1.0.0-alpha03")
+    coordinates("io.github.suitetecsa.sdk", "android", "1.0.0-alpha04")
     pom {
         name.set(project.name)
         description.set("A tool designed to interact with ETECSA services from android app.")

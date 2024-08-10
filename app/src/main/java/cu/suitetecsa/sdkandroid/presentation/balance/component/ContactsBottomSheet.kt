@@ -116,5 +116,5 @@ fun Contact(
 @Preview(showBackground = true)
 @Composable
 private fun ContactPreview() {
-    Contact(contact = Contact("PortalUsuario", "phoneNumber", null)){}
+    Contact(contact = Contact("PortalUsuario", "phoneNumber", null)) {}
 }

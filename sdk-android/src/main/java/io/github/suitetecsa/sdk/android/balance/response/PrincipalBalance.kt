@@ -7,8 +7,8 @@ import io.github.suitetecsa.sdk.android.balance.consult.UssdRequest
  */
 @JvmRecord
 data class PrincipalBalance(
-    val balance: Double,
-    val activeUntil: Long,
-    val dueDate: Long,
+    val balance: String,
+    val blockDate: String,
+    val deletionDate: String,
     val consults: List<UssdRequest>
 ) : UssdResponse

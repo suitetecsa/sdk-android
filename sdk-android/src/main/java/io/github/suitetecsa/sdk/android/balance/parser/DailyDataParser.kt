@@ -5,7 +5,6 @@ package io.github.suitetecsa.sdk.android.balance.parser
 import android.os.Build
 import androidx.annotation.RequiresApi
 import io.github.suitetecsa.sdk.android.model.DailyData
-import io.github.suitetecsa.sdk.android.utils.StringUtils
 import org.jetbrains.annotations.Contract
 import java.text.ParseException
 
@@ -21,13 +20,10 @@ object DailyDataParser {
     @Throws(ParseException::class)
     fun parseDailyData(input: CharSequence): DailyData =
         (
-            """Diaria:\s+(?<volume>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+no activos)?""" +
-                """(\s+validos\s+(?<dueDate>(\d+))\s+horas)?\."""
+            """Diaria:\s+(?<data>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+no activos)?""" +
+                """(\s+validos\s+(?<expires>(\d+))\s+horas)?\."""
             ).toRegex().find(input)?.let {
-            DailyData(
-                StringUtils.toBytes(it.groups["volume"]!!.value),
-                it.groups["dueDate"]?.value?.toInt()
-            )
+            DailyData(it.groups["data"]!!.value, it.groups["expires"]?.value ?: "no activos")
         } ?: run { throw ParseException(input.toString(), 0) }
 }
 
