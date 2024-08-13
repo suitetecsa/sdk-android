@@ -54,12 +54,21 @@ android {
     }
 }
 
+android.testOptions {
+    unitTests.all {
+        it.useJUnitPlatform()
+    }
+}
+
 dependencies {
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
+    testImplementation(libs.kotest.runner.junit5)
+    testImplementation(libs.kotest.assertions.core)
+    testImplementation(libs.kotest.property)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
@@ -80,7 +89,7 @@ mavenPublishing {
         )
     )
 
-    coordinates("io.github.suitetecsa.sdk", "android", "1.0.0-alpha04")
+    coordinates("io.github.suitetecsa.sdk", "android", "1.0.0-alpha05")
     pom {
         name.set(project.name)
         description.set("A tool designed to interact with ETECSA services from android app.")

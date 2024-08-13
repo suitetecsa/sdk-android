@@ -260,7 +260,7 @@ fun BonusSection(state: BalanceState) {
             DataPlan(
                 planTitle = "Datos",
                 dataCount = dataCount,
-                dataExpire = "${bonusData.expires.asDateMillis.asRemainingDays} dias"
+                dataExpire = "${bonusData.expires?.asDateMillis?.asRemainingDays} dias"
             )
         }
         state.dataCu?.let { bonusDataCU ->

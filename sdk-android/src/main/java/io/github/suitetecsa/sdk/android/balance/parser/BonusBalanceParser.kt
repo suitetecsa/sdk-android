@@ -60,7 +60,10 @@ private fun CharSequence.extractData(): BonusData? {
         """Datos:\s+($unlimitedDataPattern)?(\s+)?($fullDataCountPattern)?""".toRegex()
 
     return dataRegex.find(this)?.let {
-        BonusData(it.groups["data"]?.value, it.groups["dataLte"]?.value, it.groups["expires"]!!.value)
+        val data = it.groups["data"]?.value
+        val dataLte = it.groups["dataLte"]?.value
+        val expires = it.groups["expires"]?.value
+        if (data == null && dataLte == null && expires == null) null else BonusData(data, dataLte, expires)
     }
 }
 

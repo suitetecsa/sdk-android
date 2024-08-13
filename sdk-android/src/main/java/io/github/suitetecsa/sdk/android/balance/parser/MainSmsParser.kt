@@ -19,6 +19,6 @@ object MainSmsParser {
     fun extractSms(input: CharSequence) =
         """Usted dispone de\s+(?<data>(\d+))\s+SMS(\s+no activos)?(\s+validos por\s+(?<expires>(\d+))\s+dias)?(\.)?"""
             .toRegex().find(input)?.let {
-                MessagesBalance("${it.groups[" data "]!!.value} SMS", it.groups["expires"]?.value ?: "no activos")
+                MessagesBalance("${it.groups["data"]!!.value} SMS", it.groups["expires"]?.value ?: "no activos")
             } ?: run { throw ParseException(input.toString(), 0) }
 }

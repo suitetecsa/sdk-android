@@ -27,6 +27,8 @@ applifycu-bugsend = "1.0.4-alpha3"
 
 vanniktech-maven-publish = "0.29.0"
 
+kotest = "5.9.1"
+
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -57,6 +59,10 @@ hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", ve
 net-monster = { group = "app.netmonster", name = "core", version.ref = "net-monster" }
 
 applifycu-bugsend = { group = "com.github.applifycu", name = "bugsend", version.ref = "applifycu-bugsend" }
+
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
