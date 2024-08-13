@@ -46,13 +46,13 @@ object MainBalanceParser {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun CharSequence.extractVoice() =
         """Voz:\s+(?<data>(\d{1,3}:\d{2}:\d{2}))\.""".toRegex().find(this)?.let {
-            Voice(it.groups["data"]!!.value, "No activa")
+            Voice(it.groups["data"]!!.value, "no activos")
         }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun CharSequence.extractSms() =
         """SMS:\s+(?<data>(\d+))\.""".toRegex().find(this)?.let {
-            Sms(it.groups["data"]!!.value, "No activa")
+            Sms(it.groups["data"]!!.value, "no activos")
         }
 
     /**

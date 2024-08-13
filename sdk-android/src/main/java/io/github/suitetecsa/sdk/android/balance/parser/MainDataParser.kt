@@ -32,7 +32,7 @@ object MainDataParser {
                             null
                         }
                 )
-            } ?: run { throw ParseException(this.toString(), 0) }
+            } ?: run { MainData(this.extractUsageBasedPricing(), null, null, null) }
 
     /**
      * Parses the main data from a given CharSequence and returns a MainData object.
