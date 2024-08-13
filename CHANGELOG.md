@@ -6,7 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased changes
 
+### Test
+- añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
+
+### Other
+- Merge pull request #119 from suitetecsa/add-unit-tests [`bfdaf77`](https://github.com/suitetecsa/sdk-android/commit/bfdaf77)
+
+## v1.0.0-alpha04 (2024-08-10)
+
+### Bug Fixes
+- arregla un error del linter detekt [`c7396a3`](https://github.com/suitetecsa/sdk-android/commit/c7396a3)
+
 ### Continuous Integration
+- se mueve el job changelog [`49385ea`](https://github.com/suitetecsa/sdk-android/commit/49385ea)
 - arregla el workflow publish [`89373a1`](https://github.com/suitetecsa/sdk-android/commit/89373a1)
 - refactoriza los workflows [`65fa765`](https://github.com/suitetecsa/sdk-android/commit/65fa765)
 
@@ -14,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - eliminación de verificación de versión sdk_int obsoleta [`e559594`](https://github.com/suitetecsa/sdk-android/commit/e559594)
 
 ### Documentation
+- :robot: changelog file generated [`45a068f`](https://github.com/suitetecsa/sdk-android/commit/45a068f)
 - :robot: changelog file generated [`23014a2`](https://github.com/suitetecsa/sdk-android/commit/23014a2)
 - :robot: changelog file generated [`2cf9434`](https://github.com/suitetecsa/sdk-android/commit/2cf9434)
 - :robot: changelog file generated [`40bad50`](https://github.com/suitetecsa/sdk-android/commit/40bad50)
@@ -24,6 +37,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`59bf78b`](https://github.com/suitetecsa/sdk-android/commit/59bf78b)
 
 ### Chore
+- update agp to v8.5.2 [`149a42b`](https://github.com/suitetecsa/sdk-android/commit/149a42b)
 - update gradle/actions action to v4 [`53c2c9b`](https://github.com/suitetecsa/sdk-android/commit/53c2c9b)
 - update dependency com.google.devtools.ksp to v2.0.10-1.0.24 [`24c3a12`](https://github.com/suitetecsa/sdk-android/commit/24c3a12)
 - update github/codeql-action action to v3.26.0 [`d1c6d88`](https://github.com/suitetecsa/sdk-android/commit/d1c6d88)
@@ -37,7 +51,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update actions/setup-java action to v4.2.2 [`dca9e98`](https://github.com/suitetecsa/sdk-android/commit/dca9e98)
 - update actions/upload-artifact action to v4.3.5 [`1db87f0`](https://github.com/suitetecsa/sdk-android/commit/1db87f0)
 
+### Refactor
+- refactoriza casi todos los modelos de datos [`229038c`](https://github.com/suitetecsa/sdk-android/commit/229038c)
+
 ### Other
+- Merge pull request #118 from suitetecsa/refactor-lib [`eb59f85`](https://github.com/suitetecsa/sdk-android/commit/eb59f85)
+- Merge pull request #116 from suitetecsa/renovate/agp [`9471aa9`](https://github.com/suitetecsa/sdk-android/commit/9471aa9)
+- Merge pull request #115 from suitetecsa/obtimize-generate-changelog [`e95fc8b`](https://github.com/suitetecsa/sdk-android/commit/e95fc8b)
 - Merge pull request #114 from suitetecsa/renovate/gradle-actions-4.x [`3df001f`](https://github.com/suitetecsa/sdk-android/commit/3df001f)
 - Merge pull request #113 from suitetecsa/renovate/devtools.ksp [`de46ec9`](https://github.com/suitetecsa/sdk-android/commit/de46ec9)
 - Merge pull request #112 from suitetecsa/renovate/github-codeql-action-3.x [`ca8e438`](https://github.com/suitetecsa/sdk-android/commit/ca8e438)
