@@ -7,15 +7,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`f7b7fd8`](https://github.com/suitetecsa/sdk-android/commit/f7b7fd8)
 - :robot: changelog file generated [`ecc57d0`](https://github.com/suitetecsa/sdk-android/commit/ecc57d0)
 
 ### Test
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update dependency gradle to v8.10 [`48765f8`](https://github.com/suitetecsa/sdk-android/commit/48765f8)
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #121 from suitetecsa/renovate/gradle-8.x [`973188b`](https://github.com/suitetecsa/sdk-android/commit/973188b)
 - Merge pull request #120 from suitetecsa/renovate/github-codeql-action-3.x [`6912d7e`](https://github.com/suitetecsa/sdk-android/commit/6912d7e)
 - Merge pull request #119 from suitetecsa/add-unit-tests [`bfdaf77`](https://github.com/suitetecsa/sdk-android/commit/bfdaf77)
 
