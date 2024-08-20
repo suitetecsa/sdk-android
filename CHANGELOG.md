@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`dcd6ce8`](https://github.com/suitetecsa/sdk-android/commit/dcd6ce8)
 - :robot: changelog file generated [`1f9d4e9`](https://github.com/suitetecsa/sdk-android/commit/1f9d4e9)
 - :robot: changelog file generated [`f7b7fd8`](https://github.com/suitetecsa/sdk-android/commit/f7b7fd8)
 - :robot: changelog file generated [`ecc57d0`](https://github.com/suitetecsa/sdk-android/commit/ecc57d0)
@@ -15,11 +16,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update github/codeql-action action to v3.26.3 [`9e17339`](https://github.com/suitetecsa/sdk-android/commit/9e17339)
 - update github/codeql-action action to v3.26.2 [`6aa0692`](https://github.com/suitetecsa/sdk-android/commit/6aa0692)
 - update dependency gradle to v8.10 [`48765f8`](https://github.com/suitetecsa/sdk-android/commit/48765f8)
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #123 from suitetecsa/renovate/github-codeql-action-3.x [`eae9758`](https://github.com/suitetecsa/sdk-android/commit/eae9758)
 - Merge pull request #122 from suitetecsa/renovate/github-codeql-action-3.x [`fec6d62`](https://github.com/suitetecsa/sdk-android/commit/fec6d62)
 - Merge pull request #121 from suitetecsa/renovate/gradle-8.x [`973188b`](https://github.com/suitetecsa/sdk-android/commit/973188b)
 - Merge pull request #120 from suitetecsa/renovate/github-codeql-action-3.x [`6912d7e`](https://github.com/suitetecsa/sdk-android/commit/6912d7e)
