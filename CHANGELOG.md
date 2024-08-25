@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`46aad4d`](https://github.com/suitetecsa/sdk-android/commit/46aad4d)
 - :robot: changelog file generated [`dcd6ce8`](https://github.com/suitetecsa/sdk-android/commit/dcd6ce8)
 - :robot: changelog file generated [`1f9d4e9`](https://github.com/suitetecsa/sdk-android/commit/1f9d4e9)
 - :robot: changelog file generated [`f7b7fd8`](https://github.com/suitetecsa/sdk-android/commit/f7b7fd8)
@@ -16,12 +17,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update github/codeql-action action to v3.26.5 [`623f078`](https://github.com/suitetecsa/sdk-android/commit/623f078)
+- update dependency androidx.compose:compose-bom to v2024.08.00 [`ee5aaed`](https://github.com/suitetecsa/sdk-android/commit/ee5aaed)
 - update github/codeql-action action to v3.26.3 [`9e17339`](https://github.com/suitetecsa/sdk-android/commit/9e17339)
 - update github/codeql-action action to v3.26.2 [`6aa0692`](https://github.com/suitetecsa/sdk-android/commit/6aa0692)
 - update dependency gradle to v8.10 [`48765f8`](https://github.com/suitetecsa/sdk-android/commit/48765f8)
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #125 from suitetecsa/renovate/github-codeql-action-3.x [`7b71b49`](https://github.com/suitetecsa/sdk-android/commit/7b71b49)
+- Merge pull request #124 from suitetecsa/renovate/compose.bom [`30c14c7`](https://github.com/suitetecsa/sdk-android/commit/30c14c7)
 - Merge pull request #123 from suitetecsa/renovate/github-codeql-action-3.x [`eae9758`](https://github.com/suitetecsa/sdk-android/commit/eae9758)
 - Merge pull request #122 from suitetecsa/renovate/github-codeql-action-3.x [`fec6d62`](https://github.com/suitetecsa/sdk-android/commit/fec6d62)
 - Merge pull request #121 from suitetecsa/renovate/gradle-8.x [`973188b`](https://github.com/suitetecsa/sdk-android/commit/973188b)
