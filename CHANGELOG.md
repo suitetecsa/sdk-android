@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`dfc7bfe`](https://github.com/suitetecsa/sdk-android/commit/dfc7bfe)
 - :robot: changelog file generated [`a2c1c21`](https://github.com/suitetecsa/sdk-android/commit/a2c1c21)
 - :robot: changelog file generated [`6efcb9e`](https://github.com/suitetecsa/sdk-android/commit/6efcb9e)
 - :robot: changelog file generated [`46aad4d`](https://github.com/suitetecsa/sdk-android/commit/46aad4d)
@@ -22,6 +23,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update dependency androidx.compose:compose-bom to v2024.09.01 [`9fef645`](https://github.com/suitetecsa/sdk-android/commit/9fef645)
 - update dependency androidx.compose.material:material-icons-extended to v1.7.1 [`6fece68`](https://github.com/suitetecsa/sdk-android/commit/6fece68)
 - update dependency androidx.lifecycle:lifecycle-runtime-ktx to v2.8.5 [`34fc701`](https://github.com/suitetecsa/sdk-android/commit/34fc701)
+- update actions/upload-artifact action to v4.4.0 [`642f80a`](https://github.com/suitetecsa/sdk-android/commit/642f80a)
+- update agp to v8.6.0 [`985bbb3`](https://github.com/suitetecsa/sdk-android/commit/985bbb3)
+- update github/codeql-action action to v3.26.6 [`1e14166`](https://github.com/suitetecsa/sdk-android/commit/1e14166)
 - update gradle/actions action to v4.0.1 [`d473850`](https://github.com/suitetecsa/sdk-android/commit/d473850)
 - update github/codeql-action action to v3.26.5 [`623f078`](https://github.com/suitetecsa/sdk-android/commit/623f078)
 - update dependency androidx.compose:compose-bom to v2024.08.00 [`ee5aaed`](https://github.com/suitetecsa/sdk-android/commit/ee5aaed)
@@ -31,6 +35,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #130 from suitetecsa/renovate/github-codeql-action-3.x [`4b58050`](https://github.com/suitetecsa/sdk-android/commit/4b58050)
+- Merge pull request #131 from suitetecsa/renovate/agp [`0375b21`](https://github.com/suitetecsa/sdk-android/commit/0375b21)
+- Merge pull request #132 from suitetecsa/renovate/actions-upload-artifact-4.x [`ed66d56`](https://github.com/suitetecsa/sdk-android/commit/ed66d56)
 - Merge pull request #134 from suitetecsa/renovate/lifecycle.runtime.ktx [`a0ea118`](https://github.com/suitetecsa/sdk-android/commit/a0ea118)
 - Merge pull request #135 from suitetecsa/renovate/material.icons.extended [`379892c`](https://github.com/suitetecsa/sdk-android/commit/379892c)
 - Merge pull request #136 from suitetecsa/renovate/compose.bom [`fd930d4`](https://github.com/suitetecsa/sdk-android/commit/fd930d4)
