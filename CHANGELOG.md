@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`8f1c035`](https://github.com/suitetecsa/sdk-android/commit/8f1c035)
 - :robot: changelog file generated [`0d2180a`](https://github.com/suitetecsa/sdk-android/commit/0d2180a)
 - :robot: changelog file generated [`b149a00`](https://github.com/suitetecsa/sdk-android/commit/b149a00)
 - :robot: changelog file generated [`dfc7bfe`](https://github.com/suitetecsa/sdk-android/commit/dfc7bfe)
@@ -22,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update agp to v8.6.1 [`afed796`](https://github.com/suitetecsa/sdk-android/commit/afed796)
 - update github/codeql-action action to v3.26.8 [`354c35d`](https://github.com/suitetecsa/sdk-android/commit/354c35d)
 - update dependency androidx.navigation:navigation-compose to v2.8.1 [`ce9f69e`](https://github.com/suitetecsa/sdk-android/commit/ce9f69e)
 - update gradle/actions action to v4.1.0 [`901aee5`](https://github.com/suitetecsa/sdk-android/commit/901aee5)
@@ -44,6 +46,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #143 from suitetecsa/renovate/agp [`fecb07f`](https://github.com/suitetecsa/sdk-android/commit/fecb07f)
 - Merge pull request #141 from suitetecsa/renovate/gradle-actions-4.x [`d595389`](https://github.com/suitetecsa/sdk-android/commit/d595389)
 - Merge pull request #142 from suitetecsa/renovate/github-codeql-action-3.x [`b6d01fe`](https://github.com/suitetecsa/sdk-android/commit/b6d01fe)
 - Merge pull request #140 from suitetecsa/renovate/navigation.compose [`777e213`](https://github.com/suitetecsa/sdk-android/commit/777e213)
