@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`6574301`](https://github.com/suitetecsa/sdk-android/commit/6574301)
 - :robot: changelog file generated [`8f1c035`](https://github.com/suitetecsa/sdk-android/commit/8f1c035)
 - :robot: changelog file generated [`0d2180a`](https://github.com/suitetecsa/sdk-android/commit/0d2180a)
 - :robot: changelog file generated [`b149a00`](https://github.com/suitetecsa/sdk-android/commit/b149a00)
@@ -23,6 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update dependency androidx.compose.material:material-icons-extended to v1.7.2 [`6fb3914`](https://github.com/suitetecsa/sdk-android/commit/6fb3914)
 - update agp to v8.6.1 [`afed796`](https://github.com/suitetecsa/sdk-android/commit/afed796)
 - update github/codeql-action action to v3.26.8 [`354c35d`](https://github.com/suitetecsa/sdk-android/commit/354c35d)
 - update dependency androidx.navigation:navigation-compose to v2.8.1 [`ce9f69e`](https://github.com/suitetecsa/sdk-android/commit/ce9f69e)
@@ -46,6 +48,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #144 from suitetecsa/renovate/material.icons.extended [`4c31e6c`](https://github.com/suitetecsa/sdk-android/commit/4c31e6c)
 - Merge pull request #143 from suitetecsa/renovate/agp [`fecb07f`](https://github.com/suitetecsa/sdk-android/commit/fecb07f)
 - Merge pull request #141 from suitetecsa/renovate/gradle-actions-4.x [`d595389`](https://github.com/suitetecsa/sdk-android/commit/d595389)
 - Merge pull request #142 from suitetecsa/renovate/github-codeql-action-3.x [`b6d01fe`](https://github.com/suitetecsa/sdk-android/commit/b6d01fe)
