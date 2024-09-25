@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`170038e`](https://github.com/suitetecsa/sdk-android/commit/170038e)
 - :robot: changelog file generated [`2e282c6`](https://github.com/suitetecsa/sdk-android/commit/2e282c6)
 - :robot: changelog file generated [`73f17f8`](https://github.com/suitetecsa/sdk-android/commit/73f17f8)
 - :robot: changelog file generated [`6574301`](https://github.com/suitetecsa/sdk-android/commit/6574301)
@@ -28,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Chore
 - update github/codeql-action action to v3.26.9 [`e50773a`](https://github.com/suitetecsa/sdk-android/commit/e50773a)
 - update actions/setup-java action to v4.4.0 [`f6ba6d3`](https://github.com/suitetecsa/sdk-android/commit/f6ba6d3)
+- update dependency gradle to v8.10.2 [`c907955`](https://github.com/suitetecsa/sdk-android/commit/c907955)
 - update dependency androidx.compose.material:material-icons-extended to v1.7.2 [`6fb3914`](https://github.com/suitetecsa/sdk-android/commit/6fb3914)
 - update agp to v8.6.1 [`afed796`](https://github.com/suitetecsa/sdk-android/commit/afed796)
 - update github/codeql-action action to v3.26.8 [`354c35d`](https://github.com/suitetecsa/sdk-android/commit/354c35d)
@@ -52,6 +54,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #147 from suitetecsa/renovate/gradle-8.x [`7686a4c`](https://github.com/suitetecsa/sdk-android/commit/7686a4c)
 - Merge pull request #148 from suitetecsa/renovate/actions-setup-java-4.x [`54305fb`](https://github.com/suitetecsa/sdk-android/commit/54305fb)
 - Merge pull request #149 from suitetecsa/renovate/github-codeql-action-3.x [`e45735f`](https://github.com/suitetecsa/sdk-android/commit/e45735f)
 - Merge pull request #144 from suitetecsa/renovate/material.icons.extended [`4c31e6c`](https://github.com/suitetecsa/sdk-android/commit/4c31e6c)
