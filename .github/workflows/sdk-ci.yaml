@@ -12,7 +12,7 @@ permissions:
 jobs:
 
   avoid_reduncy:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Cancel Previous Redundant Builds
         uses: styfle/cancel-workflow-action@0.12.1
@@ -29,7 +29,7 @@ jobs:
   lint:
     name: Lint
     needs: [check-for-cc]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     continue-on-error: true
     strategy:
       matrix:
@@ -55,7 +55,7 @@ jobs:
   build:
     name: Build
     needs: [lint]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
