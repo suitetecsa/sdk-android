@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`f35cfa9`](https://github.com/suitetecsa/sdk-android/commit/f35cfa9)
 - :robot: changelog file generated [`af9dab0`](https://github.com/suitetecsa/sdk-android/commit/af9dab0)
 - :robot: changelog file generated [`d8f785a`](https://github.com/suitetecsa/sdk-android/commit/d8f785a)
 - :robot: changelog file generated [`0212871`](https://github.com/suitetecsa/sdk-android/commit/0212871)
@@ -30,6 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update dependency ubuntu to v24 [`5b82ac4`](https://github.com/suitetecsa/sdk-android/commit/5b82ac4)
 - update actions/checkout action to v4.2.0 [`703087b`](https://github.com/suitetecsa/sdk-android/commit/703087b)
 - update github/codeql-action action to v3.26.9 [`e50773a`](https://github.com/suitetecsa/sdk-android/commit/e50773a)
 - update actions/setup-java action to v4.4.0 [`f6ba6d3`](https://github.com/suitetecsa/sdk-android/commit/f6ba6d3)
@@ -60,6 +62,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #151 from suitetecsa/renovate/ubuntu-24.x [`8915d78`](https://github.com/suitetecsa/sdk-android/commit/8915d78)
 - Merge pull request #150 from suitetecsa/renovate/actions-checkout-4.x [`9643e4e`](https://github.com/suitetecsa/sdk-android/commit/9643e4e)
 - Merge pull request #146 from suitetecsa/renovate/lifecycle.runtime.ktx [`3c3610d`](https://github.com/suitetecsa/sdk-android/commit/3c3610d)
 - Merge pull request #145 from suitetecsa/renovate/compose.bom [`4d8583d`](https://github.com/suitetecsa/sdk-android/commit/4d8583d)
