@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`8c00cfb`](https://github.com/suitetecsa/sdk-android/commit/8c00cfb)
 - :robot: changelog file generated [`298c550`](https://github.com/suitetecsa/sdk-android/commit/298c550)
 - :robot: changelog file generated [`95e436d`](https://github.com/suitetecsa/sdk-android/commit/95e436d)
 - :robot: changelog file generated [`f35cfa9`](https://github.com/suitetecsa/sdk-android/commit/f35cfa9)
@@ -33,6 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update github/codeql-action action to v3.28.8 [`bea73c7`](https://github.com/suitetecsa/sdk-android/commit/bea73c7)
 - update actions/upload-artifact action to v4.4.3 [`25c3c9c`](https://github.com/suitetecsa/sdk-android/commit/25c3c9c)
 - update github/codeql-action action to v3.26.12 [`ec52a48`](https://github.com/suitetecsa/sdk-android/commit/ec52a48)
 - update actions/checkout action to v4.2.1 [`b8e2cc6`](https://github.com/suitetecsa/sdk-android/commit/b8e2cc6)
@@ -69,6 +71,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #161 from suitetecsa/renovate/github-codeql-action-3.x [`3b2a0e3`](https://github.com/suitetecsa/sdk-android/commit/3b2a0e3)
 - Merge pull request #156 from suitetecsa/renovate/compose.bom [`528a3e8`](https://github.com/suitetecsa/sdk-android/commit/528a3e8)
 - Merge pull request #157 from suitetecsa/renovate/github-codeql-action-3.x [`25ee9fe`](https://github.com/suitetecsa/sdk-android/commit/25ee9fe)
 - Merge pull request #158 from suitetecsa/renovate/actions-checkout-4.x [`30b00fa`](https://github.com/suitetecsa/sdk-android/commit/30b00fa)
