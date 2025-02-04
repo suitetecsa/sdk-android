@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`bd120f2`](https://github.com/suitetecsa/sdk-android/commit/bd120f2)
 - :robot: changelog file generated [`88fc5c5`](https://github.com/suitetecsa/sdk-android/commit/88fc5c5)
 - :robot: changelog file generated [`8c00cfb`](https://github.com/suitetecsa/sdk-android/commit/8c00cfb)
 - :robot: changelog file generated [`298c550`](https://github.com/suitetecsa/sdk-android/commit/298c550)
@@ -35,8 +36,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update dependency androidx.datastore:datastore-preferences to v1.1.2 [`8475d90`](https://github.com/suitetecsa/sdk-android/commit/8475d90)
+- update actions/checkout action to v4.2.2 [`71f659b`](https://github.com/suitetecsa/sdk-android/commit/71f659b)
 - update github/codeql-action action to v3.28.8 [`bea73c7`](https://github.com/suitetecsa/sdk-android/commit/bea73c7)
 - update dependency androidx.compose.material:material-icons-extended to v1.7.7 [`3bd9079`](https://github.com/suitetecsa/sdk-android/commit/3bd9079)
+- update dependency androidx.compose:compose-bom to v2024.12.01 [`0305184`](https://github.com/suitetecsa/sdk-android/commit/0305184)
 - update actions/upload-artifact action to v4.4.3 [`25c3c9c`](https://github.com/suitetecsa/sdk-android/commit/25c3c9c)
 - update github/codeql-action action to v3.26.12 [`ec52a48`](https://github.com/suitetecsa/sdk-android/commit/ec52a48)
 - update actions/checkout action to v4.2.1 [`b8e2cc6`](https://github.com/suitetecsa/sdk-android/commit/b8e2cc6)
@@ -73,6 +77,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #163 from suitetecsa/renovate/compose.bom [`38d7c22`](https://github.com/suitetecsa/sdk-android/commit/38d7c22)
+- Merge pull request #164 from suitetecsa/renovate/actions-checkout-4.x [`5a34870`](https://github.com/suitetecsa/sdk-android/commit/5a34870)
+- Merge pull request #165 from suitetecsa/renovate/datastore.preferences [`dbd2205`](https://github.com/suitetecsa/sdk-android/commit/dbd2205)
 - Merge pull request #155 from suitetecsa/renovate/material.icons.extended [`4471094`](https://github.com/suitetecsa/sdk-android/commit/4471094)
 - Merge pull request #161 from suitetecsa/renovate/github-codeql-action-3.x [`3b2a0e3`](https://github.com/suitetecsa/sdk-android/commit/3b2a0e3)
 - Merge pull request #156 from suitetecsa/renovate/compose.bom [`528a3e8`](https://github.com/suitetecsa/sdk-android/commit/528a3e8)
