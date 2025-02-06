@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`f7402da`](https://github.com/suitetecsa/sdk-android/commit/f7402da)
 - :robot: changelog file generated [`bd120f2`](https://github.com/suitetecsa/sdk-android/commit/bd120f2)
 - :robot: changelog file generated [`88fc5c5`](https://github.com/suitetecsa/sdk-android/commit/88fc5c5)
 - :robot: changelog file generated [`8c00cfb`](https://github.com/suitetecsa/sdk-android/commit/8c00cfb)
@@ -36,6 +37,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update actions/setup-java action to v4.7.0 [`215f6c3`](https://github.com/suitetecsa/sdk-android/commit/215f6c3)
 - update dependency androidx.datastore:datastore-preferences to v1.1.2 [`8475d90`](https://github.com/suitetecsa/sdk-android/commit/8475d90)
 - update actions/checkout action to v4.2.2 [`71f659b`](https://github.com/suitetecsa/sdk-android/commit/71f659b)
 - update github/codeql-action action to v3.28.8 [`bea73c7`](https://github.com/suitetecsa/sdk-android/commit/bea73c7)
@@ -77,6 +79,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #168 from suitetecsa/renovate/actions-setup-java-4.x [`0811c7f`](https://github.com/suitetecsa/sdk-android/commit/0811c7f)
 - Merge pull request #163 from suitetecsa/renovate/compose.bom [`38d7c22`](https://github.com/suitetecsa/sdk-android/commit/38d7c22)
 - Merge pull request #164 from suitetecsa/renovate/actions-checkout-4.x [`5a34870`](https://github.com/suitetecsa/sdk-android/commit/5a34870)
 - Merge pull request #165 from suitetecsa/renovate/datastore.preferences [`dbd2205`](https://github.com/suitetecsa/sdk-android/commit/dbd2205)
