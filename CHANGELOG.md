@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`c779eee`](https://github.com/suitetecsa/sdk-android/commit/c779eee)
 - :robot: changelog file generated [`f7402da`](https://github.com/suitetecsa/sdk-android/commit/f7402da)
 - :robot: changelog file generated [`bd120f2`](https://github.com/suitetecsa/sdk-android/commit/bd120f2)
 - :robot: changelog file generated [`88fc5c5`](https://github.com/suitetecsa/sdk-android/commit/88fc5c5)
@@ -37,6 +38,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update actions/upload-artifact action to v4.6.0 [`012a822`](https://github.com/suitetecsa/sdk-android/commit/012a822)
 - update actions/setup-java action to v4.7.0 [`215f6c3`](https://github.com/suitetecsa/sdk-android/commit/215f6c3)
 - update dependency androidx.datastore:datastore-preferences to v1.1.2 [`8475d90`](https://github.com/suitetecsa/sdk-android/commit/8475d90)
 - update actions/checkout action to v4.2.2 [`71f659b`](https://github.com/suitetecsa/sdk-android/commit/71f659b)
@@ -79,6 +81,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #169 from suitetecsa/renovate/actions-upload-artifact-4.x [`694d6ed`](https://github.com/suitetecsa/sdk-android/commit/694d6ed)
 - Merge pull request #168 from suitetecsa/renovate/actions-setup-java-4.x [`0811c7f`](https://github.com/suitetecsa/sdk-android/commit/0811c7f)
 - Merge pull request #163 from suitetecsa/renovate/compose.bom [`38d7c22`](https://github.com/suitetecsa/sdk-android/commit/38d7c22)
 - Merge pull request #164 from suitetecsa/renovate/actions-checkout-4.x [`5a34870`](https://github.com/suitetecsa/sdk-android/commit/5a34870)
