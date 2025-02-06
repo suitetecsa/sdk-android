@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`7090105`](https://github.com/suitetecsa/sdk-android/commit/7090105)
 - :robot: changelog file generated [`56ebb4c`](https://github.com/suitetecsa/sdk-android/commit/56ebb4c)
 - :robot: changelog file generated [`316db9c`](https://github.com/suitetecsa/sdk-android/commit/316db9c)
 - :robot: changelog file generated [`c779eee`](https://github.com/suitetecsa/sdk-android/commit/c779eee)
@@ -47,7 +48,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update dependency androidx.datastore:datastore-preferences to v1.1.2 [`8475d90`](https://github.com/suitetecsa/sdk-android/commit/8475d90)
 - update actions/checkout action to v4.2.2 [`71f659b`](https://github.com/suitetecsa/sdk-android/commit/71f659b)
 - update github/codeql-action action to v3.28.8 [`bea73c7`](https://github.com/suitetecsa/sdk-android/commit/bea73c7)
+- update dependency androidx.navigation:navigation-compose to v2.8.6 [`6ad9f52`](https://github.com/suitetecsa/sdk-android/commit/6ad9f52)
 - update dependency androidx.compose.material:material-icons-extended to v1.7.7 [`3bd9079`](https://github.com/suitetecsa/sdk-android/commit/3bd9079)
+- update agp to v8.8.0 [`aa0af17`](https://github.com/suitetecsa/sdk-android/commit/aa0af17)
 - update dependency androidx.compose:compose-bom to v2024.12.01 [`0305184`](https://github.com/suitetecsa/sdk-android/commit/0305184)
 - update dependency com.vanniktech.maven.publish to v0.30.0 [`2114fa6`](https://github.com/suitetecsa/sdk-android/commit/2114fa6)
 - update actions/upload-artifact action to v4.4.3 [`25c3c9c`](https://github.com/suitetecsa/sdk-android/commit/25c3c9c)
@@ -86,6 +89,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #153 from suitetecsa/renovate/agp [`864b20c`](https://github.com/suitetecsa/sdk-android/commit/864b20c)
+- Merge pull request #154 from suitetecsa/renovate/navigation.compose [`93a583d`](https://github.com/suitetecsa/sdk-android/commit/93a583d)
 - Merge pull request #160 from suitetecsa/renovate/vanniktech.maven.publish [`62a6511`](https://github.com/suitetecsa/sdk-android/commit/62a6511)
 - Merge pull request #166 from suitetecsa/renovate/lifecycle.runtime.ktx [`25d28a8`](https://github.com/suitetecsa/sdk-android/commit/25d28a8)
 - Merge pull request #167 from suitetecsa/renovate/smichard-conventional_changelog-2.x [`47cc4b7`](https://github.com/suitetecsa/sdk-android/commit/47cc4b7)
