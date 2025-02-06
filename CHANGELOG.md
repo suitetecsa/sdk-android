@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`56ebb4c`](https://github.com/suitetecsa/sdk-android/commit/56ebb4c)
 - :robot: changelog file generated [`316db9c`](https://github.com/suitetecsa/sdk-android/commit/316db9c)
 - :robot: changelog file generated [`c779eee`](https://github.com/suitetecsa/sdk-android/commit/c779eee)
 - :robot: changelog file generated [`f7402da`](https://github.com/suitetecsa/sdk-android/commit/f7402da)
@@ -42,11 +43,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update actions/upload-artifact action to v4.6.0 [`012a822`](https://github.com/suitetecsa/sdk-android/commit/012a822)
 - update actions/setup-java action to v4.7.0 [`215f6c3`](https://github.com/suitetecsa/sdk-android/commit/215f6c3)
 - update smichard/conventional_changelog action to v2.0.10 [`2fdc7f6`](https://github.com/suitetecsa/sdk-android/commit/2fdc7f6)
+- update dependency androidx.lifecycle:lifecycle-runtime-ktx to v2.8.7 [`883c9e8`](https://github.com/suitetecsa/sdk-android/commit/883c9e8)
 - update dependency androidx.datastore:datastore-preferences to v1.1.2 [`8475d90`](https://github.com/suitetecsa/sdk-android/commit/8475d90)
 - update actions/checkout action to v4.2.2 [`71f659b`](https://github.com/suitetecsa/sdk-android/commit/71f659b)
 - update github/codeql-action action to v3.28.8 [`bea73c7`](https://github.com/suitetecsa/sdk-android/commit/bea73c7)
 - update dependency androidx.compose.material:material-icons-extended to v1.7.7 [`3bd9079`](https://github.com/suitetecsa/sdk-android/commit/3bd9079)
 - update dependency androidx.compose:compose-bom to v2024.12.01 [`0305184`](https://github.com/suitetecsa/sdk-android/commit/0305184)
+- update dependency com.vanniktech.maven.publish to v0.30.0 [`2114fa6`](https://github.com/suitetecsa/sdk-android/commit/2114fa6)
 - update actions/upload-artifact action to v4.4.3 [`25c3c9c`](https://github.com/suitetecsa/sdk-android/commit/25c3c9c)
 - update github/codeql-action action to v3.26.12 [`ec52a48`](https://github.com/suitetecsa/sdk-android/commit/ec52a48)
 - update actions/checkout action to v4.2.1 [`b8e2cc6`](https://github.com/suitetecsa/sdk-android/commit/b8e2cc6)
@@ -83,6 +86,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #160 from suitetecsa/renovate/vanniktech.maven.publish [`62a6511`](https://github.com/suitetecsa/sdk-android/commit/62a6511)
+- Merge pull request #166 from suitetecsa/renovate/lifecycle.runtime.ktx [`25d28a8`](https://github.com/suitetecsa/sdk-android/commit/25d28a8)
 - Merge pull request #167 from suitetecsa/renovate/smichard-conventional_changelog-2.x [`47cc4b7`](https://github.com/suitetecsa/sdk-android/commit/47cc4b7)
 - Merge pull request #169 from suitetecsa/renovate/actions-upload-artifact-4.x [`694d6ed`](https://github.com/suitetecsa/sdk-android/commit/694d6ed)
 - Merge pull request #168 from suitetecsa/renovate/actions-setup-java-4.x [`0811c7f`](https://github.com/suitetecsa/sdk-android/commit/0811c7f)
