@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`e61e862`](https://github.com/suitetecsa/sdk-android/commit/e61e862)
 - :robot: changelog file generated [`aabc1a7`](https://github.com/suitetecsa/sdk-android/commit/aabc1a7)
 - :robot: changelog file generated [`88ed53a`](https://github.com/suitetecsa/sdk-android/commit/88ed53a)
 - :robot: changelog file generated [`be44631`](https://github.com/suitetecsa/sdk-android/commit/be44631)
@@ -45,6 +46,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update agp to v8.8.2 [`d8c7604`](https://github.com/suitetecsa/sdk-android/commit/d8c7604)
 - update github/codeql-action action to v3.28.9 [`53ccfeb`](https://github.com/suitetecsa/sdk-android/commit/53ccfeb)
 - update hilt.android to v2.55 [`e456b2d`](https://github.com/suitetecsa/sdk-android/commit/e456b2d)
 - update gradle/actions action to v4.3.0 [`6349eb7`](https://github.com/suitetecsa/sdk-android/commit/6349eb7)
@@ -97,6 +99,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #182 from suitetecsa/renovate/agp [`623c6fd`](https://github.com/suitetecsa/sdk-android/commit/623c6fd)
 - Merge pull request #179 from suitetecsa/renovate/github-codeql-action-3.x [`79b7f95`](https://github.com/suitetecsa/sdk-android/commit/79b7f95)
 - Merge pull request #177 from suitetecsa/renovate/hilt.android [`ae23007`](https://github.com/suitetecsa/sdk-android/commit/ae23007)
 - Merge pull request #175 from suitetecsa/renovate/gradle-actions-4.x [`652e3dd`](https://github.com/suitetecsa/sdk-android/commit/652e3dd)
