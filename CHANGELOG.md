@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`a6b614d`](https://github.com/suitetecsa/sdk-android/commit/a6b614d)
 - :robot: changelog file generated [`8a15e32`](https://github.com/suitetecsa/sdk-android/commit/8a15e32)
 - :robot: changelog file generated [`d2a0556`](https://github.com/suitetecsa/sdk-android/commit/d2a0556)
 - :robot: changelog file generated [`e5ac542`](https://github.com/suitetecsa/sdk-android/commit/e5ac542)
@@ -53,6 +54,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update dependency androidx.navigation:navigation-compose to v2.8.8 [`87477d1`](https://github.com/suitetecsa/sdk-android/commit/87477d1)
 - update agp to v8.8.2 [`d8c7604`](https://github.com/suitetecsa/sdk-android/commit/d8c7604)
 - update actions/upload-artifact action to v4.6.1 [`213a3b6`](https://github.com/suitetecsa/sdk-android/commit/213a3b6)
+- update dependency androidx.compose:compose-bom to v2025 [`1b9ced3`](https://github.com/suitetecsa/sdk-android/commit/1b9ced3)
 - update github/codeql-action action to v3.28.9 [`53ccfeb`](https://github.com/suitetecsa/sdk-android/commit/53ccfeb)
 - update hilt.android to v2.55 [`e456b2d`](https://github.com/suitetecsa/sdk-android/commit/e456b2d)
 - update gradle/actions action to v4.3.0 [`6349eb7`](https://github.com/suitetecsa/sdk-android/commit/6349eb7)
@@ -105,6 +107,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #178 from suitetecsa/renovate/major-compose.bom [`7e2c565`](https://github.com/suitetecsa/sdk-android/commit/7e2c565)
 - Merge pull request #181 from suitetecsa/renovate/navigation.compose [`6147168`](https://github.com/suitetecsa/sdk-android/commit/6147168)
 - Merge pull request #183 from suitetecsa/renovate/actions-upload-artifact-4.x [`31e70c1`](https://github.com/suitetecsa/sdk-android/commit/31e70c1)
 - Merge pull request #184 from suitetecsa/renovate/datastore.preferences [`73f3326`](https://github.com/suitetecsa/sdk-android/commit/73f3326)
