@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`b72fe6e`](https://github.com/suitetecsa/sdk-android/commit/b72fe6e)
 - :robot: changelog file generated [`5a2f261`](https://github.com/suitetecsa/sdk-android/commit/5a2f261)
 - :robot: changelog file generated [`a6b614d`](https://github.com/suitetecsa/sdk-android/commit/a6b614d)
 - :robot: changelog file generated [`8a15e32`](https://github.com/suitetecsa/sdk-android/commit/8a15e32)
@@ -51,6 +52,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update github/codeql-action action to v3.28.11 [`ce2ddf9`](https://github.com/suitetecsa/sdk-android/commit/ce2ddf9)
 - update dependency androidx.compose.material:material-icons-extended to v1.7.8 [`f87ca27`](https://github.com/suitetecsa/sdk-android/commit/f87ca27)
 - update dependency androidx.datastore:datastore-preferences to v1.1.3 [`01aa9cf`](https://github.com/suitetecsa/sdk-android/commit/01aa9cf)
 - update dependency androidx.navigation:navigation-compose to v2.8.8 [`87477d1`](https://github.com/suitetecsa/sdk-android/commit/87477d1)
@@ -109,6 +111,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #186 from suitetecsa/renovate/github-codeql-action-3.x [`90d6e6f`](https://github.com/suitetecsa/sdk-android/commit/90d6e6f)
 - Merge pull request #180 from suitetecsa/renovate/material.icons.extended [`a1bf899`](https://github.com/suitetecsa/sdk-android/commit/a1bf899)
 - Merge pull request #178 from suitetecsa/renovate/major-compose.bom [`7e2c565`](https://github.com/suitetecsa/sdk-android/commit/7e2c565)
 - Merge pull request #181 from suitetecsa/renovate/navigation.compose [`6147168`](https://github.com/suitetecsa/sdk-android/commit/6147168)
