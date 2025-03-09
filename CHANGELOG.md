@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`cf1c4e3`](https://github.com/suitetecsa/sdk-android/commit/cf1c4e3)
 - :robot: changelog file generated [`b72fe6e`](https://github.com/suitetecsa/sdk-android/commit/b72fe6e)
 - :robot: changelog file generated [`5a2f261`](https://github.com/suitetecsa/sdk-android/commit/5a2f261)
 - :robot: changelog file generated [`a6b614d`](https://github.com/suitetecsa/sdk-android/commit/a6b614d)
@@ -52,6 +53,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update dependency io.gitlab.arturbosch.detekt to v1.23.8 [`759ed7e`](https://github.com/suitetecsa/sdk-android/commit/759ed7e)
 - update github/codeql-action action to v3.28.11 [`ce2ddf9`](https://github.com/suitetecsa/sdk-android/commit/ce2ddf9)
 - update dependency androidx.compose.material:material-icons-extended to v1.7.8 [`f87ca27`](https://github.com/suitetecsa/sdk-android/commit/f87ca27)
 - update dependency androidx.datastore:datastore-preferences to v1.1.3 [`01aa9cf`](https://github.com/suitetecsa/sdk-android/commit/01aa9cf)
@@ -111,6 +113,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #185 from suitetecsa/renovate/arturbosch.detekt [`653b57b`](https://github.com/suitetecsa/sdk-android/commit/653b57b)
 - Merge pull request #186 from suitetecsa/renovate/github-codeql-action-3.x [`90d6e6f`](https://github.com/suitetecsa/sdk-android/commit/90d6e6f)
 - Merge pull request #180 from suitetecsa/renovate/material.icons.extended [`a1bf899`](https://github.com/suitetecsa/sdk-android/commit/a1bf899)
 - Merge pull request #178 from suitetecsa/renovate/major-compose.bom [`7e2c565`](https://github.com/suitetecsa/sdk-android/commit/7e2c565)
