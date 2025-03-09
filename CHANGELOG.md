@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`d2a0556`](https://github.com/suitetecsa/sdk-android/commit/d2a0556)
 - :robot: changelog file generated [`e5ac542`](https://github.com/suitetecsa/sdk-android/commit/e5ac542)
 - :robot: changelog file generated [`e61e862`](https://github.com/suitetecsa/sdk-android/commit/e61e862)
 - :robot: changelog file generated [`aabc1a7`](https://github.com/suitetecsa/sdk-android/commit/aabc1a7)
@@ -49,6 +50,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Chore
 - update dependency androidx.datastore:datastore-preferences to v1.1.3 [`01aa9cf`](https://github.com/suitetecsa/sdk-android/commit/01aa9cf)
 - update agp to v8.8.2 [`d8c7604`](https://github.com/suitetecsa/sdk-android/commit/d8c7604)
+- update actions/upload-artifact action to v4.6.1 [`213a3b6`](https://github.com/suitetecsa/sdk-android/commit/213a3b6)
 - update github/codeql-action action to v3.28.9 [`53ccfeb`](https://github.com/suitetecsa/sdk-android/commit/53ccfeb)
 - update hilt.android to v2.55 [`e456b2d`](https://github.com/suitetecsa/sdk-android/commit/e456b2d)
 - update gradle/actions action to v4.3.0 [`6349eb7`](https://github.com/suitetecsa/sdk-android/commit/6349eb7)
@@ -101,6 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #183 from suitetecsa/renovate/actions-upload-artifact-4.x [`31e70c1`](https://github.com/suitetecsa/sdk-android/commit/31e70c1)
 - Merge pull request #184 from suitetecsa/renovate/datastore.preferences [`73f3326`](https://github.com/suitetecsa/sdk-android/commit/73f3326)
 - Merge pull request #182 from suitetecsa/renovate/agp [`623c6fd`](https://github.com/suitetecsa/sdk-android/commit/623c6fd)
 - Merge pull request #179 from suitetecsa/renovate/github-codeql-action-3.x [`79b7f95`](https://github.com/suitetecsa/sdk-android/commit/79b7f95)
