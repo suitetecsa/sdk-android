@@ -355,13 +355,14 @@ fun BalanceActions(
                 items = simCards,
                 selectedItem = currentSimCard,
                 onItemSelect = onSimCardSelect,
-                selectedItemFactory = { modifier, item ->
+                enabled = !isSomeTaskRunning,
+                selectedItemFactory = { simCard, modifier ->
                     Row(
                         modifier = modifier
                             .padding(8.dp)
                             .wrapContentSize()
                     ) {
-                        item?.let {
+                        simCard?.let {
                             Icon(
                                 imageVector = simCardIcons[it.slotIndex],
                                 contentDescription = null,
@@ -381,8 +382,7 @@ fun BalanceActions(
                             Text(text = " ${it.displayName}")
                         }
                     }
-                },
-                enabled = !isSomeTaskRunning
+                }
             )
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

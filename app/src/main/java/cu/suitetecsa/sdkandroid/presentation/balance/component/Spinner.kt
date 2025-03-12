@@ -18,19 +18,19 @@ fun <T> Spinner(
     items: List<T>,
     selectedItem: T,
     onItemSelect: (T) -> Unit,
-    selectedItemFactory: @Composable (Modifier, T) -> Unit,
-    dropdownItemFactory: @Composable (T, Int) -> Unit,
     modifier: Modifier = Modifier,
     dropDownModifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    selectedItemFactory: @Composable (T, Modifier) -> Unit,
+    dropdownItemFactory: @Composable (T, Int) -> Unit
 ) {
     var expanded: Boolean by remember { mutableStateOf(false) }
 
     Box(modifier = modifier.wrapContentSize(Alignment.TopStart)) {
         selectedItemFactory(
+            selectedItem,
             Modifier
-                .clickable(enabled = enabled) { expanded = true },
-            selectedItem
+                .clickable(enabled = enabled) { expanded = true }
         )
 
         DropdownMenu(
