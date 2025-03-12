@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - get and show sim phone number [`ac0dd29`](https://github.com/suitetecsa/sdk-android/commit/ac0dd29)
 
 ### Documentation
+- :robot: changelog file generated [`e996df1`](https://github.com/suitetecsa/sdk-android/commit/e996df1)
 - :robot: changelog file generated [`8355ff0`](https://github.com/suitetecsa/sdk-android/commit/8355ff0)
 - :robot: changelog file generated [`01bda4d`](https://github.com/suitetecsa/sdk-android/commit/01bda4d)
 - :robot: changelog file generated [`12b48ee`](https://github.com/suitetecsa/sdk-android/commit/12b48ee)
@@ -65,6 +66,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update kotlin to v2.1.10 [`77132f0`](https://github.com/suitetecsa/sdk-android/commit/77132f0)
+- update dependency com.google.devtools.ksp to v2.1.10-1.0.31 [`5cb7f5d`](https://github.com/suitetecsa/sdk-android/commit/5cb7f5d)
 - update dependency ru.kode:detekt-rules-compose to v1.4.0 [`d014b8a`](https://github.com/suitetecsa/sdk-android/commit/d014b8a)
 - update dependency gradle to v8.13 [`623cd29`](https://github.com/suitetecsa/sdk-android/commit/623cd29)
 - update dependency com.vanniktech.maven.publish to v0.31.0 [`44250d2`](https://github.com/suitetecsa/sdk-android/commit/44250d2)
@@ -129,6 +132,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #126 from suitetecsa/renovate/kotlin [`734f8cd`](https://github.com/suitetecsa/sdk-android/commit/734f8cd)
 - Merge pull request #127 from suitetecsa/renovate/detekt.rules.compose [`abde08a`](https://github.com/suitetecsa/sdk-android/commit/abde08a)
 - Merge pull request #191 from suitetecsa/fix-detekt-lint-issues [`2b244d7`](https://github.com/suitetecsa/sdk-android/commit/2b244d7)
 - Merge pull request #190 from suitetecsa/fix-detekt-lint-issues [`eac982a`](https://github.com/suitetecsa/sdk-android/commit/eac982a)
