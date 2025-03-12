@@ -146,6 +146,8 @@ fun BalanceInfo(
                 .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(text="Numero")
+            Text(text="${state.currentSimCard?.phoneNumber}")
             Text(text = "Saldo:")
             Text(
                 text = "$%.2f CUP".format(state.balance),

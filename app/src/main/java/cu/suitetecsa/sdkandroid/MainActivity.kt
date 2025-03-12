@@ -2,6 +2,7 @@ package cu.suitetecsa.sdkandroid
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -42,13 +43,15 @@ class MainActivity : AppCompatActivity() {
         if (checkPermissions()) {
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(
+                mutableListOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.CALL_PHONE,
                     Manifest.permission.READ_CONTACTS,
-                ),
+                ).apply {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) add(Manifest.permission.READ_PHONE_NUMBERS)
+                }.toTypedArray(),
                 RequestCode
             )
             return
