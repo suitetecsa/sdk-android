@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased changes
 
+### Bug Fixes
+- get and show sim phone number [`ac0dd29`](https://github.com/suitetecsa/sdk-android/commit/ac0dd29)
+
 ### Documentation
+- :robot: changelog file generated [`81c435d`](https://github.com/suitetecsa/sdk-android/commit/81c435d)
 - :robot: changelog file generated [`62021ad`](https://github.com/suitetecsa/sdk-android/commit/62021ad)
 - :robot: changelog file generated [`e75e2f0`](https://github.com/suitetecsa/sdk-android/commit/e75e2f0)
 - :robot: changelog file generated [`bd606ea`](https://github.com/suitetecsa/sdk-android/commit/bd606ea)
