@@ -15,13 +15,13 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun <T> Spinner(
-    modifier: Modifier = Modifier,
-    dropDownModifier: Modifier = Modifier,
     items: List<T>,
     selectedItem: T,
     onItemSelect: (T) -> Unit,
     selectedItemFactory: @Composable (Modifier, T) -> Unit,
     dropdownItemFactory: @Composable (T, Int) -> Unit,
+    modifier: Modifier = Modifier,
+    dropDownModifier: Modifier = Modifier,
     enabled: Boolean = true
 ) {
     var expanded: Boolean by remember { mutableStateOf(false) }
