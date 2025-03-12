@@ -7,10 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Bug Fixes
+- detekt issues [`353c377`](https://github.com/suitetecsa/sdk-android/commit/353c377)
 - detekt issues [`283b886`](https://github.com/suitetecsa/sdk-android/commit/283b886)
 - get and show sim phone number [`ac0dd29`](https://github.com/suitetecsa/sdk-android/commit/ac0dd29)
 
 ### Documentation
+- :robot: changelog file generated [`01bda4d`](https://github.com/suitetecsa/sdk-android/commit/01bda4d)
 - :robot: changelog file generated [`12b48ee`](https://github.com/suitetecsa/sdk-android/commit/12b48ee)
 - :robot: changelog file generated [`81c435d`](https://github.com/suitetecsa/sdk-android/commit/81c435d)
 - :robot: changelog file generated [`62021ad`](https://github.com/suitetecsa/sdk-android/commit/62021ad)
@@ -125,6 +127,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Other
+- Merge pull request #191 from suitetecsa/fix-detekt-lint-issues [`2b244d7`](https://github.com/suitetecsa/sdk-android/commit/2b244d7)
 - Merge pull request #190 from suitetecsa/fix-detekt-lint-issues [`eac982a`](https://github.com/suitetecsa/sdk-android/commit/eac982a)
 - Merge pull request #189 from suitetecsa/renovate/gradle-8.x [`030f870`](https://github.com/suitetecsa/sdk-android/commit/030f870)
 - Merge pull request #188 from suitetecsa/renovate/vanniktech.maven.publish [`31733b4`](https://github.com/suitetecsa/sdk-android/commit/31733b4)
