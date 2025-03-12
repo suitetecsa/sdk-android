@@ -6,12 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased changes
 
+### Feature
+- update compileSdk and minSdk versions [`d676648`](https://github.com/suitetecsa/sdk-android/commit/d676648)
+
 ### Bug Fixes
 - detekt issues [`353c377`](https://github.com/suitetecsa/sdk-android/commit/353c377)
 - detekt issues [`283b886`](https://github.com/suitetecsa/sdk-android/commit/283b886)
 - get and show sim phone number [`ac0dd29`](https://github.com/suitetecsa/sdk-android/commit/ac0dd29)
 
 ### Documentation
+- :robot: changelog file generated [`bff2d1f`](https://github.com/suitetecsa/sdk-android/commit/bff2d1f)
 - :robot: changelog file generated [`e996df1`](https://github.com/suitetecsa/sdk-android/commit/e996df1)
 - :robot: changelog file generated [`8355ff0`](https://github.com/suitetecsa/sdk-android/commit/8355ff0)
 - :robot: changelog file generated [`01bda4d`](https://github.com/suitetecsa/sdk-android/commit/01bda4d)
@@ -131,7 +135,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update dependency gradle to v8.10 [`48765f8`](https://github.com/suitetecsa/sdk-android/commit/48765f8)
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
+### Refactor
+- handle potential null in activeSubscriptionInfoList [`781176a`](https://github.com/suitetecsa/sdk-android/commit/781176a)
+
 ### Other
+- Merge pull request #192 from suitetecsa/fix-build-gradle-kts-lint-issues [`f1635ce`](https://github.com/suitetecsa/sdk-android/commit/f1635ce)
 - Merge pull request #126 from suitetecsa/renovate/kotlin [`734f8cd`](https://github.com/suitetecsa/sdk-android/commit/734f8cd)
 - Merge pull request #127 from suitetecsa/renovate/detekt.rules.compose [`abde08a`](https://github.com/suitetecsa/sdk-android/commit/abde08a)
 - Merge pull request #191 from suitetecsa/fix-detekt-lint-issues [`2b244d7`](https://github.com/suitetecsa/sdk-android/commit/2b244d7)
