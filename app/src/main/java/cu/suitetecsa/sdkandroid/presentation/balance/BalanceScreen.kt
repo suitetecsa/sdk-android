@@ -146,8 +146,8 @@ fun BalanceInfo(
                 .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text="Numero")
-            Text(text="${state.currentSimCard?.phoneNumber}")
+            Text(text = "Numero")
+            Text(text = "${state.currentSimCard?.phoneNumber}")
             Text(text = "Saldo:")
             Text(
                 text = "$%.2f CUP".format(state.balance),
@@ -355,7 +355,6 @@ fun BalanceActions(
                 items = simCards,
                 selectedItem = currentSimCard,
                 onItemSelect = onSimCardSelect,
-                enabled = !isSomeTaskRunning,
                 selectedItemFactory = { modifier, item ->
                     Row(
                         modifier = modifier
@@ -382,7 +381,8 @@ fun BalanceActions(
                             Text(text = " ${it.displayName}")
                         }
                     }
-                }
+                },
+                enabled = !isSomeTaskRunning
             )
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
