@@ -38,7 +38,7 @@ internal class SimCardCollectorLegacy(private val context: Context) : SimCardCol
     override fun collect(): List<SimCard> {
         val simCards: MutableList<SimCard> = ArrayList()
         val subscriptionManager = getSubscriptionManager(context)
-        if (subscriptionManager.activeSubscriptionInfoList.isNotEmpty()) {
+        if (subscriptionManager.activeSubscriptionInfoList?.isNotEmpty() == true) {
             simCards.addAll(getSimCards(context, subscriptionManager, ::mapSimCard))
         } else {
             simCards.addAll(getSimCards(context, getSubscriptionManagerForNetMonster(context), ::mapSimCard))
@@ -64,7 +64,7 @@ internal class SimCardCollectorLegacy(private val context: Context) : SimCardCol
         ): List<SimCard> {
             val simCards: MutableList<SimCard> = ArrayList()
             val scope = SimCardCollectScope(manager)
-            for (subscribedNetwork in manager.activeSubscriptionInfoList) {
+            for (subscribedNetwork in manager.activeSubscriptionInfoList!!) {
                 scope.subscribedNetwork = subscribedNetwork
                 scope.telephonyManager = (context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager)
                     .createForSubscriptionId(subscribedNetwork.subscriptionId)

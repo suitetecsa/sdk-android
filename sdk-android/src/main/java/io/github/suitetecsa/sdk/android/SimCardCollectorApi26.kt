@@ -50,7 +50,7 @@ class SimCardCollectorApi26(private val context: Context) : SimCardCollector {
     override fun collect(): List<SimCard> {
         val simCards: MutableList<SimCard> = ArrayList()
         val subscriptionManager = SimCardCollectorLegacy.getSubscriptionManager(context)
-        if (subscriptionManager.activeSubscriptionInfoList.isNotEmpty()) {
+        if (subscriptionManager.activeSubscriptionInfoList?.isNotEmpty() == true) {
             simCards.addAll(
                 SimCardCollectorLegacy.getSimCards(
                     context,
