@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Feature
+- Remove Android O version check for balance feature [`7230222`](https://github.com/suitetecsa/sdk-android/commit/7230222)
+- Refactor SimCardCollector for improved logic and removal of legacy code [`267a0a4`](https://github.com/suitetecsa/sdk-android/commit/267a0a4)
+- enhance contact data retrieval and error handling [`ca872c1`](https://github.com/suitetecsa/sdk-android/commit/ca872c1)
 - update compileSdk and minSdk versions [`d676648`](https://github.com/suitetecsa/sdk-android/commit/d676648)
 
 ### Bug Fixes
@@ -15,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - get and show sim phone number [`ac0dd29`](https://github.com/suitetecsa/sdk-android/commit/ac0dd29)
 
 ### Documentation
+- :robot: changelog file generated [`e2ce764`](https://github.com/suitetecsa/sdk-android/commit/e2ce764)
 - :robot: changelog file generated [`bff2d1f`](https://github.com/suitetecsa/sdk-android/commit/bff2d1f)
 - :robot: changelog file generated [`e996df1`](https://github.com/suitetecsa/sdk-android/commit/e996df1)
 - :robot: changelog file generated [`8355ff0`](https://github.com/suitetecsa/sdk-android/commit/8355ff0)
@@ -136,6 +140,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Refactor
+- Initialize cursor to null in ContactsCollectorImpl [`e174da4`](https://github.com/suitetecsa/sdk-android/commit/e174da4)
 - handle potential null in activeSubscriptionInfoList [`781176a`](https://github.com/suitetecsa/sdk-android/commit/781176a)
 
 ### Other
