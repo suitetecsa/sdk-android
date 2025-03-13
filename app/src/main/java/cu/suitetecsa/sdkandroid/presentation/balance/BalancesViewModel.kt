@@ -3,6 +3,7 @@ package cu.suitetecsa.sdkandroid.presentation.balance
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.compose.runtime.State
@@ -40,6 +41,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+private const val TAG = "BalancesViewModel"
 
 @HiltViewModel
 class BalancesViewModel @Inject constructor(
@@ -166,6 +169,7 @@ class BalancesViewModel @Inject constructor(
                                 mailData = response.mailData,
                                 dailyData = response.dailyData
                             )
+                            Log.e(TAG, "onSuccess: ${response.usageBasedPricing}")
                         }
 
                         MESSAGES_BALANCE -> {

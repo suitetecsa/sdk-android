@@ -191,7 +191,7 @@ fun PlansSection(state: BalanceState) {
             DataPlan(
                 planTitle = "Datos",
                 dataCount = dataCount,
-                dataExpire = data.expires?.takeIf { it.isActive }?.asDateMillis?.asRemainingDays?.let { "$it días" }
+                dataExpire = data.expires?.takeIf { it.isActive }?.let { "$it días" }
             )
         }
         state.voice?.let { voice ->
@@ -212,7 +212,7 @@ fun PlansSection(state: BalanceState) {
             DataPlan(
                 planTitle = "Bolsa diaria",
                 dataCount = dailyData.data,
-                dataExpire = dailyData.expires.takeIf { it.isActive }?.asDateMillis?.asRemainingDays
+                dataExpire = dailyData.expires.takeIf { it.isActive }
                     ?.let { "$it horas" }
             )
         }
@@ -220,7 +220,7 @@ fun PlansSection(state: BalanceState) {
             DataPlan(
                 planTitle = "Bolsa correo",
                 dataCount = mailData.data,
-                dataExpire = mailData.expires.takeIf { it.isActive }?.asDateMillis?.asRemainingDays?.let { "$it días" }
+                dataExpire = mailData.expires.takeIf { it.isActive }?.let { "$it días" }
             )
         }
     }

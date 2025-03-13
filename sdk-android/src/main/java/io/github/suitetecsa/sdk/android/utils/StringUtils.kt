@@ -27,8 +27,8 @@ object StringUtils {
     @Throws(ParseException::class)
     fun toDateMillis(date: String): Long {
         val calendar = Calendar.getInstance()
-        toDate(date)?.let { calendar.setTime(it) }
-        return calendar.getTimeInMillis()
+        toDate(date)?.let { calendar.time = it }
+        return calendar.timeInMillis
     }
 
     @Throws(ParseException::class)
