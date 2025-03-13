@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Feature
+- Enhance USSD code formatting and improve state management in BalancesViewModel [`40568f8`](https://github.com/suitetecsa/sdk-android/commit/40568f8)
+- Improve balance data parsing and display [`46f3fa9`](https://github.com/suitetecsa/sdk-android/commit/46f3fa9)
+- refactor UssdRequestSenderImpl for improved USSD request handling [`3eec480`](https://github.com/suitetecsa/sdk-android/commit/3eec480)
 - Remove Android O version check for balance feature [`7230222`](https://github.com/suitetecsa/sdk-android/commit/7230222)
 - Refactor SimCardCollector for improved logic and removal of legacy code [`267a0a4`](https://github.com/suitetecsa/sdk-android/commit/267a0a4)
 - enhance contact data retrieval and error handling [`ca872c1`](https://github.com/suitetecsa/sdk-android/commit/ca872c1)
@@ -18,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - get and show sim phone number [`ac0dd29`](https://github.com/suitetecsa/sdk-android/commit/ac0dd29)
 
 ### Documentation
+- :robot: changelog file generated [`a32dea9`](https://github.com/suitetecsa/sdk-android/commit/a32dea9)
 - :robot: changelog file generated [`e2ce764`](https://github.com/suitetecsa/sdk-android/commit/e2ce764)
 - :robot: changelog file generated [`bff2d1f`](https://github.com/suitetecsa/sdk-android/commit/bff2d1f)
 - :robot: changelog file generated [`e996df1`](https://github.com/suitetecsa/sdk-android/commit/e996df1)
