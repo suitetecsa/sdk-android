@@ -28,7 +28,7 @@ internal class ContactsCollectorImpl(private val context: Context) : ContactsCol
     override fun collect(): List<Contact> {
         val contacts = mutableListOf<Contact>()
         val contentResolver: ContentResolver = context.contentResolver
-        var cursor: Cursor? = null
+        val cursor: Cursor?
 
         try {
             cursor = contentResolver.query(
