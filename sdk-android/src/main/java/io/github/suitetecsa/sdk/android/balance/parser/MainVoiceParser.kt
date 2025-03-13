@@ -1,7 +1,5 @@
 package io.github.suitetecsa.sdk.android.balance.parser
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import io.github.suitetecsa.sdk.android.balance.response.VoiceBalance
 import org.jetbrains.annotations.Contract
 import java.text.ParseException
@@ -13,7 +11,6 @@ object MainVoiceParser {
      * @return The parsed main voice balance as a VoiceBalance object, or null if the data cannot be parsed.
      */
     @JvmStatic
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Contract("_ -> new")
     @Throws(ParseException::class)
     fun extractVoice(input: CharSequence): VoiceBalance =

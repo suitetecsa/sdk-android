@@ -1,7 +1,6 @@
 package cu.suitetecsa.sdkandroid.presentation.balance
 
 import android.content.res.Configuration
-import android.os.Build
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -73,13 +72,9 @@ fun BalanceRoute(
                 }
             },
             onBalanceUpdate = {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    balancesViewModel.onEvent(
-                        BalanceEvent.UpdateBalance
-                    )
-                } else {
-                    Unit
-                }
+                balancesViewModel.onEvent(
+                    BalanceEvent.UpdateBalance
+                )
             },
             isSomeTaskRunning = state.loading
         )
@@ -109,14 +104,10 @@ fun BalanceScreen(
     ) {
         var isSheetOpen by remember { mutableStateOf(false) }
         Box(modifier = Modifier.height(topPadding.calculateTopPadding())) {}
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            BalanceInfo(
-                state = state,
-                onTurnUsageBasedPricing = onTurnUsageBasedPricing
-            )
-        } else {
-            Text(text = "Not supported")
-        }
+        BalanceInfo(
+            state = state,
+            onTurnUsageBasedPricing = onTurnUsageBasedPricing
+        )
         Text(text = state.errorText ?: "")
         Button(
             onClick = {
@@ -207,14 +198,14 @@ fun PlansSection(state: BalanceState) {
             DataPlan(
                 planTitle = "Voz",
                 dataCount = voice.data,
-                dataExpire = voice.expires.takeIf { it.isActive }?.asDateMillis?.asRemainingDays?.let { "$it días" }
+                dataExpire = voice.expires.takeIf { it.isActive }?.let { "$it días" }
             )
         }
         state.sms?.let { sms ->
             DataPlan(
                 planTitle = "SMS",
                 dataCount = sms.data,
-                dataExpire = sms.expires.takeIf { it.isActive }?.asDateMillis?.asRemainingDays?.let { "$it días" }
+                dataExpire = sms.expires.takeIf { it.isActive }?.let { "$it días" }
             )
         }
         state.dailyData?.let { dailyData ->
@@ -385,10 +376,8 @@ fun BalanceActions(
                 }
             )
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            IconButton(onClick = onBalanceUpdate, enabled = !isSomeTaskRunning) {
-                Icon(imageVector = Icons.Outlined.Autorenew, contentDescription = "Update")
-            }
+        IconButton(onClick = onBalanceUpdate, enabled = !isSomeTaskRunning) {
+            Icon(imageVector = Icons.Outlined.Autorenew, contentDescription = "Update")
         }
     } else {
         Icon(imageVector = Icons.Outlined.SimCardAlert, contentDescription = null)
