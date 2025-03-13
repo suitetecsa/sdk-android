@@ -41,6 +41,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import androidx.core.net.toUri
 
 private const val TAG = "BalancesViewModel"
 
@@ -121,7 +122,6 @@ class BalancesViewModel @Inject constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @RequiresPermission(android.Manifest.permission.CALL_PHONE)
     private fun updateBalance(simCard: SimCard) {
         simCard.smartFetchBalance(
@@ -215,13 +215,12 @@ class BalancesViewModel @Inject constructor(
         )
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @RequiresPermission(android.Manifest.permission.CALL_PHONE)
     private fun turnUsageBasedPricing(isActive: Boolean) {
         val ussdCode = if (!isActive) {
-            "*133*1*1*2${Uri.parse("#")}"
+            "*133*1*1*2${"#".toUri()}"
         } else {
-            "*133*1*1*1${Uri.parse("#")}"
+            "*133*1*1*1${"#".toUri()}"
         }
         currentSimCard?.also {
             it.ussdFetch(
