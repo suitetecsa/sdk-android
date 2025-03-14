@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - get and show sim phone number [`ac0dd29`](https://github.com/suitetecsa/sdk-android/commit/ac0dd29)
 
 ### Documentation
+- :robot: changelog file generated [`26cbb41`](https://github.com/suitetecsa/sdk-android/commit/26cbb41)
 - :robot: changelog file generated [`a32dea9`](https://github.com/suitetecsa/sdk-android/commit/a32dea9)
 - :robot: changelog file generated [`e2ce764`](https://github.com/suitetecsa/sdk-android/commit/e2ce764)
 - :robot: changelog file generated [`bff2d1f`](https://github.com/suitetecsa/sdk-android/commit/bff2d1f)
@@ -78,6 +79,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update dependency androidx.activity:activity-compose to v1.10.1 (#162) [`28877bc`](https://github.com/suitetecsa/sdk-android/commit/28877bc)
 - update kotlin to v2.1.10 [`77132f0`](https://github.com/suitetecsa/sdk-android/commit/77132f0)
 - update dependency com.google.devtools.ksp to v2.1.10-1.0.31 [`5cb7f5d`](https://github.com/suitetecsa/sdk-android/commit/5cb7f5d)
 - update dependency ru.kode:detekt-rules-compose to v1.4.0 [`d014b8a`](https://github.com/suitetecsa/sdk-android/commit/d014b8a)
