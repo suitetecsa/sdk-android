@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - get and show sim phone number [`ac0dd29`](https://github.com/suitetecsa/sdk-android/commit/ac0dd29)
 
 ### Documentation
+- :robot: changelog file generated [`6cac4ea`](https://github.com/suitetecsa/sdk-android/commit/6cac4ea)
 - :robot: changelog file generated [`d877ea4`](https://github.com/suitetecsa/sdk-android/commit/d877ea4)
 - :robot: changelog file generated [`26cbb41`](https://github.com/suitetecsa/sdk-android/commit/26cbb41)
 - :robot: changelog file generated [`a32dea9`](https://github.com/suitetecsa/sdk-android/commit/a32dea9)
@@ -80,6 +81,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update dependency androidx.navigation:navigation-compose to v2.8.9 (#193) [`a453c48`](https://github.com/suitetecsa/sdk-android/commit/a453c48)
 - update dependency androidx.core:core-ktx to v1.15.0 (#170) [`3cf1e2e`](https://github.com/suitetecsa/sdk-android/commit/3cf1e2e)
 - update dependency androidx.activity:activity-compose to v1.10.1 (#162) [`28877bc`](https://github.com/suitetecsa/sdk-android/commit/28877bc)
 - update kotlin to v2.1.10 [`77132f0`](https://github.com/suitetecsa/sdk-android/commit/77132f0)
