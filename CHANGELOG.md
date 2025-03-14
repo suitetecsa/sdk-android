@@ -16,11 +16,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update compileSdk and minSdk versions [`d676648`](https://github.com/suitetecsa/sdk-android/commit/d676648)
 
 ### Bug Fixes
+- update dependency androidx.compose:compose-bom to v2025.03.00 (#194) [`83e1c18`](https://github.com/suitetecsa/sdk-android/commit/83e1c18)
 - detekt issues [`353c377`](https://github.com/suitetecsa/sdk-android/commit/353c377)
 - detekt issues [`283b886`](https://github.com/suitetecsa/sdk-android/commit/283b886)
 - get and show sim phone number [`ac0dd29`](https://github.com/suitetecsa/sdk-android/commit/ac0dd29)
 
 ### Documentation
+- :robot: changelog file generated [`15848e6`](https://github.com/suitetecsa/sdk-android/commit/15848e6)
 - :robot: changelog file generated [`6cac4ea`](https://github.com/suitetecsa/sdk-android/commit/6cac4ea)
 - :robot: changelog file generated [`d877ea4`](https://github.com/suitetecsa/sdk-android/commit/d877ea4)
 - :robot: changelog file generated [`26cbb41`](https://github.com/suitetecsa/sdk-android/commit/26cbb41)
