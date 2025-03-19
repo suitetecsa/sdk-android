@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased changes
 
+### Documentation
+- :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
+
+### Chore
+- update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
+
+## v2.0.0-beta.1 (2025-03-18)
+
 ### Feature
 - :sparkles: implement retry mechanism for USSD requests [`ef27524`](https://github.com/suitetecsa/sdk-android/commit/ef27524)
 - Enhance USSD code formatting and improve state management in BalancesViewModel [`40568f8`](https://github.com/suitetecsa/sdk-android/commit/40568f8)
