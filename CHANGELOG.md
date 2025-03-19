@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Feature
+- :sparkles: implement retry mechanism for USSD requests [`ef27524`](https://github.com/suitetecsa/sdk-android/commit/ef27524)
 - Enhance USSD code formatting and improve state management in BalancesViewModel [`40568f8`](https://github.com/suitetecsa/sdk-android/commit/40568f8)
 - Improve balance data parsing and display [`46f3fa9`](https://github.com/suitetecsa/sdk-android/commit/46f3fa9)
 - refactor UssdRequestSenderImpl for improved USSD request handling [`3eec480`](https://github.com/suitetecsa/sdk-android/commit/3eec480)
@@ -22,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - get and show sim phone number [`ac0dd29`](https://github.com/suitetecsa/sdk-android/commit/ac0dd29)
 
 ### Documentation
+- :robot: changelog file generated [`27ccfec`](https://github.com/suitetecsa/sdk-android/commit/27ccfec)
 - :robot: changelog file generated [`15848e6`](https://github.com/suitetecsa/sdk-android/commit/15848e6)
 - :robot: changelog file generated [`6cac4ea`](https://github.com/suitetecsa/sdk-android/commit/6cac4ea)
 - :robot: changelog file generated [`d877ea4`](https://github.com/suitetecsa/sdk-android/commit/d877ea4)
@@ -152,10 +154,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.26.1 [`d028316`](https://github.com/suitetecsa/sdk-android/commit/d028316)
 
 ### Refactor
+- update `constantPattern` regex in detekt configuration [`df63e44`](https://github.com/suitetecsa/sdk-android/commit/df63e44)
 - Initialize cursor to null in ContactsCollectorImpl [`e174da4`](https://github.com/suitetecsa/sdk-android/commit/e174da4)
 - handle potential null in activeSubscriptionInfoList [`781176a`](https://github.com/suitetecsa/sdk-android/commit/781176a)
 
 ### Other
+- shore: shange version [`e5fcc74`](https://github.com/suitetecsa/sdk-android/commit/e5fcc74)
+- Merge remote-tracking branch 'origin/master' [`ebbf9be`](https://github.com/suitetecsa/sdk-android/commit/ebbf9be)
 - Merge pull request #192 from suitetecsa/fix-build-gradle-kts-lint-issues [`f1635ce`](https://github.com/suitetecsa/sdk-android/commit/f1635ce)
 - Merge pull request #126 from suitetecsa/renovate/kotlin [`734f8cd`](https://github.com/suitetecsa/sdk-android/commit/734f8cd)
 - Merge pull request #127 from suitetecsa/renovate/detekt.rules.compose [`abde08a`](https://github.com/suitetecsa/sdk-android/commit/abde08a)
