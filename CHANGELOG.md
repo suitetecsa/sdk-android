@@ -7,17 +7,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Feature
+- Enhance USSD code formatting and improve state management in BalancesViewModel [`40568f8`](https://github.com/suitetecsa/sdk-android/commit/40568f8)
+- Improve balance data parsing and display [`46f3fa9`](https://github.com/suitetecsa/sdk-android/commit/46f3fa9)
+- refactor UssdRequestSenderImpl for improved USSD request handling [`3eec480`](https://github.com/suitetecsa/sdk-android/commit/3eec480)
 - Remove Android O version check for balance feature [`7230222`](https://github.com/suitetecsa/sdk-android/commit/7230222)
 - Refactor SimCardCollector for improved logic and removal of legacy code [`267a0a4`](https://github.com/suitetecsa/sdk-android/commit/267a0a4)
 - enhance contact data retrieval and error handling [`ca872c1`](https://github.com/suitetecsa/sdk-android/commit/ca872c1)
 - update compileSdk and minSdk versions [`d676648`](https://github.com/suitetecsa/sdk-android/commit/d676648)
 
 ### Bug Fixes
+- update dependency androidx.compose:compose-bom to v2025.03.00 (#194) [`83e1c18`](https://github.com/suitetecsa/sdk-android/commit/83e1c18)
 - detekt issues [`353c377`](https://github.com/suitetecsa/sdk-android/commit/353c377)
 - detekt issues [`283b886`](https://github.com/suitetecsa/sdk-android/commit/283b886)
 - get and show sim phone number [`ac0dd29`](https://github.com/suitetecsa/sdk-android/commit/ac0dd29)
 
 ### Documentation
+- :robot: changelog file generated [`15848e6`](https://github.com/suitetecsa/sdk-android/commit/15848e6)
+- :robot: changelog file generated [`6cac4ea`](https://github.com/suitetecsa/sdk-android/commit/6cac4ea)
+- :robot: changelog file generated [`d877ea4`](https://github.com/suitetecsa/sdk-android/commit/d877ea4)
+- :robot: changelog file generated [`26cbb41`](https://github.com/suitetecsa/sdk-android/commit/26cbb41)
+- :robot: changelog file generated [`a32dea9`](https://github.com/suitetecsa/sdk-android/commit/a32dea9)
 - :robot: changelog file generated [`e2ce764`](https://github.com/suitetecsa/sdk-android/commit/e2ce764)
 - :robot: changelog file generated [`bff2d1f`](https://github.com/suitetecsa/sdk-android/commit/bff2d1f)
 - :robot: changelog file generated [`e996df1`](https://github.com/suitetecsa/sdk-android/commit/e996df1)
@@ -74,6 +83,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - añade varios unit tests [`a3cab7e`](https://github.com/suitetecsa/sdk-android/commit/a3cab7e)
 
 ### Chore
+- update dependency androidx.navigation:navigation-compose to v2.8.9 (#193) [`a453c48`](https://github.com/suitetecsa/sdk-android/commit/a453c48)
+- update dependency androidx.core:core-ktx to v1.15.0 (#170) [`3cf1e2e`](https://github.com/suitetecsa/sdk-android/commit/3cf1e2e)
+- update dependency androidx.activity:activity-compose to v1.10.1 (#162) [`28877bc`](https://github.com/suitetecsa/sdk-android/commit/28877bc)
 - update kotlin to v2.1.10 [`77132f0`](https://github.com/suitetecsa/sdk-android/commit/77132f0)
 - update dependency com.google.devtools.ksp to v2.1.10-1.0.31 [`5cb7f5d`](https://github.com/suitetecsa/sdk-android/commit/5cb7f5d)
 - update dependency ru.kode:detekt-rules-compose to v1.4.0 [`d014b8a`](https://github.com/suitetecsa/sdk-android/commit/d014b8a)
