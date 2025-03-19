@@ -7,9 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`8d9199a`](https://github.com/suitetecsa/sdk-android/commit/8d9199a)
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- update actions/upload-artifact action to v4.6.2 (#196) [`2117960`](https://github.com/suitetecsa/sdk-android/commit/2117960)
 - update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
 
 ## v2.0.0-beta.1 (2025-03-18)
