@@ -7,10 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`e2418b0`](https://github.com/suitetecsa/sdk-android/commit/e2418b0)
 - :robot: changelog file generated [`8d9199a`](https://github.com/suitetecsa/sdk-android/commit/8d9199a)
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- update hilt.android to v2.56 (#197) [`a4a9415`](https://github.com/suitetecsa/sdk-android/commit/a4a9415)
 - update actions/upload-artifact action to v4.6.2 (#196) [`2117960`](https://github.com/suitetecsa/sdk-android/commit/2117960)
 - update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
 
