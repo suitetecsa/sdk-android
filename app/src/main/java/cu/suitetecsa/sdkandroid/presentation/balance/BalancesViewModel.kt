@@ -1,13 +1,11 @@
 package cu.suitetecsa.sdkandroid.presentation.balance
 
 import android.annotation.SuppressLint
-import android.net.Uri
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cu.suitetecsa.sdkandroid.data.source.PreferenceDataSource
@@ -16,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.suitetecsa.sdk.android.ContactsCollector
 import io.github.suitetecsa.sdk.android.SimCardCollector
 import io.github.suitetecsa.sdk.android.balance.FetchBalanceCallBack
+import io.github.suitetecsa.sdk.android.balance.RequestState
 import io.github.suitetecsa.sdk.android.balance.consult.UssdRequest
 import io.github.suitetecsa.sdk.android.balance.consult.UssdRequest.BONUS_BALANCE
 import io.github.suitetecsa.sdk.android.balance.consult.UssdRequest.CUSTOM
@@ -41,7 +40,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import androidx.core.net.toUri
 
 private const val TAG = "BalancesViewModel"
 
@@ -126,15 +124,26 @@ class BalancesViewModel @Inject constructor(
     private fun updateBalance(simCard: SimCard) {
         simCard.smartFetchBalance(
             object : FetchBalanceCallBack {
-                override fun onFetching(request: UssdRequest) {
+                override fun onStateChanged(
+                    request: UssdRequest,
+                    state: RequestState,
+                    retryCount: Int
+                ) {
                     this@BalancesViewModel.consultType = request
-                    val consultMessage = when (request) {
-                        BONUS_BALANCE -> "Consultando Bonos"
-                        DATA_BALANCE -> "Consultando Datos"
-                        MESSAGES_BALANCE -> "Consultando SMS"
-                        PRINCIPAL_BALANCE -> "Consultando Saldo"
-                        VOICE_BALANCE -> "Consultando Minutos"
-                        CUSTOM -> ""
+                    val consultMessage = when (state) {
+                        RequestState.STARTED -> {
+                            when (request) {
+                                BONUS_BALANCE -> "Consultando Bonos"
+                                DATA_BALANCE -> "Consultando Datos"
+                                MESSAGES_BALANCE -> "Consultando SMS"
+                                PRINCIPAL_BALANCE -> "Consultando Saldo"
+                                VOICE_BALANCE -> "Consultando Minutos"
+                                CUSTOM -> ""
+                            }
+                        }
+                        RequestState.RETRYING -> "Reintentando en $retryCount segundos"
+                        RequestState.SUCCEEDED -> "Hecho"
+                        RequestState.FAILED -> "Hubo un Fallo"
                     }
                     _state.value = _state.value.copy(consultMessage = consultMessage)
                 }
@@ -226,7 +235,11 @@ class BalancesViewModel @Inject constructor(
             it.ussdFetch(
                 ussdCode,
                 object : FetchBalanceCallBack {
-                    override fun onFetching(request: UssdRequest) {
+                    override fun onStateChanged(
+                        request: UssdRequest,
+                        state: RequestState,
+                        retryCount: Int
+                    ) {
                         _state.value = _state.value.copy(
                             consultMessage = if (!isActive) {
                                 "Desactivando TPC"
