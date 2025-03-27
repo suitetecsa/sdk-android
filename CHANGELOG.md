@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`492490c`](https://github.com/suitetecsa/sdk-android/commit/492490c)
 - :robot: changelog file generated [`804240f`](https://github.com/suitetecsa/sdk-android/commit/804240f)
 - :robot: changelog file generated [`17e435c`](https://github.com/suitetecsa/sdk-android/commit/17e435c)
 - :robot: changelog file generated [`3413dbf`](https://github.com/suitetecsa/sdk-android/commit/3413dbf)
@@ -18,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- update dependency com.google.devtools.ksp to v2.1.20-1.0.32 (#128) [`a30a6f2`](https://github.com/suitetecsa/sdk-android/commit/a30a6f2)
 - update kotlin to v2.1.20 (#198) [`ff523e2`](https://github.com/suitetecsa/sdk-android/commit/ff523e2)
 - update hilt.android to v2.56.1 (#201) [`6d5d097`](https://github.com/suitetecsa/sdk-android/commit/6d5d097)
 - update dependency androidx.compose:compose-bom to v2025.03.01 (#203) [`ebbf9c1`](https://github.com/suitetecsa/sdk-android/commit/ebbf9c1)
