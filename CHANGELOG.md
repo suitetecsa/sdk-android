@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`4497ffe`](https://github.com/suitetecsa/sdk-android/commit/4497ffe)
 - :robot: changelog file generated [`ccdec00`](https://github.com/suitetecsa/sdk-android/commit/ccdec00)
 - :robot: changelog file generated [`94c57bf`](https://github.com/suitetecsa/sdk-android/commit/94c57bf)
 - :robot: changelog file generated [`492490c`](https://github.com/suitetecsa/sdk-android/commit/492490c)
@@ -21,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- update actions/setup-java action to v4.7.1 (#207) [`84c8247`](https://github.com/suitetecsa/sdk-android/commit/84c8247)
 - update github/codeql-action action to v3.28.15 (#205) [`8d13404`](https://github.com/suitetecsa/sdk-android/commit/8d13404)
 - update agp to v8.9.1 (#200) [`946478f`](https://github.com/suitetecsa/sdk-android/commit/946478f)
 - update dependency com.google.devtools.ksp to v2.1.20-1.0.32 (#128) [`a30a6f2`](https://github.com/suitetecsa/sdk-android/commit/a30a6f2)
