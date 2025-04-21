@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`0d293e7`](https://github.com/suitetecsa/sdk-android/commit/0d293e7)
 - :robot: changelog file generated [`5a6cc87`](https://github.com/suitetecsa/sdk-android/commit/5a6cc87)
 - :robot: changelog file generated [`e11a31a`](https://github.com/suitetecsa/sdk-android/commit/e11a31a)
 - :robot: changelog file generated [`5aa4ef7`](https://github.com/suitetecsa/sdk-android/commit/5aa4ef7)
@@ -25,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- update dependency com.google.devtools.ksp to v2.1.20-2.0.0 [`f93139f`](https://github.com/suitetecsa/sdk-android/commit/f93139f)
 - update hilt.android to v2.56.2 [`3c292bd`](https://github.com/suitetecsa/sdk-android/commit/3c292bd)
 - update actions/setup-java action to v4.7.1 (#207) [`84c8247`](https://github.com/suitetecsa/sdk-android/commit/84c8247)
 - update dependency androidx.core:core-ktx to v1.16.0 [`e3ef9f7`](https://github.com/suitetecsa/sdk-android/commit/e3ef9f7)
@@ -43,6 +45,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
 
 ### Other
+- Merge pull request #206 from suitetecsa/renovate/devtools.ksp [`39d2f43`](https://github.com/suitetecsa/sdk-android/commit/39d2f43)
 - Merge pull request #210 from suitetecsa/renovate/hilt.android [`ef7a1fb`](https://github.com/suitetecsa/sdk-android/commit/ef7a1fb)
 - Merge pull request #209 from suitetecsa/renovate/core.ktx [`35d8d6f`](https://github.com/suitetecsa/sdk-android/commit/35d8d6f)
 - Merge pull request #208 from suitetecsa/renovate/compose.bom [`4b6929f`](https://github.com/suitetecsa/sdk-android/commit/4b6929f)
