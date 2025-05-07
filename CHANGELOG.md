@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`8645d5a`](https://github.com/suitetecsa/sdk-android/commit/8645d5a)
 - :robot: changelog file generated [`60f01db`](https://github.com/suitetecsa/sdk-android/commit/60f01db)
 - :robot: changelog file generated [`53aa411`](https://github.com/suitetecsa/sdk-android/commit/53aa411)
 - :robot: changelog file generated [`2be3b85`](https://github.com/suitetecsa/sdk-android/commit/2be3b85)
@@ -30,6 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- update agp to v8.10.0 [`98d8dc5`](https://github.com/suitetecsa/sdk-android/commit/98d8dc5)
 - update github/codeql-action action to v3.28.17 [`b0e6f17`](https://github.com/suitetecsa/sdk-android/commit/b0e6f17)
 - update dependency com.google.devtools.ksp to v2.1.20-2.0.1 [`e48354b`](https://github.com/suitetecsa/sdk-android/commit/e48354b)
 - update dependency androidx.compose:compose-bom to v2025.04.01 [`ae0ebde`](https://github.com/suitetecsa/sdk-android/commit/ae0ebde)
@@ -53,6 +55,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
 
 ### Other
+- Merge pull request #211 from suitetecsa/renovate/agp [`af74502`](https://github.com/suitetecsa/sdk-android/commit/af74502)
 - Merge pull request #217 from suitetecsa/renovate/github-codeql-action-3.x [`97cd02c`](https://github.com/suitetecsa/sdk-android/commit/97cd02c)
 - Merge pull request #216 from suitetecsa/renovate/devtools.ksp [`b36b9a2`](https://github.com/suitetecsa/sdk-android/commit/b36b9a2)
 - Merge pull request #213 from suitetecsa/renovate/compose.bom [`754f9b9`](https://github.com/suitetecsa/sdk-android/commit/754f9b9)
