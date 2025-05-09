@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`983b9b3`](https://github.com/suitetecsa/sdk-android/commit/983b9b3)
 - :robot: changelog file generated [`58089c1`](https://github.com/suitetecsa/sdk-android/commit/58089c1)
 - :robot: changelog file generated [`e05845c`](https://github.com/suitetecsa/sdk-android/commit/e05845c)
 - :robot: changelog file generated [`8d9b0e9`](https://github.com/suitetecsa/sdk-android/commit/8d9b0e9)
@@ -34,6 +35,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- update dependency androidx.navigation:navigation-compose to v2.9.0 [`399a03c`](https://github.com/suitetecsa/sdk-android/commit/399a03c)
 - update dependency androidx.lifecycle:lifecycle-runtime-ktx to v2.9.0 [`98e08bd`](https://github.com/suitetecsa/sdk-android/commit/98e08bd)
 - update dependency androidx.compose:compose-bom to v2025.05.00 [`3ec6877`](https://github.com/suitetecsa/sdk-android/commit/3ec6877)
 - update dependency androidx.datastore:datastore-preferences to v1.1.6 [`c20daa6`](https://github.com/suitetecsa/sdk-android/commit/c20daa6)
@@ -61,6 +63,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
 
 ### Other
+- Merge pull request #220 from suitetecsa/renovate/navigation.compose [`13074d1`](https://github.com/suitetecsa/sdk-android/commit/13074d1)
 - Merge pull request #219 from suitetecsa/renovate/lifecycle.runtime.ktx [`9568276`](https://github.com/suitetecsa/sdk-android/commit/9568276)
 - Merge pull request #218 from suitetecsa/renovate/compose.bom [`5b1f310`](https://github.com/suitetecsa/sdk-android/commit/5b1f310)
 - Merge pull request #214 from suitetecsa/renovate/datastore.preferences [`4df8c17`](https://github.com/suitetecsa/sdk-android/commit/4df8c17)
