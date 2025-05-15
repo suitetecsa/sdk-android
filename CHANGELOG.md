@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`31311b6`](https://github.com/suitetecsa/sdk-android/commit/31311b6)
 - :robot: changelog file generated [`4dc8112`](https://github.com/suitetecsa/sdk-android/commit/4dc8112)
 - :robot: changelog file generated [`32106ae`](https://github.com/suitetecsa/sdk-android/commit/32106ae)
 - :robot: changelog file generated [`7a76694`](https://github.com/suitetecsa/sdk-android/commit/7a76694)
@@ -48,6 +49,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update agp to v8.10.0 [`98d8dc5`](https://github.com/suitetecsa/sdk-android/commit/98d8dc5)
 - update github/codeql-action action to v3.28.17 [`b0e6f17`](https://github.com/suitetecsa/sdk-android/commit/b0e6f17)
 - update dependency com.google.devtools.ksp to v2.1.20-2.0.1 [`e48354b`](https://github.com/suitetecsa/sdk-android/commit/e48354b)
+- update dependency gradle to v8.14 [`15e7593`](https://github.com/suitetecsa/sdk-android/commit/15e7593)
 - update dependency androidx.compose:compose-bom to v2025.04.01 [`ae0ebde`](https://github.com/suitetecsa/sdk-android/commit/ae0ebde)
 - update github/codeql-action action to v3.28.16 [`d4fbd4e`](https://github.com/suitetecsa/sdk-android/commit/d4fbd4e)
 - update dependency com.google.devtools.ksp to v2.1.20-2.0.0 [`f93139f`](https://github.com/suitetecsa/sdk-android/commit/f93139f)
@@ -69,6 +71,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
 
 ### Other
+- Merge pull request #215 from suitetecsa/renovate/gradle-8.x [`39905d9`](https://github.com/suitetecsa/sdk-android/commit/39905d9)
 - Merge pull request #223 from suitetecsa/renovate/vanniktech.maven.publish [`96d6970`](https://github.com/suitetecsa/sdk-android/commit/96d6970)
 - Merge pull request #222 from suitetecsa/renovate/devtools.ksp [`b7354f7`](https://github.com/suitetecsa/sdk-android/commit/b7354f7)
 - Merge pull request #221 from suitetecsa/renovate/kotlin [`128dab8`](https://github.com/suitetecsa/sdk-android/commit/128dab8)
