@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`4dc8112`](https://github.com/suitetecsa/sdk-android/commit/4dc8112)
 - :robot: changelog file generated [`32106ae`](https://github.com/suitetecsa/sdk-android/commit/32106ae)
 - :robot: changelog file generated [`7a76694`](https://github.com/suitetecsa/sdk-android/commit/7a76694)
 - :robot: changelog file generated [`983b9b3`](https://github.com/suitetecsa/sdk-android/commit/983b9b3)
@@ -37,6 +38,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- update dependency com.vanniktech.maven.publish to v0.32.0 [`f6ddc74`](https://github.com/suitetecsa/sdk-android/commit/f6ddc74)
 - update dependency com.google.devtools.ksp to v2.1.21-2.0.1 [`2f59d4c`](https://github.com/suitetecsa/sdk-android/commit/2f59d4c)
 - update kotlin to v2.1.21 [`88f6a91`](https://github.com/suitetecsa/sdk-android/commit/88f6a91)
 - update dependency androidx.navigation:navigation-compose to v2.9.0 [`399a03c`](https://github.com/suitetecsa/sdk-android/commit/399a03c)
@@ -67,6 +69,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
 
 ### Other
+- Merge pull request #223 from suitetecsa/renovate/vanniktech.maven.publish [`96d6970`](https://github.com/suitetecsa/sdk-android/commit/96d6970)
 - Merge pull request #222 from suitetecsa/renovate/devtools.ksp [`b7354f7`](https://github.com/suitetecsa/sdk-android/commit/b7354f7)
 - Merge pull request #221 from suitetecsa/renovate/kotlin [`128dab8`](https://github.com/suitetecsa/sdk-android/commit/128dab8)
 - Merge pull request #220 from suitetecsa/renovate/navigation.compose [`13074d1`](https://github.com/suitetecsa/sdk-android/commit/13074d1)
