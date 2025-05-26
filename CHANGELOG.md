@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`2cdf7fa`](https://github.com/suitetecsa/sdk-android/commit/2cdf7fa)
 - :robot: changelog file generated [`fddc361`](https://github.com/suitetecsa/sdk-android/commit/fddc361)
 - :robot: changelog file generated [`31311b6`](https://github.com/suitetecsa/sdk-android/commit/31311b6)
 - :robot: changelog file generated [`4dc8112`](https://github.com/suitetecsa/sdk-android/commit/4dc8112)
@@ -40,6 +41,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- update gradle/actions action to v4.4.0 [`ed09af6`](https://github.com/suitetecsa/sdk-android/commit/ed09af6)
 - update github/codeql-action action to v3.28.18 [`7edf2d9`](https://github.com/suitetecsa/sdk-android/commit/7edf2d9)
 - update dependency com.vanniktech.maven.publish to v0.32.0 [`f6ddc74`](https://github.com/suitetecsa/sdk-android/commit/f6ddc74)
 - update dependency com.google.devtools.ksp to v2.1.21-2.0.1 [`2f59d4c`](https://github.com/suitetecsa/sdk-android/commit/2f59d4c)
@@ -73,6 +75,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
 
 ### Other
+- Merge pull request #225 from suitetecsa/renovate/gradle-actions-4.x [`70702b9`](https://github.com/suitetecsa/sdk-android/commit/70702b9)
 - Merge pull request #224 from suitetecsa/renovate/github-codeql-action-3.x [`d1ce5e7`](https://github.com/suitetecsa/sdk-android/commit/d1ce5e7)
 - Merge pull request #215 from suitetecsa/renovate/gradle-8.x [`39905d9`](https://github.com/suitetecsa/sdk-android/commit/39905d9)
 - Merge pull request #223 from suitetecsa/renovate/vanniktech.maven.publish [`96d6970`](https://github.com/suitetecsa/sdk-android/commit/96d6970)
