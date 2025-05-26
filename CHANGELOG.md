@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`1ef0675`](https://github.com/suitetecsa/sdk-android/commit/1ef0675)
 - :robot: changelog file generated [`2e35c6a`](https://github.com/suitetecsa/sdk-android/commit/2e35c6a)
 - :robot: changelog file generated [`2cdf7fa`](https://github.com/suitetecsa/sdk-android/commit/2cdf7fa)
 - :robot: changelog file generated [`fddc361`](https://github.com/suitetecsa/sdk-android/commit/fddc361)
@@ -42,6 +43,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- update dependency gradle to v8.14.1 [`7200a19`](https://github.com/suitetecsa/sdk-android/commit/7200a19)
+- update dependency androidx.datastore:datastore-preferences to v1.1.7 [`7d83f3d`](https://github.com/suitetecsa/sdk-android/commit/7d83f3d)
 - update dependency androidx.compose:compose-bom to v2025.05.01 [`a95f521`](https://github.com/suitetecsa/sdk-android/commit/a95f521)
 - update gradle/actions action to v4.4.0 [`ed09af6`](https://github.com/suitetecsa/sdk-android/commit/ed09af6)
 - update github/codeql-action action to v3.28.18 [`7edf2d9`](https://github.com/suitetecsa/sdk-android/commit/7edf2d9)
@@ -77,6 +80,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
 
 ### Other
+- Merge pull request #228 from suitetecsa/renovate/gradle-8.x [`c119156`](https://github.com/suitetecsa/sdk-android/commit/c119156)
+- Merge pull request #227 from suitetecsa/renovate/datastore.preferences [`b040dc8`](https://github.com/suitetecsa/sdk-android/commit/b040dc8)
 - Merge pull request #226 from suitetecsa/renovate/compose.bom [`ed829c4`](https://github.com/suitetecsa/sdk-android/commit/ed829c4)
 - Merge pull request #225 from suitetecsa/renovate/gradle-actions-4.x [`70702b9`](https://github.com/suitetecsa/sdk-android/commit/70702b9)
 - Merge pull request #224 from suitetecsa/renovate/github-codeql-action-3.x [`d1ce5e7`](https://github.com/suitetecsa/sdk-android/commit/d1ce5e7)
