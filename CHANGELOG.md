@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`c1eecb2`](https://github.com/suitetecsa/sdk-android/commit/c1eecb2)
 - :robot: changelog file generated [`65f6445`](https://github.com/suitetecsa/sdk-android/commit/65f6445)
 - :robot: changelog file generated [`1ef0675`](https://github.com/suitetecsa/sdk-android/commit/1ef0675)
 - :robot: changelog file generated [`2e35c6a`](https://github.com/suitetecsa/sdk-android/commit/2e35c6a)
@@ -44,6 +45,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- update github/codeql-action action to v3.28.19 [`ced7594`](https://github.com/suitetecsa/sdk-android/commit/ced7594)
 - update agp to v8.10.1 [`3f9eb8f`](https://github.com/suitetecsa/sdk-android/commit/3f9eb8f)
 - update dependency gradle to v8.14.1 [`7200a19`](https://github.com/suitetecsa/sdk-android/commit/7200a19)
 - update dependency androidx.datastore:datastore-preferences to v1.1.7 [`7d83f3d`](https://github.com/suitetecsa/sdk-android/commit/7d83f3d)
@@ -82,6 +84,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
 
 ### Other
+- Merge pull request #230 from suitetecsa/renovate/github-codeql-action-3.x [`6537327`](https://github.com/suitetecsa/sdk-android/commit/6537327)
 - Merge pull request #229 from suitetecsa/renovate/agp [`04c64ca`](https://github.com/suitetecsa/sdk-android/commit/04c64ca)
 - Merge pull request #228 from suitetecsa/renovate/gradle-8.x [`c119156`](https://github.com/suitetecsa/sdk-android/commit/c119156)
 - Merge pull request #227 from suitetecsa/renovate/datastore.preferences [`b040dc8`](https://github.com/suitetecsa/sdk-android/commit/b040dc8)
