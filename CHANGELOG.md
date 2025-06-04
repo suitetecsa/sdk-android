@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`881c45b`](https://github.com/suitetecsa/sdk-android/commit/881c45b)
 - :robot: changelog file generated [`9b4cb1a`](https://github.com/suitetecsa/sdk-android/commit/9b4cb1a)
 - :robot: changelog file generated [`c1eecb2`](https://github.com/suitetecsa/sdk-android/commit/c1eecb2)
 - :robot: changelog file generated [`65f6445`](https://github.com/suitetecsa/sdk-android/commit/65f6445)
@@ -46,6 +47,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- update dependency androidx.compose:compose-bom to v2025.06.00 [`7cd1065`](https://github.com/suitetecsa/sdk-android/commit/7cd1065)
 - update dependency androidx.lifecycle:lifecycle-runtime-ktx to v2.9.1 [`feaf81f`](https://github.com/suitetecsa/sdk-android/commit/feaf81f)
 - update dependency androidx.appcompat:appcompat to v1.7.1 [`bef34d7`](https://github.com/suitetecsa/sdk-android/commit/bef34d7)
 - update github/codeql-action action to v3.28.19 [`ced7594`](https://github.com/suitetecsa/sdk-android/commit/ced7594)
@@ -87,6 +89,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
 
 ### Other
+- Merge pull request #233 from suitetecsa/renovate/compose.bom [`5c9d285`](https://github.com/suitetecsa/sdk-android/commit/5c9d285)
 - Merge pull request #232 from suitetecsa/renovate/lifecycle.runtime.ktx [`338e33a`](https://github.com/suitetecsa/sdk-android/commit/338e33a)
 - Merge pull request #231 from suitetecsa/renovate/appcompat [`6a1f4f7`](https://github.com/suitetecsa/sdk-android/commit/6a1f4f7)
 - Merge pull request #230 from suitetecsa/renovate/github-codeql-action-3.x [`6537327`](https://github.com/suitetecsa/sdk-android/commit/6537327)
