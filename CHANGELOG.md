@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`9b4cb1a`](https://github.com/suitetecsa/sdk-android/commit/9b4cb1a)
 - :robot: changelog file generated [`c1eecb2`](https://github.com/suitetecsa/sdk-android/commit/c1eecb2)
 - :robot: changelog file generated [`65f6445`](https://github.com/suitetecsa/sdk-android/commit/65f6445)
 - :robot: changelog file generated [`1ef0675`](https://github.com/suitetecsa/sdk-android/commit/1ef0675)
@@ -45,6 +46,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- update dependency androidx.lifecycle:lifecycle-runtime-ktx to v2.9.1 [`feaf81f`](https://github.com/suitetecsa/sdk-android/commit/feaf81f)
+- update dependency androidx.appcompat:appcompat to v1.7.1 [`bef34d7`](https://github.com/suitetecsa/sdk-android/commit/bef34d7)
 - update github/codeql-action action to v3.28.19 [`ced7594`](https://github.com/suitetecsa/sdk-android/commit/ced7594)
 - update agp to v8.10.1 [`3f9eb8f`](https://github.com/suitetecsa/sdk-android/commit/3f9eb8f)
 - update dependency gradle to v8.14.1 [`7200a19`](https://github.com/suitetecsa/sdk-android/commit/7200a19)
@@ -84,6 +87,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
 
 ### Other
+- Merge pull request #232 from suitetecsa/renovate/lifecycle.runtime.ktx [`338e33a`](https://github.com/suitetecsa/sdk-android/commit/338e33a)
+- Merge pull request #231 from suitetecsa/renovate/appcompat [`6a1f4f7`](https://github.com/suitetecsa/sdk-android/commit/6a1f4f7)
 - Merge pull request #230 from suitetecsa/renovate/github-codeql-action-3.x [`6537327`](https://github.com/suitetecsa/sdk-android/commit/6537327)
 - Merge pull request #229 from suitetecsa/renovate/agp [`04c64ca`](https://github.com/suitetecsa/sdk-android/commit/04c64ca)
 - Merge pull request #228 from suitetecsa/renovate/gradle-8.x [`c119156`](https://github.com/suitetecsa/sdk-android/commit/c119156)
