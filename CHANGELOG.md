@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`afd7c69`](https://github.com/suitetecsa/sdk-android/commit/afd7c69)
 - :robot: changelog file generated [`38ddc15`](https://github.com/suitetecsa/sdk-android/commit/38ddc15)
 - :robot: changelog file generated [`636c811`](https://github.com/suitetecsa/sdk-android/commit/636c811)
 - :robot: changelog file generated [`ff23c6e`](https://github.com/suitetecsa/sdk-android/commit/ff23c6e)
@@ -50,6 +51,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- update dependency androidx.compose:compose-bom to v2025.07.00 [`4e80c83`](https://github.com/suitetecsa/sdk-android/commit/4e80c83)
 - update dependency gradle to v8.14.3 [`872d324`](https://github.com/suitetecsa/sdk-android/commit/872d324)
 - update dependency androidx.navigation:navigation-compose to v2.9.1 [`bf06f10`](https://github.com/suitetecsa/sdk-android/commit/bf06f10)
 - update github/codeql-action action to v3.29.2 [`ba8ba28`](https://github.com/suitetecsa/sdk-android/commit/ba8ba28)
@@ -95,6 +97,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
 
 ### Other
+- Merge pull request #238 from suitetecsa/renovate/compose.bom [`2ee88cd`](https://github.com/suitetecsa/sdk-android/commit/2ee88cd)
 - Merge pull request #234 from suitetecsa/renovate/gradle-8.x [`c5bf975`](https://github.com/suitetecsa/sdk-android/commit/c5bf975)
 - Merge pull request #242 from suitetecsa/renovate/navigation.compose [`d39d49c`](https://github.com/suitetecsa/sdk-android/commit/d39d49c)
 - Merge pull request #236 from suitetecsa/renovate/github-codeql-action-3.x [`c136d5a`](https://github.com/suitetecsa/sdk-android/commit/c136d5a)
