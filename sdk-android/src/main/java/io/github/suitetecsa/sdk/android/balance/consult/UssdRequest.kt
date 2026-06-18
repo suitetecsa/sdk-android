@@ -1,12 +1,12 @@
 package io.github.suitetecsa.sdk.android.balance.consult
 
-import android.net.Uri
+import androidx.core.net.toUri
 
 enum class UssdRequest(val ussdCode: String) {
-    PRINCIPAL_BALANCE("*222" + Uri.parse("#")),
-    DATA_BALANCE("*222*328" + Uri.parse("#")),
-    VOICE_BALANCE("*222*869" + Uri.parse("#")),
-    MESSAGES_BALANCE("*222*767" + Uri.parse("#")),
-    BONUS_BALANCE("*222*266" + Uri.parse("#")),
+    BALANCE("*222" + "#".toUri()),
+    DATA("*222*328" + "#".toUri()),
+    VOICE("*222*869" + "#".toUri()),
+    SMS("*222*767" + "#".toUri()),
+    BONUSES("*222*266" + "#".toUri()),
     CUSTOM("Nothing")
 }

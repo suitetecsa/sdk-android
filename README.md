@@ -36,238 +36,133 @@ SimCardCollector simCardCollector = new SimCardCollector.Builder().build(context
 List<SimCard> simCards = simCardCollector.collect();
 ```
 
-### Realizar llamadas con una SIM
+### Realizar consultas USSD con una SIM
 
 #### Kotlin
 
 ```kotlin
-simCards.last().makeCall(context, "51234567")
+simCards.last().ussdFetch("*222#", object : UssdStringCallback {
+    override fun onSuccess(rawResponse: String) { }
+    override fun onFailure(throwable: Throwable) { }
+})
 ```
 
 #### Java
 
 ```java
-SimCardUtils.makeCall(simCards.get(0), context, "51234567");
-```
-
-### Obtener saldo de la tarjeta SIM
-
-Para obtener el saldo de la primera tarjeta SIM de la lista, puedes seguir estos pasos:
-
-#### Kotlin
-
-```kotlin
-// Obtener la primera SIM de la lista
-val firstSimCard = simCards.first()
-var balance: MainBalance? = null
-// Enviar la solicitud
-
-firstSimCard.ussdExecute(
-    "*222#",
-    object : ConsultBalanceCallBack {
-        override fun onRequesting(request: UssdRequest) {
-            Toast.makeText(context, "Consultando saldo...", Toast.LENGTH_LONG).show()
-        }
-        @SuppressLint("MissingPermission")
-        override fun onSuccess(request: UssdRequest, ussdResponse: UssdResponse) {
-            when (request) {
-                UssdRequest.CUSTOM -> {
-                    // Convierte el objeto UssdResponse en un objeto MainBalance
-                    balance = (ussdResponse as Custom).response.parseMainBalance()
-                }
-                else -> {}
-            }
-        }
-        override fun onFailure(throwable: Throwable) {
-            throw throwable
-        }
-    }
-)
-```
-
-#### Java
-
-```java
-// Obtener la primera SIM de la lista
-SimCard firstSimCard = simCards.get(0);
-final MainBalance balance;
-
-// Enviar la solicitud
-SimCardUtils.ussdExecute(firstSimCard, "*222#", new ConsultBalanceCallBack() {
-    @Override 
-    public void onRequesting(UssdRequest request) {
-        Toast.makeText(context, "Consultando saldo...", Toast.LENGTH_LONG).show();
-    }
+SimCardUtils.ussdFetch(simCards.get(0), "*222#", new UssdStringCallback() {
+    @Override
+    public void onSuccess(String rawResponse) { }
 
     @Override
-    public void onSuccess(UssdRequest request, UssdResponse response) {
-        if (Objects.requireNonNull(request) == UssdRequest.CUSTOM) {
-            balance = MainBalanceParser.parseMainBalance(((Custom) response).response());
-        }
-    }
-
-    @Override
-    public void onFailure(Throwable throwable) {
-        throwable.printStackTrace();
-    }
+    public void onFailure(Throwable throwable) { }
 });
 ```
 
-### Consultar todo el saldo disponible.
+### Consultas tipadas (recomendado)
 
-`consultBalance` es una función de extensión que realiza las consultas de saldo automáticamente, consulta primero el saldo inicial, y dependiendo de la información que extraiga consulta los demás saldos. O sea, que si en el saldo inicial no detecta paquetes de datos, no ejecutará la consulta (\*222\*328#). Esto puede ser un inconveniente si desea consultar siempre el estado de la tarifa por consumo, una forma de solucionarlo es comprobar si la linea posee información de planes de datos y si no fuese el caso hacer la consulta del estado de la TPC usando la función `ussdExecute`.
+El SDK ofrece métodos semánticos que combinan el envío USSD + parseo en una sola llamada,
+usando `SdkCallback<T>` para devolver el modelo ya tipado:
 
 #### Kotlin
 
 ```kotlin
-if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-    simCard.consultBalance(
-        object : ConsultBalanceCallBack {
-            override fun onRequesting(resquest: UssdRequest) {
-                val consultMessage = when (resquest) {
-                    UssdRequest.BONUS_BALANCE -> "Consultando Bonos"
-                    UssdRequest.DATA_BALANCE -> "Consultando Datos"
-                    UssdRequest.MESSAGES_BALANCE -> "Consultando SMS"
-                    UssdRequest.PRINCIPAL_BALANCE -> "Consultando Saldo"
-                    UssdRequest.VOICE_BALANCE -> "Consultando Minutos"
-                    UssdRequest.CUSTOM -> ""
-                }
-                Toast.makeText(context, consultMessage, Toast.LENGTH_LONG).show()
-            }
-            override fun onSuccess(resquest: UssdRequest, ussdResponse: UssdResponse) {
-                when (resquest) {
-                    UssdRequest.BONUS_BALANCE -> {
-                        // Contiene la informacion extraida de la consulta de bono (*222*266#).
-                        // Es la ultima operacion en realizarse
-                        Toast.makeText(
-                            context,
-                            "${(ussdResponse as BonusBalance).credit.balance}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    UssdRequest.DATA_BALANCE -> {
-                        // Contiene la informacion extraida de la consulta de datos (*222*328#).
-                        // Solo se ejecuta si se detecta paquetes de datos en el saldo principal.
-                        Toast.makeText(
-                            context,
-                            "${(ussdResponse as DataBalance).usageBasedPricing}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    UssdRequest.MESSAGES_BALANCE -> {
-                        // Contiene la informacion extraida de la consulta de mensajes (*222*767#).
-                        // Solo se ejecuta si se detecta paquetes de SMS en el saldo principal.
-                        Toast.makeText(
-                            context,
-                            "${(ussdResponse as MessagesBalance).sms}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    UssdRequest.PRINCIPAL_BALANCE -> {
-                        // Contiene la informacion extraida de la consulta de saldo (*222#).
-                        // Es la primera operacion en realizarse
-                        Toast.makeText(
-                            context,
-                            "${(ussdResponse as PrincipalBalance).balance}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    UssdRequest.VOICE_BALANCE -> {
-                        // Contiene la informacion extraida de la consulta de mensajes (*222*869#).
-                        // Solo se ejecuta si se detecta paquetes de Voz en el saldo principal.
-                        Toast.makeText(
-                            context,
-                            "${(ussdResponse as VoiceBalance).seconds}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                    UssdRequest.CUSTOM -> {
-                        // No se ejecuta en la consulta de saldo automacica.
-                    }
-                }
-            }
+val sim = simCards.first()
 
-            override fun onFailure(throwable: Throwable?) {
-                throwable?.let { throw it }
-            }
-        }
-    )
-}
+sim.queryBalance(object : SdkCallback<MainBalance> {
+    override fun onSuccess(balance: MainBalance) {
+        // balance.balance: Float
+        // balance.data: Long? (bytes)
+        // balance.voice: Long? (segundos)
+        // balance.sms: Int?
+        // balance.lockDate: Date
+        // balance.deletionDate: Date
+    }
+    override fun onFailure(error: Throwable) { }
+})
+
+sim.queryData(object : SdkCallback<MainData> {
+    override fun onSuccess(data: MainData) { }
+    override fun onFailure(error: Throwable) { }
+})
+
+sim.queryVoice(object : SdkCallback<VoiceBalance> {
+    override fun onSuccess(voice: VoiceBalance) { }
+    override fun onFailure(error: Throwable) { }
+})
+
+sim.querySms(object : SdkCallback<MessagesBalance> {
+    override fun onSuccess(sms: MessagesBalance) { }
+    override fun onFailure(error: Throwable) { }
+})
+
+sim.queryBonuses(object : SdkCallback<BonusBalance> {
+    override fun onSuccess(bonus: BonusBalance) { }
+    override fun onFailure(error: Throwable) { }
+})
 ```
 
 #### Java
 
 ```java
-if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-    SimCardUtils.ussdExecute(firstSimCard, new ConsultBalanceCallBack() {
-        @SuppressLint("MissingPermission")
-        @Override
-        public void onRequesting(UssdRequest request) {
-            String consultMessage = switch (request) {
-                case BONUS_BALANCE -> "Consultando Bonos...";
-                case DATA_BALANCE -> "Consultando Datos...";
-                case MESSAGES_BALANCE -> "Consultando SMS...";
-                case PRINCIPAL_BALANCE -> "Consultando Saldo...";
-                case VOICE_BALANCE -> "Consultando Minutos...";
-                default -> "";
-            };
-            Toast.makeText(context, consultMessage, Toast.LENGTH_LONG).show();
-        }
+SimCard sim = simCards.get(0);
 
-        @Override
-        public void onSuccess(UssdRequest request, UssdResponse response) {
-            switch (request) {
-                case PRINCIPAL_BALANCE ->
-                    // Contiene la informacion extraida de la consulta de saldo (*222#).
-                    // Es la primera operacion en realizarse
-                    Toast.makeText(
-                        context,
-                        ((PrincipalBalance) response).balance(),
-                        Toast.LENGTH_LONG
-                    ).show();
-                case DATA_BALANCE ->
-                    // Contiene la informacion extraida de la consulta de datos (*222*328#).
-                    // Solo se ejecuta si se detecta paquetes de datos en el saldo principal.
-                    Toast.makeText(
-                        context,
-                        ((DataBalance) response).usageBasedPricing(),
-                        Toast.LENGTH_LONG
-                    ).show();
-                case VOICE_BALANCE ->
-                    // Contiene la informacion extraida de la consulta de mensajes (*222*869#).
-                    // Solo se ejecuta si se detecta paquetes de Voz en el saldo principal.
-                    Toast.makeText(
-                        context,
-                        ((VoiceBalance) response).seconds(),
-                        Toast.LENGTH_LONG
-                    ).show();
-                case MESSAGES_BALANCE ->
-                    // Contiene la informacion extraida de la consulta de mensajes (*222*767#).
-                    // Solo se ejecuta si se detecta paquetes de SMS en el saldo principal.
-                    Toast.makeText(
-                        context,
-                        ((MessagesBalance) response).sms(),
-                        Toast.LENGTH_LONG
-                    ).show();
-                case BONUS_BALANCE ->
-                    // Contiene la informacion extraida de la consulta de bono (*222*266#).
-                    // Es la ultima operacion en realizarse
-                    Toast.makeText(
-                        context,
-                        ((BonusBalance) response).credit().balance(),
-                        Toast.LENGTH_LONG
-                    ).show();
-                default -> {}
-            }
-        }
+SimCardBalanceQueries.queryBalance(sim, new SdkCallback<MainBalance>() {
+    @Override
+    public void onSuccess(MainBalance balance) { }
+    @Override
+    public void onFailure(Throwable error) { }
+});
 
-        @Override
-        public void onFailure(Throwable throwable) {
-            throwable.printStackTrace();
-        }
-    });
-}
+SimCardBalanceQueries.queryData(sim, new SdkCallback<MainData>() { ... });
+SimCardBalanceQueries.queryVoice(sim, new SdkCallback<VoiceBalance>() { ... });
+SimCardBalanceQueries.querySms(sim, new SdkCallback<MessagesBalance>() { ... });
+SimCardBalanceQueries.queryBonuses(sim, new SdkCallback<BonusBalance>() { ... });
 ```
+
+| Método | Código USSD | Devuelve |
+|---|---|---|
+| `queryBalance(callback)` | `*222#` | `MainBalance` |
+| `queryData(callback)` | `*222*328#` | `MainData` |
+| `queryVoice(callback)` | `*222*869#` | `VoiceBalance` |
+| `querySms(callback)` | `*222*767#` | `MessagesBalance` |
+| `queryBonuses(callback)` | `*222*266#` | `BonusBalance` |
+
+### API de bajo nivel
+
+Si necesitas enviar códigos USSD arbitrarios o acceder directamente a los parsers:
+
+#### Kotlin
+
+```kotlin
+sim.ussdFetch("*222#", object : UssdStringCallback {
+    override fun onSuccess(rawResponse: String) {
+        val balance = rawResponse.extractMainBalance()
+    }
+    override fun onFailure(throwable: Throwable) { }
+})
+```
+
+#### Java
+
+```java
+SimCardUtils.ussdFetch(sim, "*222#", new UssdStringCallback() {
+    @Override
+    public void onSuccess(String rawResponse) { }
+    @Override
+    public void onFailure(Throwable throwable) { }
+});
+```
+
+Los parsers también pueden usarse directamente:
+
+| Parser | Devuelve |
+|---|---|
+| `MainBalanceParser.extractMainBalance(input)` | `MainBalance` |
+| `MainDataParser.extractMainData(input)` | `MainData` |
+| `MainVoiceParser.extractVoice(input)` | `VoiceBalance` |
+| `MainSmsParser.extractSms(input)` | `MessagesBalance` |
+| `BonusBalanceParser.extractBonusBalance(input)` | `BonusBalance` |
 
 # Contribución
 

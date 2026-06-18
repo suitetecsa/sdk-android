@@ -2,38 +2,36 @@ package io.github.suitetecsa.sdk.android
 
 import io.github.suitetecsa.sdk.android.balance.parser.MainBalanceParser.extractMainBalance
 import io.github.suitetecsa.sdk.android.model.MainBalance
-import io.github.suitetecsa.sdk.android.model.MainData
-import io.github.suitetecsa.sdk.android.model.Sms
-import io.github.suitetecsa.sdk.android.model.Voice
+import io.github.suitetecsa.sdk.android.utils.asBytes
+import io.github.suitetecsa.sdk.android.utils.asDate
+import io.github.suitetecsa.sdk.android.utils.asSeconds
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 
 class MainBalanceParserTest : StringSpec({
     "should parse only main balance" {
         extractMainBalance("Saldo: 123.45 CUP. Linea activa hasta 15-08-24 vence 30-09-24.") shouldBe MainBalance(
-            "123.45",
+            123.45f,
             null,
             null,
             null,
             null,
-            null,
-            "15-08-24",
-            "30-09-24"
+            "15-08-24".asDate!!,
+            "30-09-24".asDate!!
         )
     }
     "should parse main balance with data" {
         extractMainBalance(
-            "Saldo: 123.45 CUP. Datos: 1.5 GB + 500 MB LTE. " +
+            "Saldo: 123.45 CUP. Datos: 1.5 GB. " +
                 "Linea activa hasta 15-08-24 vence 30-09-24."
         ) shouldBe MainBalance(
-            "123.45",
-            MainData(false, "1.5 GB", "500 MB", "no activos"),
+            123.45f,
+            "1.5 GB".asBytes,
             null,
             null,
             null,
-            null,
-            "15-08-24",
-            "30-09-24"
+            "15-08-24".asDate!!,
+            "30-09-24".asDate!!
         )
     }
     "should parse main balance with voice" {
@@ -41,14 +39,13 @@ class MainBalanceParserTest : StringSpec({
             "Saldo: 123.45 CUP. Voz: 12:34:56. " +
                 "Linea activa hasta 15-08-24 vence 30-09-24."
         ) shouldBe MainBalance(
-            "123.45",
+            123.45f,
             null,
-            Voice("12:34:56", "no activos"),
+            "12:34:56".asSeconds,
             null,
             null,
-            null,
-            "15-08-24",
-            "30-09-24"
+            "15-08-24".asDate!!,
+            "30-09-24".asDate!!
         )
     }
     "should parse main balance with sms" {
@@ -56,30 +53,28 @@ class MainBalanceParserTest : StringSpec({
             "Saldo: 123.45 CUP. SMS: 50. " +
                 "Linea activa hasta 15-08-24 vence 30-09-24."
         ) shouldBe MainBalance(
-            "123.45",
+            123.45f,
             null,
             null,
-            Sms("50", "no activos"),
+            50,
             null,
-            null,
-            "15-08-24",
-            "30-09-24"
+            "15-08-24".asDate!!,
+            "30-09-24".asDate!!
         )
     }
     "should parse main balance with combine plan" {
         extractMainBalance(
-            "Saldo: 123.45 CUP. Datos: 1.5 GB + 500 MB LTE. " +
+            "Saldo: 123.45 CUP. Datos: 1.5 GB. " +
                 "Voz: 12:34:56. SMS: 50. " +
                 "Linea activa hasta 15-08-24 vence 30-09-24."
         ) shouldBe MainBalance(
-            "123.45",
-            MainData(false, "1.5 GB", "500 MB", "no activos"),
-            Voice("12:34:56", "no activos"),
-            Sms("50", "no activos"),
+            123.45f,
+            "1.5 GB".asBytes,
+            "12:34:56".asSeconds,
+            50,
             null,
-            null,
-            "15-08-24",
-            "30-09-24"
+            "15-08-24".asDate!!,
+            "30-09-24".asDate!!
         )
     }
 })

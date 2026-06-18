@@ -3,14 +3,13 @@ package io.github.suitetecsa.sdk.android.balance.parser
 import android.os.Build
 import androidx.annotation.RequiresApi
 import io.github.suitetecsa.sdk.android.model.MainBalance
-import io.github.suitetecsa.sdk.android.model.MainData
-import io.github.suitetecsa.sdk.android.model.Sms
-import io.github.suitetecsa.sdk.android.model.Voice
+import io.github.suitetecsa.sdk.android.utils.asBytes
+import io.github.suitetecsa.sdk.android.utils.asDate
+import io.github.suitetecsa.sdk.android.utils.asSeconds
 import java.text.ParseException
 
 object MainBalanceParser {
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun CharSequence.extractCredit() =
         (
             """Saldo:\s+(?<balance>([\d.]+))\s+CUP\.\s+([^"]*?)Linea activa hasta\s+""" +
@@ -24,35 +23,22 @@ object MainBalanceParser {
                 )
             } ?: run { throw ParseException(this.toString(), 0) }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun CharSequence.extractData() =
         (
-            """Datos:\s+(?<data>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+\+\s+)?""" +
-                """((?<dataLte>(\d+(\.\d+)?)(\s)*([GMK])?B)\s+LTE)\."""
+            """Datos:\s+(?<data>(\d+(\.\d+)?)(\s)*([GMK])?B)?\."""
             )
             .toRegex().find(this)?.let {
-                MainData(
-                    false,
-                    it.groups["data"]?.value,
-                    it.groups["dataLte"]?.value,
-                    if (it.groups["data"]?.value != null || it.groups["dataLte"]?.value != null) {
-                        "no activos"
-                    } else {
-                        null
-                    }
-                )
+                it.groups["data"]?.value
             }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun CharSequence.extractVoice() =
         """Voz:\s+(?<data>(\d{1,3}:\d{2}:\d{2}))\.""".toRegex().find(this)?.let {
-            Voice(it.groups["data"]!!.value, "no activos")
+            it.groups["data"]?.value
         }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun CharSequence.extractSms() =
         """SMS:\s+(?<data>(\d+))\.""".toRegex().find(this)?.let {
-            Sms(it.groups["data"]!!.value, "no activos")
+            it.groups["data"]?.value
         }
 
     /**
@@ -61,19 +47,17 @@ object MainBalanceParser {
      * @return The parsed main balance data as a MainBalance object, or null if the data cannot be parsed.
      */
     @JvmStatic
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Throws(ParseException::class)
     fun extractMainBalance(input: CharSequence) = input.extractCredit()
         .let { (balance, lockDate, deletionDate) ->
             MainBalance(
-                balance,
-                input.extractData(),
-                input.extractVoice(),
-                input.extractSms(),
+                balance.toFloat(),
+                input.extractData()?.asBytes,
+                input.extractVoice()?.asSeconds,
+                input.extractSms()?.toIntOrNull(),
                 null,
-                null,
-                lockDate,
-                deletionDate
+                lockDate.asDate!!,
+                deletionDate.asDate!!
             )
         }
 }

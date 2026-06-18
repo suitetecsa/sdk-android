@@ -9,6 +9,9 @@ import io.github.suitetecsa.sdk.android.model.BonusUnlimitedData
 import io.github.suitetecsa.sdk.android.model.DataCu
 import io.github.suitetecsa.sdk.android.model.Sms
 import io.github.suitetecsa.sdk.android.model.Voice
+import io.github.suitetecsa.sdk.android.utils.asBytes
+import io.github.suitetecsa.sdk.android.utils.asDate
+import io.github.suitetecsa.sdk.android.utils.asSeconds
 
 object BonusBalanceParser {
     /**
@@ -45,48 +48,46 @@ val CharSequence.asBonusBalance: BonusBalance
 @RequiresApi(Build.VERSION_CODES.O)
 private fun CharSequence.extractCredit() =
     """\$(?<data>([\d.]+))\s+vence\s+(?<expires>(\d{2}-\d{2}-\d{2}))\.""".toRegex().find(this)
-        ?.let { BonusCredit(it.groups["data"]!!.value, it.groups["expires"]!!.value) }
+        ?.let { BonusCredit(it.groups["data"]!!.value.toFloat(), it.groups["expires"]!!.value.asDate!!) }
 
 @RequiresApi(Build.VERSION_CODES.O)
 private fun CharSequence.extractData(): BonusData? {
     val dataCountPattern = """(\d+(\.\d+)?)(\s)*([GMK])?B"""
     val dataCountGroup = """(?<data>$dataCountPattern)"""
-    val dataCountLtePattern = """(?<dataLte>$dataCountPattern)\s+LTE"""
     val dataDueDatePattern = """(?<expires>(\d{2}-\d{2}-\d{2}))"""
     val fullDataCountPattern =
-        """($dataCountGroup)?(\s+)?(\+)?(\s+)?($dataCountLtePattern)?\s+vence\s+$dataDueDatePattern(\.)?"""
+        """($dataCountGroup)?(\s+)?(\+)?(\s+)?($dataCountPattern)?(\s+LTE)?\s+vence\s+$dataDueDatePattern(\.)?"""
     val unlimitedDataPattern = """ilimitados\s+vence\s+(?<unlimitedData>(\d{2}-\d{2}-\d{2}))\."""
     val dataRegex =
         """Datos:\s+($unlimitedDataPattern)?(\s+)?($fullDataCountPattern)?""".toRegex()
 
     return dataRegex.find(this)?.let {
         val data = it.groups["data"]?.value
-        val dataLte = it.groups["dataLte"]?.value
         val expires = it.groups["expires"]?.value
-        if (data == null && dataLte == null && expires == null) null else BonusData(data, dataLte, expires)
+        if (data == null && expires == null) null else BonusData(data?.asBytes, expires?.asDate)
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 private fun CharSequence.extractUnlimitedData() =
     """ilimitados\s+vence\s+(?<expires>(\d{2}-\d{2}-\d{2}))\."""
-        .toRegex().find(this)?.let { BonusUnlimitedData(it.groups["expires"]?.value!!) }
+        .toRegex().find(this)?.let { BonusUnlimitedData(it.groups["expires"]?.value!!.asDate!!) }
 
 @RequiresApi(Build.VERSION_CODES.O)
 private fun CharSequence.extractDataCu() =
     """Datos\.cu\s+(?<data>(\d+(\.\d+)?)(\s)*([GMK])?B)?\s+vence\s+(?<expires>(\d{2}-\d{2}-\d{2}))\."""
         .toRegex().find(this)?.let {
-            DataCu(it.groups["data"]!!.value, it.groups["expires"]!!.value)
+            DataCu(it.groups["data"]!!.value.asBytes, it.groups["expires"]!!.value.asDate!!)
         }
 
 @RequiresApi(Build.VERSION_CODES.O)
 private fun CharSequence.extractVoice() =
     """Voz:\s+(?<data>(\d{2}:\d{2}:\d{2}))\s+vence\s+(?<expires>(\d{2}-\d{2}-\d{2}))\."""
         .toRegex().find(this)?.let {
-            Voice(it.groups["data"]!!.value, it.groups["expires"]!!.value)
+            Voice(it.groups["data"]!!.value.asSeconds, it.groups["expires"]!!.value)
         }
 
 @RequiresApi(Build.VERSION_CODES.O)
 private fun CharSequence.extractSms() =
     """SMS:\s+(?<data>(\d+))\s+vence\s+(?<expires>(\d{2}-\d{2}-\d{2}))\.""".toRegex().find(this)
-        ?.let { Sms(it.groups["data"]!!.value, it.groups["expires"]!!.value) }
+        ?.let { Sms(it.groups["data"]!!.value.toInt(), it.groups["expires"]!!.value) }

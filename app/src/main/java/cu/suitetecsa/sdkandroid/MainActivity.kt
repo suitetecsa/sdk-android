@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
-import com.arr.bugsend.BugSend
 import cu.suitetecsa.sdkandroid.presentation.balance.BalanceRoute
 import cu.suitetecsa.sdkandroid.presentation.balance.component.TopBar
 import cu.suitetecsa.sdkandroid.ui.theme.SDKAndroidTheme
@@ -30,15 +29,6 @@ private const val RequestCode = 50
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        BugSend(this)
-            .setTitle(getString(R.string.bug_send_title))
-            .setIcon(R.drawable.outline_bug_report_24)
-            .setMessage(getString(R.string.bug_send_message))
-            .setEmail(BuildConfig.SUPPORT_EMAIL)
-            .setSubject("REPORT/PortalUsuario")
-            .setExtraText("App Version: ${BuildConfig.VERSION_NAME}")
-            .show()
 
         if (checkPermissions()) {
             ActivityCompat.requestPermissions(

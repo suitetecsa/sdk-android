@@ -26,17 +26,12 @@ android {
     }
 
     buildTypes {
-        val supportEmail = System.getenv("SUPPORT_EMAIL")
         release {
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "SUPPORT_EMAIL", "\"$supportEmail\"")
-        }
-        debug {
-            buildConfigField("String", "SUPPORT_EMAIL", "\"$supportEmail\"")
         }
     }
     compileOptions {
@@ -53,20 +48,23 @@ android {
         allRules = false
         autoCorrect = true
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     buildFeatures {
         compose = true
         buildConfig = true
     }
     composeCompiler {
-        enableStrongSkippingMode = true
+        featureFlags.add(org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag.StrongSkipping)
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
     }
 }
 
@@ -104,6 +102,5 @@ dependencies {
     // Detekt rules
     detektPlugins(libs.detekt.rules.compose)
 
-    // BugSend
-    implementation(libs.applifycu.bugsend)
+
 }

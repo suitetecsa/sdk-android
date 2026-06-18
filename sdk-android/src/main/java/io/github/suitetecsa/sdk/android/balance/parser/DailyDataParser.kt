@@ -3,6 +3,7 @@
 package io.github.suitetecsa.sdk.android.balance.parser
 
 import io.github.suitetecsa.sdk.android.model.DailyData
+import io.github.suitetecsa.sdk.android.utils.asBytes
 import org.jetbrains.annotations.Contract
 import java.text.ParseException
 
@@ -20,7 +21,7 @@ object DailyDataParser {
             """Diaria:\s+(?<data>(\d+(\.\d+)?)(\s)*([GMK])?B)?(\s+no activos)?""" +
                 """(\s+validos\s+(?<expires>(\d+))\s+horas)?\."""
             ).toRegex().find(input)?.let {
-            DailyData(it.groups["data"]!!.value, it.groups["expires"]?.value ?: "no activos")
+            DailyData(it.groups["data"]!!.value.asBytes, it.groups["expires"]?.value ?: "no activos")
         }
 }
 
