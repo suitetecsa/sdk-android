@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Unreleased changes
 
 ### Documentation
+- :robot: changelog file generated [`a6f0427`](https://github.com/suitetecsa/sdk-android/commit/a6f0427)
 - :robot: changelog file generated [`c6cb272`](https://github.com/suitetecsa/sdk-android/commit/c6cb272)
 - :robot: changelog file generated [`af4c619`](https://github.com/suitetecsa/sdk-android/commit/af4c619)
 - :robot: changelog file generated [`2392379`](https://github.com/suitetecsa/sdk-android/commit/2392379)
@@ -54,6 +55,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - :robot: changelog file generated [`eec45d0`](https://github.com/suitetecsa/sdk-android/commit/eec45d0)
 
 ### Chore
+- trigger ci [`fb03bfc`](https://github.com/suitetecsa/sdk-android/commit/fb03bfc)
 - update dependency androidx.lifecycle:lifecycle-runtime-ktx to v2.9.2 [`eaae528`](https://github.com/suitetecsa/sdk-android/commit/eaae528)
 - update hilt.android to v2.57 [`2f443e6`](https://github.com/suitetecsa/sdk-android/commit/2f443e6)
 - update dependency androidx.compose:compose-bom to v2025.07.00 [`4e80c83`](https://github.com/suitetecsa/sdk-android/commit/4e80c83)
@@ -102,7 +104,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - update actions/upload-artifact action to v4.6.2 (#196) [`2117960`](https://github.com/suitetecsa/sdk-android/commit/2117960)
 - update github/codeql-action action to v3.28.12 (#195) [`9de9b8f`](https://github.com/suitetecsa/sdk-android/commit/9de9b8f)
 
+### Refactor
+- balance system overhaul [`8cdf480`](https://github.com/suitetecsa/sdk-android/commit/8cdf480)
+
 ### Other
+- Merge pull request #251 from suitetecsa/refactor/balance-system [`c7f1cf1`](https://github.com/suitetecsa/sdk-android/commit/c7f1cf1)
 - Merge pull request #245 from suitetecsa/renovate/lifecycle.runtime.ktx [`32b6006`](https://github.com/suitetecsa/sdk-android/commit/32b6006)
 - Merge pull request #244 from suitetecsa/renovate/hilt.android [`7b7faae`](https://github.com/suitetecsa/sdk-android/commit/7b7faae)
 - Merge pull request #240 from suitetecsa/renovate/kotlin [`c2d758d`](https://github.com/suitetecsa/sdk-android/commit/c2d758d)
