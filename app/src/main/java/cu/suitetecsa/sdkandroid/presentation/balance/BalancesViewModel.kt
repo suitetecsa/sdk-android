@@ -1,7 +1,7 @@
 package cu.suitetecsa.sdkandroid.presentation.balance
 
+import android.Manifest
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -10,38 +10,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import cu.suitetecsa.sdkandroid.data.source.PreferenceDataSource
 import cu.suitetecsa.sdkandroid.domain.model.Preferences
+import cu.suitetecsa.sdkandroid.domain.model.SimBalance
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.suitetecsa.sdk.android.ContactsCollector
 import io.github.suitetecsa.sdk.android.SimCardCollector
-import io.github.suitetecsa.sdk.android.balance.FetchBalanceCallBack
-import io.github.suitetecsa.sdk.android.balance.RequestState
-import io.github.suitetecsa.sdk.android.balance.consult.UssdRequest
-import io.github.suitetecsa.sdk.android.balance.consult.UssdRequest.BONUS_BALANCE
-import io.github.suitetecsa.sdk.android.balance.consult.UssdRequest.CUSTOM
-import io.github.suitetecsa.sdk.android.balance.consult.UssdRequest.DATA_BALANCE
-import io.github.suitetecsa.sdk.android.balance.consult.UssdRequest.MESSAGES_BALANCE
-import io.github.suitetecsa.sdk.android.balance.consult.UssdRequest.PRINCIPAL_BALANCE
-import io.github.suitetecsa.sdk.android.balance.consult.UssdRequest.VOICE_BALANCE
-import io.github.suitetecsa.sdk.android.balance.response.BonusBalance
-import io.github.suitetecsa.sdk.android.balance.response.Custom
-import io.github.suitetecsa.sdk.android.balance.response.DataBalance
-import io.github.suitetecsa.sdk.android.balance.response.MessagesBalance
-import io.github.suitetecsa.sdk.android.balance.response.PrincipalBalance
+import io.github.suitetecsa.sdk.android.balance.SdkCallback
+import io.github.suitetecsa.sdk.android.balance.UssdStringCallback
 import io.github.suitetecsa.sdk.android.balance.response.UssdResponse
-import io.github.suitetecsa.sdk.android.balance.response.VoiceBalance
-import io.github.suitetecsa.sdk.android.model.MainData
 import io.github.suitetecsa.sdk.android.model.SimCard
-import io.github.suitetecsa.sdk.android.model.Sms
-import io.github.suitetecsa.sdk.android.model.Voice
-import io.github.suitetecsa.sdk.android.utils.smartFetchBalance
+import io.github.suitetecsa.sdk.android.utils.queryBalance
+import io.github.suitetecsa.sdk.android.utils.queryBonuses
+import io.github.suitetecsa.sdk.android.utils.queryData
+import io.github.suitetecsa.sdk.android.utils.querySms
+import io.github.suitetecsa.sdk.android.utils.queryVoice
 import io.github.suitetecsa.sdk.android.utils.ussdFetch
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
-
-private const val TAG = "BalancesViewModel"
 
 @HiltViewModel
 class BalancesViewModel @Inject constructor(
@@ -78,27 +66,16 @@ class BalancesViewModel @Inject constructor(
         get() = _state
     var canUpdate = true
         private set
-    var consultType: UssdRequest? = null
-        private set
 
     @SuppressLint("MissingPermission", "NewApi", "HardwareIds")
     fun onEvent(event: BalanceEvent) {
         when (event) {
-            is BalanceEvent.UpdateBalance -> {
-                if (canUpdate) {
-                    canUpdate = false
-                    _state.value = _state.value.copy(loading = true)
-                    currentSimCard?.also {
-                        updateBalance(it)
-                    }
-                }
-            }
-
             is BalanceEvent.ChangeSimCard -> {
                 viewModelScope.launch {
                     preferenceDataSource.updateCurrentSimCardId(event.simCard.telephony.subscriberId)
                     _state.value =
                         BalanceState(currentSimCard = currentSimCard, simCards = simCards)
+                    fetchAll()
                 }
             }
 
@@ -117,114 +94,140 @@ class BalancesViewModel @Inject constructor(
                     }
                 )
             }
+
+            BalanceEvent.FetchAll -> {
+                fetchAll()
+            }
         }
     }
 
-    @RequiresPermission(android.Manifest.permission.CALL_PHONE)
-    private fun updateBalance(simCard: SimCard) {
-        simCard.smartFetchBalance(
-            object : FetchBalanceCallBack {
-                override fun onStateChanged(
-                    request: UssdRequest,
-                    state: RequestState,
-                    retryCount: Int
-                ) {
-                    this@BalancesViewModel.consultType = request
-                    val consultMessage = when (state) {
-                        RequestState.STARTED -> {
-                            when (request) {
-                                BONUS_BALANCE -> "Consultando Bonos"
-                                DATA_BALANCE -> "Consultando Datos"
-                                MESSAGES_BALANCE -> "Consultando SMS"
-                                PRINCIPAL_BALANCE -> "Consultando Saldo"
-                                VOICE_BALANCE -> "Consultando Minutos"
-                                CUSTOM -> ""
-                            }
-                        }
-                        RequestState.RETRYING -> "Reintentando en $retryCount segundos"
-                        RequestState.SUCCEEDED -> "Hecho"
-                        RequestState.FAILED -> "Hubo un Fallo"
-                    }
-                    _state.value = _state.value.copy(consultMessage = consultMessage)
-                }
+    @SuppressLint("MissingPermission", "NewApi")
+    private fun fetchAll() {
+        val sim = currentSimCard ?: return
+        _state.value = _state.value.copy(loading = true, consultMessage = "Consultando...", error = null)
 
-                override fun onSuccess(
-                    request: UssdRequest,
-                    response: UssdResponse
-                ) {
-                    when (request) {
-                        BONUS_BALANCE -> {
-                            _state.value = _state.value.copy(
-                                bonusCredit = (response as BonusBalance).credit,
-                                bonusData = response.data,
-                                dataCu = response.dataCu,
-                                bonusUnlimitedData = response.unlimitedData,
-                            )
-                            _state.value = _state.value.copy(
-                                consultMessage = null,
-                                loading = false,
-                            )
-                            canUpdate = true
-                        }
+        var pending = 5
+        var fetchedBalance: SimBalance? = null
+        var fetchedConsumptionRate = false
+        var fetchedDataBytes: Long? = null
+        var fetchedDataExpires: String? = null
+        var fetchedVoiceExpires: String? = null
+        var fetchedSmsExpires: String? = null
+        var fetchedBonusCredit: Float? = null
+        var fetchedBonusCreditExpires: Date? = null
+        var fetchedBonusData: Long? = null
+        var fetchedBonusDataExpires: Date? = null
+        var fetchedDataCu: Long? = null
+        var fetchedDataCuExpires: Date? = null
+        var fetchedUnlimitedExpires: Date? = null
 
-                        DATA_BALANCE -> {
-                            _state.value = _state.value.copy(
-                                data = MainData(
-                                    (response as DataBalance).usageBasedPricing,
-                                    response.data,
-                                    response.dataLte,
-                                    response.expires
-                                ),
-                                mailData = response.mailData,
-                                dailyData = response.dailyData
-                            )
-                            Log.e(TAG, "onSuccess: ${response.usageBasedPricing}")
-                        }
+        fun tryComplete() {
+            val bal = fetchedBalance ?: return
+            if (--pending > 0) return
+            val complete = bal.copy(
+                consumptionRate = fetchedConsumptionRate,
+                data = fetchedDataBytes,
+                dataExpires = fetchedDataExpires,
+                voiceExpires = fetchedVoiceExpires,
+                smsExpires = fetchedSmsExpires,
+                bonusCredit = fetchedBonusCredit,
+                bonusCreditExpires = fetchedBonusCreditExpires,
+                bonusData = fetchedBonusData,
+                bonusDataExpires = fetchedBonusDataExpires,
+                dataCu = fetchedDataCu,
+                dataCuExpires = fetchedDataCuExpires,
+                bonusUnlimitedDataExpires = fetchedUnlimitedExpires,
+            )
+            _state.value = _state.value.copy(
+                simBalance = complete,
+                loading = false,
+                consultMessage = null,
+            )
+        }
 
-                        MESSAGES_BALANCE -> {
-                            _state.value = _state.value.copy(
-                                sms = Sms(
-                                    (response as MessagesBalance).data,
-                                    response.expires
-                                )
-                            )
-                        }
-
-                        PRINCIPAL_BALANCE -> {
-                            _state.value = _state.value.copy(
-                                balance = (response as PrincipalBalance).balance.toFloat(),
-                                activeUntil = response.blockDate,
-                                mainBalanceDueDate = response.deletionDate,
-                            )
-                        }
-
-                        VOICE_BALANCE -> {
-                            _state.value = _state.value.copy(
-                                voice = Voice(
-                                    (response as VoiceBalance).data,
-                                    response.expires
-                                )
-                            )
-                        }
-
-                        else -> {}
-                    }
-                }
-
-                override fun onFailure(throwable: Throwable) {
-                    throwable.printStackTrace()
-                    _state.value = _state.value.copy(
-                        errorText = throwable.message,
-                        consultMessage = null,
-                        loading = false,
-                    )
-                    canUpdate = true
-                }
+        sim.queryBalance(object : SdkCallback<io.github.suitetecsa.sdk.android.model.MainBalance> {
+            override fun onSuccess(result: io.github.suitetecsa.sdk.android.model.MainBalance) {
+                fetchedBalance = SimBalance(
+                    balance = result.balance,
+                    lockDate = result.lockDate,
+                    deletionDate = result.deletionDate,
+                    consumptionRate = false,
+                    data = result.data,
+                    dataExpires = null,
+                    voice = result.voice,
+                    voiceExpires = null,
+                    sms = result.sms,
+                    smsExpires = null,
+                    dailyData = result.dailyData,
+                    dailyDataExpires = null,
+                )
+                tryComplete()
             }
-        )
+
+            override fun onFailure(throwable: Throwable) {
+                _state.value = _state.value.copy(
+                    loading = false,
+                    consultMessage = null,
+                    error = throwable.message,
+                )
+                pending = 0
+            }
+        })
+
+        sim.queryData(object : SdkCallback<io.github.suitetecsa.sdk.android.model.MainData> {
+            override fun onSuccess(result: io.github.suitetecsa.sdk.android.model.MainData) {
+                fetchedConsumptionRate = result.consumptionRate
+                fetchedDataBytes = result.data
+                fetchedDataExpires = result.expires
+                tryComplete()
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                pending--
+            }
+        })
+
+        sim.queryVoice(object : SdkCallback<io.github.suitetecsa.sdk.android.balance.response.VoiceBalance> {
+            override fun onSuccess(result: io.github.suitetecsa.sdk.android.balance.response.VoiceBalance) {
+                fetchedVoiceExpires = result.expires
+                tryComplete()
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                pending--
+            }
+        })
+
+        sim.querySms(object : SdkCallback<io.github.suitetecsa.sdk.android.balance.response.MessagesBalance> {
+            override fun onSuccess(result: io.github.suitetecsa.sdk.android.balance.response.MessagesBalance) {
+                fetchedSmsExpires = result.expires
+                tryComplete()
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                pending--
+            }
+        })
+
+        sim.queryBonuses(object : SdkCallback<io.github.suitetecsa.sdk.android.balance.response.BonusBalance> {
+            override fun onSuccess(result: io.github.suitetecsa.sdk.android.balance.response.BonusBalance) {
+                fetchedBonusCredit = result.credit?.data
+                fetchedBonusCreditExpires = result.credit?.expires
+                fetchedBonusData = result.data?.data
+                fetchedBonusDataExpires = result.data?.expires
+                fetchedDataCu = result.dataCu?.data
+                fetchedDataCuExpires = result.dataCu?.expires
+                fetchedUnlimitedExpires = result.unlimitedData?.expires
+                tryComplete()
+            }
+
+            override fun onFailure(throwable: Throwable) {
+                pending--
+            }
+        })
     }
 
-    @RequiresPermission(android.Manifest.permission.CALL_PHONE)
+    @RequiresPermission(Manifest.permission.CALL_PHONE)
     private fun turnUsageBasedPricing(isActive: Boolean) {
         val ussdCode = if (!isActive) {
             "*133*1*1*2${"#".toUri()}"
@@ -234,57 +237,39 @@ class BalancesViewModel @Inject constructor(
         currentSimCard?.also {
             it.ussdFetch(
                 ussdCode,
-                object : FetchBalanceCallBack {
-                    override fun onStateChanged(
-                        request: UssdRequest,
-                        state: RequestState,
-                        retryCount: Int
-                    ) {
-                        _state.value = _state.value.copy(
-                            consultMessage = if (!isActive) {
-                                "Desactivando TPC"
-                            } else {
-                                "Activando TPC"
-                            }
-                        )
-                    }
-
-                    override fun onSuccess(
-                        request: UssdRequest,
-                        response: UssdResponse
-                    ) {
-                        when (request) {
-                            CUSTOM -> {
-                                if ((response as Custom).response == UssdResponse.PROCESSING_RESPONSE) {
-                                    _state.value.data?.let { data ->
-                                        _state.value = _state.value.copy(
-                                            data = MainData(
-                                                isActive,
-                                                data.data,
-                                                data.dataLte,
-                                                data.expires
-                                            )
-                                        )
-                                    } ?: run {
-                                        _state.value = _state.value.copy(
-                                            data = MainData(
-                                                isActive,
-                                                null,
-                                                null,
-                                                null
-                                            )
-                                        )
-                                    }
-                                }
+                object : UssdStringCallback {
+                    override fun onSuccess(rawResponse: String) {
+                        if (rawResponse == UssdResponse.PROCESSING_RESPONSE) {
+                            _state.value.simBalance?.let { bal ->
                                 _state.value = _state.value.copy(
-                                    consultMessage = null,
-                                    loading = false,
+                                    simBalance = bal.copy(
+                                        consumptionRate = isActive
+                                    )
                                 )
-                                canUpdate = true
+                            } ?: run {
+                                _state.value = _state.value.copy(
+                                    simBalance = SimBalance(
+                                        balance = 0f,
+                                        lockDate = java.util.Date(),
+                                        deletionDate = java.util.Date(),
+                                        consumptionRate = isActive,
+                                        data = null,
+                                        dataExpires = null,
+                                        voice = null,
+                                        voiceExpires = null,
+                                        sms = null,
+                                        smsExpires = null,
+                                        dailyData = null,
+                                        dailyDataExpires = null,
+                                    )
+                                )
                             }
-
-                            else -> {}
                         }
+                        _state.value = _state.value.copy(
+                            consultMessage = null,
+                            loading = false,
+                        )
+                        canUpdate = true
                     }
 
                     override fun onFailure(throwable: Throwable) {

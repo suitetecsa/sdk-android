@@ -47,7 +47,7 @@ object LongUtils {
     @JvmStatic
     fun toRemainingDays(date: Long): Int {
         val calendar = Calendar.getInstance()
-        val diffInMillis = date - calendar.getTimeInMillis()
+        val diffInMillis = date - calendar.timeInMillis
         return (diffInMillis / (HOURS_PER_DAY * MINUTES_PER_HOUR * MINUTES_PER_HOUR * MILLISECONDS) + 1).toInt()
     }
 
