@@ -47,7 +47,7 @@ jobs:
       - name: Run ${{ matrix.task }} task
         run: ./gradlew ${{ matrix.task }}
       - name: Upload SARIF files
-        uses: github/codeql-action/upload-sarif@181d5eefc20863364f96762470ba6f862bdef56b # v3.29.2
+        uses: github/codeql-action/upload-sarif@3ea06614dafe36dec890db3446326e0d40ce53d4 # v3.38.1
         if: ${{ always() }}
         with:
           sarif_file: .
